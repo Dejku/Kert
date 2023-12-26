@@ -1,102 +1,115 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="q-px-sm bg-surface">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title class="text-tertiary text-size-9"
+          >Kert</q-toolbar-title
+        >
+        <q-space />
+        <router-link to="/settings/account">
+          <q-avatar class="text-size-12">
+            <img src="../assets/default_avatar.png" />
+          </q-avatar>
+        </router-link>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
     <q-page-container>
-      <router-view />
+      <router-view
+        v-slot="{ Component, route }"
+        class="column q-pa-lg full-width"
+      >
+        <transition :name="(route.meta.transition as string) || 'fade'">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </q-page-container>
+
+    <q-footer
+      class="row justify-around items-center no-wrap q-pa-sm bg-surface text-size-9"
+    >
+      <router-link
+        v-for="nav in navigation.slice(0, 2)"
+        :key="nav.name"
+        :to="nav.to"
+        exact
+      >
+        <q-icon :name="nav.icon" />
+      </router-link>
+      <div>
+        <router-link
+          id="home"
+          class="absolute-center flex flex-center bg-background border-circle"
+          to="/home"
+          exact
+        >
+          <q-icon :name="iconsStore.icons.home" />
+        </router-link>
+      </div>
+      <router-link
+        v-for="nav in navigation.slice(2, 4)"
+        :key="nav.name"
+        :to="nav.to"
+        exact
+      >
+        <q-icon :name="nav.icon" />
+      </router-link>
+    </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue';
+import { useIconsStore } from 'src/stores/iconsStore';
+const iconsStore = useIconsStore();
 
-const essentialLinks: EssentialLinkProps[] = [
+const navigation = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    name: 'calendar',
+    icon: iconsStore.icons.calendar,
+    to: '/calendar',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    name: 'groups',
+    icon: iconsStore.icons.people,
+    to: '/groups',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    name: 'tasks',
+    icon: iconsStore.icons.list,
+    to: '/tasks',
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    name: 'settings',
+    icon: iconsStore.icons.settings,
+    to: '/settings',
   },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ];
-
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
 </script>
+
+<style lang="scss" scoped>
+$box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+
+.q-toolbar__title {
+  letter-spacing: 3px;
+  font-weight: 700;
+}
+
+.q-footer {
+  box-shadow: $box-shadow;
+
+  #home {
+    translate: 0 calc(-1.25 * $body-font-size);
+    padding: min($body-font-size, 32px);
+    box-shadow: $box-shadow;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: calc(100% - $body-font-size-2);
+      height: calc(100% - $body-font-size-2);
+      border-radius: inherit;
+      background-color: var(--surface);
+    }
+  }
+}
+</style>
