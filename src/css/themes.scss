@@ -51,7 +51,7 @@ $themes: (
 
 @each $theme, $colors in $themes {
   [data-theme='#{$theme}'] {
-    .q-page-container {
+    #q-app {
       background-color: map.get($colors, 'background') !important;
       color: map.get($colors, 'onBackground') !important;
     }

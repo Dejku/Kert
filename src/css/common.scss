@@ -7,9 +7,16 @@ a {
   }
 }
 
+.hug {
+  width: fit-content;
+  height: fit-content;
+}
+
 .shadow {
   box-shadow: $shadow;
 }
+
+// z-index
 
 .z-zero {
   z-index: 0;
@@ -17,6 +24,20 @@ a {
 
 .z-minus {
   z-index: -1000;
+}
+
+// gaps
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-20 {
+  gap: 20px;
 }
 
 // border
@@ -31,6 +52,10 @@ a {
 
 .rounded-borders--small {
   border-radius: $border-radius-small;
+}
+
+.rounded-borders--big {
+  border-radius: $border-radius-big;
 }
 
 // text
