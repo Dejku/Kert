@@ -8,6 +8,7 @@
       'base__button--transparent': transparent,
       'base__button--no-border': noBorder,
       'base__button--corner-small': cornerSmall,
+      'base__button--circle': circle,
     }"
   >
     <q-icon v-if="iconLeft" :name="iconLeft" />
@@ -23,8 +24,7 @@ defineProps({
     default: undefined,
   },
   label: {
-    type: String,
-    default: 'Kliknij',
+    type: [String, Number],
   },
   iconRight: {
     type: String,
@@ -50,6 +50,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  circle: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
@@ -67,6 +71,10 @@ defineProps({
 
   i {
     font-size: $body-font-size-10;
+  }
+
+  &.base__button--circle {
+    padding: 5px;
   }
 
   &.base__button--disabled {
@@ -129,6 +137,11 @@ defineProps({
       color: var(--error);
       border-color: var(--error);
     }
+
+    &.base__button--color-onBackground {
+      color: var(--onBackground);
+      border-color: var(--onBackground);
+    }
   }
 
   // ----------------------
@@ -173,6 +186,12 @@ defineProps({
     color: var(--onError);
     background-color: var(--error);
     border-color: var(--onError);
+  }
+
+  &.base__button--color-onBackground {
+    color: var(--onBackground);
+    background-color: var(--background);
+    border-color: var(--onBackground);
   }
 }
 </style>
