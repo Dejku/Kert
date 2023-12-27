@@ -25,6 +25,7 @@ defineProps({
   },
   label: {
     type: [String, Number],
+    default: 'Kliknij',
   },
   iconRight: {
     type: String,
@@ -105,8 +106,13 @@ defineProps({
     border: 1px solid;
     box-shadow: none !important;
 
-    color: var(--primary);
-    border-color: var(--primary);
+    color: var(--onBackground);
+    border-color: var(--outline);
+
+    &.base__button--color-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
 
     &.base__button--color-secondary {
       color: var(--secondary);
@@ -118,22 +124,22 @@ defineProps({
       border-color: var(--tertiary);
     }
 
-    &.base__button--color-green {
+    &.base__button--color-success {
       color: var(--success);
       border-color: var(--success);
     }
 
-    &.base__button--color-blue {
+    &.base__button--color-info {
       color: var(--info);
       border-color: var(--info);
     }
 
-    &.base__button--color-yellow {
+    &.base__button--color-warning {
       color: var(--warning);
       border-color: var(--warning);
     }
 
-    &.base__button--color-red {
+    &.base__button--color-error {
       color: var(--error);
       border-color: var(--error);
     }
@@ -149,49 +155,41 @@ defineProps({
   &.base__button--color-primary {
     color: var(--onPrimary);
     background-color: var(--primary);
-    border-color: var(--onPrimary);
   }
 
   &.base__button--color-secondary {
     color: var(--onSecondary);
     background-color: var(--secondary);
-    border-color: var(--onSecondary);
   }
 
   &.base__button--color-tertiary {
     color: var(--onTertiary);
     background-color: var(--tertiary);
-    border-color: var(--onTertiary);
   }
 
-  &.base__button--color-green {
+  &.base__button--color-success {
     color: var(--onSuccess);
     background-color: var(--success);
-    border-color: var(--onSuccess);
   }
 
-  &.base__button--color-blue {
+  &.base__button--color-info {
     color: var(--onInfo);
     background-color: var(--info);
-    border-color: var(--onInfo);
   }
 
-  &.base__button--color-yellow {
+  &.base__button--color-warning {
     color: var(--onWarning);
     background-color: var(--warning);
-    border-color: var(--onWarning);
   }
 
-  &.base__button--color-red {
+  &.base__button--color-error {
     color: var(--onError);
     background-color: var(--error);
-    border-color: var(--onError);
   }
 
   &.base__button--color-onBackground {
     color: var(--onBackground);
     background-color: var(--background);
-    border-color: var(--onBackground);
   }
 }
 </style>

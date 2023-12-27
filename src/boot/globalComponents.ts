@@ -1,9 +1,6 @@
 import { boot } from 'quasar/wrappers'
-
-const globalComponents = {
-  'BaseButton': 'BaseButton',
-}
+import BaseButton from 'src/components/~Global/BaseButton.vue';
 
 export default boot(({ app }) => {
-  Object.entries(globalComponents).forEach(async ([name, component]) => await import(`../components/~Global/${component}.vue`).then(component => app.component(name, component.default)))
+  app.component('BaseButton', BaseButton)
 })
