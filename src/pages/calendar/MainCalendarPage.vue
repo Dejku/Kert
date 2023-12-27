@@ -11,7 +11,7 @@
     </q-tabs>
 
     <q-tab-panels v-model="activeTab" animated class="bg-background col-grow">
-      <q-tab-panel name="calendar" class="column" style="gap: 4vh">
+      <q-tab-panel name="calendar" class="column" style="gap: 3.5vh">
         <div
           class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big shadow"
         >
@@ -59,6 +59,7 @@
                   :key="`${day.day}/${day.month}/${day.year}`"
                   :id="`${day.day}/${day.month}/${day.year}`"
                   class="date flex flex-center border-circle shadow"
+                  v-touch-hold.mouse="dateHold"
                   :class="{
                     'date--state-active': day.active,
                     'date--state-today': day.today,
@@ -71,11 +72,11 @@
                       }),
                   }"
                   @click="
-                    if (!day.active && day.prev) {
-                      changeMonth(-1);
-                    } else if (!day.active && day.next) {
-                      changeMonth(1);
-                    }
+                    !day.active && day.prev
+                      ? changeMonth(-1)
+                      : !day.active && day.next
+                      ? changeMonth(1)
+                      : null;
 
                     if (day.active) selectDay(day.day, day.month, day.year);
                   "
@@ -89,7 +90,10 @@
 
         <q-separator color="surface" />
 
-        <div class="column flex items-center text-size-4 gap-10">
+        <div
+          class="column flex items-center text-size-4 gap-10"
+          @click="modalStore.showModal({ type: 'monthSummary' })"
+        >
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
@@ -105,6 +109,13 @@
             </p>
           </div>
         </div>
+
+        <section
+          v-if="$q.screen.height > 700"
+          class="q-pa-md bg-surface rounded-borders shadow"
+        >
+          Lorem Ipsum
+        </section>
       </q-tab-panel>
 
       <q-tab-panel name="summary" class="column q-pa-md gap-20">
@@ -148,20 +159,23 @@ import { Dates, Month } from 'components/models/index';
 
 import { useIconsStore } from 'src/stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
+import { useModalStore } from 'stores/modalStore';
 
 import { onMounted, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
+const modalStore = useModalStore();
+
 const activeTab = ref<string>('calendar');
-
-const selectedDate = ref(new Date());
 const transition = ref<'left' | 'fade' | 'right'>('fade');
-
+const selectedDate = ref(new Date());
 const renderedMonth = ref<Month[]>([]);
 
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
+
+const dateHold = () => modalStore.showModal({ type: 'addVacation' });
 
 function selectDay(day: number, month: number, year: number) {
   vacationStore.selectVacationDay({ day, month, year });
