@@ -18,14 +18,19 @@
 
 // calendar
 
+$dateWidth: 32px;
+$dateGap: 1vh;
+
 #calendar__day__names {
   display: grid;
-  grid-template-columns: repeat(7, 32px);
-  gap: 0.3rem;
+  grid-template-columns: repeat(7, $dateWidth);
+
+  gap: $dateGap;
 }
 
 .date {
   $border: 1px solid;
+
   border: $border transparent;
   background-color: var(--surface);
   color: var(--onSurface);
@@ -49,13 +54,13 @@
 }
 
 #calendar__container {
-  height: calc(32px * 7);
+  height: calc($dateWidth * 7);
 
   .calendar__container__dates {
     display: grid;
-    grid-template-columns: repeat(7, 32px);
-    grid-template-rows: repeat(6, 32px);
-    gap: 0.3rem;
+    grid-template-columns: repeat(7, $dateWidth);
+    grid-template-rows: repeat(6, $dateWidth);
+    gap: $dateGap;
   }
 }
 
@@ -80,44 +85,18 @@
 }
 
 .calendar__transition--left-enter-to,
-.calendar__transition--right-enter-to {
-  translate: -50% 0;
-}
-
-.calendar__transition--left-enter-from {
-  translate: 100% 0;
-}
-
-.calendar__transition--left-leave-to {
-  translate: -200% 0;
-}
-
-.calendar__transition--right-enter-from {
-  translate: -200% 0;
-}
-
-.calendar__transition--right-leave-to {
-  translate: 100% 0;
-}
-
+.calendar__transition--right-enter-to,
 .calendar__transition--left-leave-from,
 .calendar__transition--right-leave-from {
   translate: -50% 0;
 }
 
-// details
+.calendar__transition--left-enter-from,
+.calendar__transition--right-leave-to {
+  translate: 100% 0;
+}
 
-#details {
-  font-size: 12px;
-  gap: 10px;
-
-  .details__content {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 3px;
-  }
-
-  p {
-    margin: 0;
-  }
+.calendar__transition--left-leave-to,
+.calendar__transition--right-enter-from {
+  translate: -200% 0;
 }

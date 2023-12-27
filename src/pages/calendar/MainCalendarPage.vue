@@ -1,5 +1,5 @@
 <template>
-  <q-page class="gap-10" style="padding-left: 0; padding-right: 0">
+  <q-page style="gap: 2vh; padding-left: 0; padding-right: 0">
     <q-tabs
       v-model="activeTab"
       indicator-color="primary"
@@ -11,7 +11,7 @@
     </q-tabs>
 
     <q-tab-panels v-model="activeTab" animated class="bg-background col-grow">
-      <q-tab-panel name="calendar" class="column gap-20">
+      <q-tab-panel name="calendar" class="column" style="gap: 4vh">
         <div
           class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big shadow"
         >
@@ -51,6 +51,8 @@
                 v-for="month in renderedMonth"
                 class="calendar__container__dates"
                 :key="`${month.name}/${month.year}`"
+                v-touch-swipe.mouse.left="swipeLeft"
+                v-touch-swipe.mouse.right="swipeRight"
               >
                 <div
                   v-for="day in month.dates"
@@ -157,6 +159,9 @@ const selectedDate = ref(new Date());
 const transition = ref<'left' | 'fade' | 'right'>('fade');
 
 const renderedMonth = ref<Month[]>([]);
+
+const swipeLeft = () => changeMonth(1);
+const swipeRight = () => changeMonth(-1);
 
 function selectDay(day: number, month: number, year: number) {
   vacationStore.selectVacationDay({ day, month, year });
