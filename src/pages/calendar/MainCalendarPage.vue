@@ -59,6 +59,7 @@
                   :key="`${day.day}/${day.month}/${day.year}`"
                   :id="`${day.day}/${day.month}/${day.year}`"
                   class="date flex flex-center border-circle shadow"
+                  :data-date="`${day.day}/${day.month}/${day.year}`"
                   v-touch-hold.mouse="dateHold"
                   :class="{
                     'date--state-active': day.active,
@@ -92,7 +93,7 @@
 
         <div
           class="column flex items-center text-size-4 gap-10"
-          @click="modalStore.showModal({ type: 'monthSummary' })"
+          @click="modalStore.showModal({ component: { type: 'monthSummary' } })"
         >
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
@@ -175,7 +176,30 @@ const renderedMonth = ref<Month[]>([]);
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
 
-const dateHold = () => modalStore.showModal({ type: 'addVacation' });
+const dateHold = async (details: any) => {
+  const data = details.evt.target.getAttribute('data-date').split('/');
+
+  const response = await modalStore.showModal({
+    component: {
+      type: 'addVacation',
+      options: {
+        date: {
+          day: Number(data[0]),
+          month: Number(data[1]),
+          year: Number(data[2]),
+        },
+      },
+    },
+    buttonsOptions: {
+      extendedButton: {
+        label: 'Dodaj urlop',
+      },
+    },
+  });
+
+  if (response.status == 'success') console.log(response);
+  else console.log(response);
+};
 
 function selectDay(day: number, month: number, year: number) {
   vacationStore.selectVacationDay({ day, month, year });
@@ -247,7 +271,7 @@ function renderCalendar() {
 
   renderedMonth.value.push({
     index: currMonth,
-    name: Months[currMonth],
+    name: Months[currMonth].name,
     year: selectedDate.value.getFullYear(),
     claimedVacationDaysInMonth: 0,
     dates,
