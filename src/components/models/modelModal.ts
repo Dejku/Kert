@@ -1,7 +1,7 @@
-import { AppColors } from '.'
+import { AppColors, Date } from '.'
 
 export interface ModalStructure {
-    title: string | undefined,
+    title: string,
     component: Component,
     buttons: ButtonsOptions
 }
@@ -14,38 +14,18 @@ export interface ModalOption {
 
 interface Component {
     type: 'monthSummary' | 'addVacation' | 'showVacation' | undefined,
-    options?: {
-        date?: {
-            day: number,
-            month: number,
-            year: number
-        }
-    },
-    details?: ComponentAddVacation
-}
-
-interface ButtonsOptions {
-    baseButton?: {
-        label: string,
-        color?: AppColors | 'onBackground'
-        transparent?: boolean
-    },
-    extendedButton?: {
-        label: string,
-        color?: AppColors | 'onBackground'
-        transparent?: boolean
+    options: {
+        date?: Date,
     }
 }
 
-interface ComponentAddVacation {
-    date: {
-        day: number,
-        month: number,
-        year: number
-    } | undefined,
-    type: string,
-    time: {
-        type: string,
-        hours: number,
-    },
+interface ButtonsOptions {
+    baseButton?: ButtonOptions,
+    extendedButton?: ButtonOptions
+}
+
+interface ButtonOptions {
+    label: string | undefined,
+    color?: AppColors | 'onBackground',
+    transparent?: boolean
 }

@@ -60,26 +60,29 @@
                   :id="`${day.day}/${day.month}/${day.year}`"
                   class="date flex flex-center border-circle shadow"
                   :data-date="`${day.day}/${day.month}/${day.year}`"
-                  v-touch-hold.mouse="dateHold"
+                  v-touch-hold.mouse="holdSelectDay"
                   :class="{
                     'date--state-active': day.active,
                     'date--state-today': day.today,
                     'date--state-claimed-normal':
                       day.active &&
-                      vacationStore.isExist({
-                        day: day.day,
-                        month: day.month,
-                        year: day.year,
-                      }),
+                      vacationStore.checkType(
+                        { day: day.day, month: day.month, year: day.year },
+                        false
+                      ),
+                    'date--state-claimed-special':
+                      day.active &&
+                      vacationStore.checkType(
+                        { day: day.day, month: day.month, year: day.year },
+                        true
+                      ),
                   }"
                   @click="
                     !day.active && day.prev
                       ? changeMonth(-1)
                       : !day.active && day.next
                       ? changeMonth(1)
-                      : null;
-
-                    if (day.active) selectDay(day.day, day.month, day.year);
+                      : selectDay(day.day, day.month, day.year)
                   "
                 >
                   {{ day.day }}
@@ -93,20 +96,36 @@
 
         <div
           class="column flex items-center text-size-4 gap-10"
-          @click="modalStore.showModal({ component: { type: 'monthSummary' } })"
+          @click="
+            modalStore.showModal({
+              component: {
+                type: 'monthSummary',
+                options: { date: { day: 20, month: 2, year: 2023 } },
+              },
+            })
+          "
         >
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
-              Wykorzystany urlopu w tym miesiącu:
-              <span class="text-bold">4 dni</span>
+              Wykorzystane dni urlopu w tym miesiącu:
+              <span class="text-bold">{{
+                vacationStore.countVacationDaysInMonth(
+                  selectedDate.getMonth(),
+                  selectedDate.getFullYear()
+                )
+              }}</span>
             </p>
           </div>
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
-              Pozostały urlopu do wykorzystania:
-              <span class="text-bold">16 dni</span>
+              Pozostałe dni urlopu do wykorzystania:
+              <span class="text-bold">{{
+                vacationStore.countAllAvailableVacationDays(
+                  selectedDate.getFullYear()
+                )
+              }}</span>
             </p>
           </div>
         </div>
@@ -125,8 +144,27 @@
         >
           <span class="text-bold">Urlop wypoczynkowy</span>
           <div class="row justify-between text-size-4">
-            <span>Wyk. dni: <span class="text-bold">0</span></span>
-            <span>Poz. dni: <span class="text-bold">20</span></span>
+            <span>
+              Wyk. dni:
+              <span class="text-bold">
+                {{
+                  vacationStore.countVacationDaysByTypeInYear(
+                    'Urlop wypoczynkowy',
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
+            <span>
+              Poz. dni:
+              <span class="text-bold">
+                {{
+                  vacationStore.countAvailableNormalVacationDays(
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
           </div>
         </div>
 
@@ -135,8 +173,27 @@
         >
           <span class="text-bold">Na żądanie</span>
           <div class="row justify-between text-size-4">
-            <span>Wyk. dni: <span class="text-bold">0</span></span>
-            <span>Poz. dni: <span class="text-bold">4</span></span>
+            <span>
+              Wyk. dni:
+              <span class="text-bold">
+                {{
+                  vacationStore.countVacationDaysByTypeInYear(
+                    'Na żądanie',
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
+            <span>
+              Poz. dni:
+              <span class="text-bold">
+                {{
+                  vacationStore.countAvailableOnDemandDays(
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
           </div>
         </div>
 
@@ -145,8 +202,27 @@
         >
           <span class="text-bold">Siła wyższa</span>
           <div class="row justify-between text-size-4">
-            <span>Wyk. godziny: <span class="text-bold">0</span></span>
-            <span>Poz. godziny: <span class="text-bold">16</span></span>
+            <span>
+              Wyk. godziny:
+              <span class="text-bold">
+                {{
+                  vacationStore.countVacationHoursByTypeInYear(
+                    'Siła wyższa',
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
+            <span>
+              Poz. godziny:
+              <span class="text-bold">
+                {{
+                  vacationStore.countAvailableForceDays(
+                    selectedDate.getFullYear()
+                  )
+                }}
+              </span>
+            </span>
           </div>
         </div>
       </q-tab-panel>
@@ -158,7 +234,7 @@
 import { Days, Months } from 'components/utils/index';
 import { Dates, Month } from 'components/models/index';
 
-import { useIconsStore } from 'src/stores/iconsStore';
+import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
 import { useModalStore } from 'stores/modalStore';
 
@@ -176,33 +252,18 @@ const renderedMonth = ref<Month[]>([]);
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
 
-const dateHold = async (details: any) => {
+const selectDay = (day: number, month: number, year: number) =>
+  vacationStore.selectVacationDay({ day, month, year });
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function holdSelectDay(details: any) {
   const data = details.evt.target.getAttribute('data-date').split('/');
 
-  const response = await modalStore.showModal({
-    component: {
-      type: 'addVacation',
-      options: {
-        date: {
-          day: Number(data[0]),
-          month: Number(data[1]),
-          year: Number(data[2]),
-        },
-      },
-    },
-    buttonsOptions: {
-      extendedButton: {
-        label: 'Dodaj urlop',
-      },
-    },
+  vacationStore.holdSelectVacationDay({
+    day: Number(data[0]),
+    month: Number(data[1]),
+    year: Number(data[2]),
   });
-
-  if (response.status == 'success') console.log(response);
-  else console.log(response);
-};
-
-function selectDay(day: number, month: number, year: number) {
-  vacationStore.selectVacationDay({ day, month, year });
 }
 
 function changeMonth(value: number) {
