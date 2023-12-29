@@ -5,11 +5,12 @@ export function fireEvent(eventName: string, detail: object | boolean) {
     window.dispatchEvent(event);
 }
 
-export function waitForUserInteraction(eventName: string, once?: boolean): Promise<CustomResponse> {
+export function waitForInteraction(eventName: string, once?: boolean): Promise<CustomResponse> {
     return new Promise<CustomResponse>((resolve) => {
         const listener = (e: object) => {
             window.removeEventListener(eventName, listener);
             resolve((e as CustomEvent).detail);
+            window.removeEventListener('showOverlay', listener);
         };
 
         window.addEventListener('showOverlay', listener, { once: true });

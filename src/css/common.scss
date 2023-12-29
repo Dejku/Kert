@@ -16,6 +16,10 @@ a {
   box-shadow: $shadow;
 }
 
+.shadow-drop {
+  filter: drop-shadow($shadow);
+}
+
 // z-index
 
 .z-zero {
@@ -96,4 +100,10 @@ $font-size: (
 
 .text-weight-300 {
   font-weight: 300;
+}
+
+.truncate-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

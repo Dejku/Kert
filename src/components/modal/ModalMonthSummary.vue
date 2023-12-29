@@ -5,8 +5,10 @@
     </header>
     <div class="column q-px-sm text-weight-300 text-size-6 gap-10">
       <header class="row flex-center gap-10">
-        <div>W tym</div>
-        <hr class="col-grow rounded-borders--big bg-outline no-border" />
+        W tym
+        <hr
+          class="col-grow rounded-borders--big bg-outline no-border no-margin"
+        />
       </header>
       <section class="column q-px-xs gap-5">
         <div class="row justify-between">
@@ -20,15 +22,3 @@
 </template>
 
 <script setup lang="ts"></script>
-
-<style lang="scss" scoped>
-span {
-  color: var(--onSurface);
-  opacity: 0.75;
-  font-weight: 200;
-}
-
-hr {
-  height: 1px;
-}
-</style>

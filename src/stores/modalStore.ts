@@ -1,59 +1,60 @@
 import { defineStore } from 'pinia';
-import { fireEvent } from 'components/utils';
-
-interface ModalOption {
-  type: 'monthSummary' | 'addVacation' | 'showVacation',
-  title?: string,
-  options?: string,
-  buttonsOptions?: ButtonsOptions
-}
-
-interface ButtonsOptions {
-  baseButton: {
-    label: string,
-  },
-  extendedButton?: {
-    visible: boolean,
-    label: string | undefined,
-    color: string | undefined
-  }
-}
+import { fireEvent, waitForInteraction } from 'components/utils';
+import { ModalStructure, ModalOption, CustomResponse } from 'components/models';
+import { useAppStore } from './appStore';
 
 export const useModalStore = defineStore('modal', {
   state: () => ({
     isShowed: false,
     modal: {
-      title: '',
-      component: '',
-      buttons:
-      {
+      title: undefined,
+      component: {
+        type: undefined,
+      },
+      buttons: {
         baseButton: {
           label: 'Okej',
+          color: 'onBackground',
+          transparent: true
         },
-        extendedButton: {
-          visible: false,
-          label: undefined,
-          color: undefined
-        }
       }
-    }
+    } as ModalStructure
   }),
 
   actions: {
-    showModal(options: ModalOption) {
-      this.isShowed = true;
-      fireEvent('showOverlay', true);
+    async showModal(options: ModalOption): Promise<CustomResponse> {
+      this.isVisible(true);
 
-      this.modal.component = options.type;
+      this.modal.component = options.component;
+      if (options.title)
+        this.modal.title = options.title;
+      else
+        this.modal.title =
+          options.component.type == 'addVacation' ? 'Dodaj urlop' :
+            options.component.type == 'showVacation' ? 'Szczegóły urlopu' : 'Brak tytułu';
+
+      if (options.buttonsOptions) {
+        if (options.buttonsOptions.baseButton) this.modal.buttons.baseButton = options.buttonsOptions.baseButton;
+        if (options.buttonsOptions.extendedButton) this.modal.buttons.extendedButton = options.buttonsOptions.extendedButton;
+      }
+
+      return await waitForInteraction('modal_userInteraction', true);
     },
 
-    hideModal() {
-      fireEvent('showOverlay', false);
+    optionChoosen(status: CustomResponse['status']) {
+      fireEvent('modal_userInteraction', { status, message: this.modal.component.details });
       this.close();
     },
 
+    isVisible(isShowed: boolean) {
+      const appStore = useAppStore();
+
+      this.isShowed = isShowed;
+      appStore.isOverlayShowed = isShowed;
+    },
+
     close() {
-      this.isShowed = false;
+      this.isVisible(false);
       this.clear();
     },
 

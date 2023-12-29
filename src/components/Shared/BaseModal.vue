@@ -4,10 +4,12 @@
       <div
         v-if="modalStore.isShowed"
         id="base__modal"
-        class="column flex items-center absolute-bottom z-top gap-20"
+        class="column flex items-center absolute-bottom gap-10"
       >
-        <div class="column flex flex-center full-width gap-10">
-          <hr class="rounded-borders--big bg-outline no-border" />
+        <div class="column flex flex-center full-width gap-20">
+          <hr
+            class="rounded-borders--big bg-outline no-border no-margin shadow"
+          />
 
           <h5 id="base__modal__title" class="no-margin text-bold">
             {{ modalStore.modal.title }}
@@ -17,24 +19,27 @@
             <component
               :is="
                 modalComponents.find(
-                  (comp) => comp.name === modalStore.modal.component
+                  (comp) => comp.name === modalStore.modal.component.type
                 )?.comp
               "
             ></component>
           </section>
         </div>
 
-        <div id="base__modal__buttons" class="row gap-40">
+        <div id="base__modal__buttons" class="row q-py-sm gap-40">
           <BaseButton
-            :label="modalStore.modal.buttons.baseButton.label"
-            transparent
-            @click="modalStore.hideModal()"
+            :label="modalStore.modal.buttons.baseButton?.label"
+            :class="`base__button--color-${modalStore.modal.buttons.baseButton?.color}`"
+            :transparent="modalStore.modal.buttons.baseButton?.transparent"
+            @click="modalStore.optionChoosen('failed')"
           />
 
           <BaseButton
-            v-if="modalStore.modal.buttons.extendedButton.visible"
+            v-if="modalStore.modal.buttons.extendedButton?.label"
             :label="modalStore.modal.buttons.extendedButton.label"
             :class="`base__button--color-${modalStore.modal.buttons.extendedButton.color}`"
+            :transparent="modalStore.modal.buttons.extendedButton.transparent"
+            @click="modalStore.optionChoosen('success')"
           />
         </div>
       </div>
@@ -46,7 +51,7 @@
 import { useModalStore } from 'stores/modalStore';
 const modalStore = useModalStore();
 
-import { defineAsyncComponent, onMounted, onUnmounted } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 const modalComponents = [
   {
@@ -62,35 +67,4 @@ const modalComponents = [
     ),
   },
 ];
-
-onMounted(() =>
-  window.addEventListener('showOverlay', (e) =>
-    overlayListener(e as CustomEvent)
-  )
-);
-onUnmounted(() =>
-  window.removeEventListener('showOverlay', (e) =>
-    overlayListener(e as CustomEvent)
-  )
-);
-
-const overlayListener = (e: CustomEvent) =>
-  e.detail == false ? modalStore.close() : null;
 </script>
-
-<style lang="scss" scoped>
-#base__modal {
-  background-image: linear-gradient(
-    to bottom,
-    var(--surface),
-    var(--background)
-  );
-  border-radius: 25px 25px 0 0;
-  padding: 15px 20px 30px;
-
-  hr {
-    width: 40%;
-    height: 5px;
-  }
-}
-</style>

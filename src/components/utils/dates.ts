@@ -9,16 +9,16 @@ export const Days = [
 ]
 
 export const Months = [
-    'Styczeń',
-    'Luty',
-    'Marzec',
-    'Kwiecień',
-    'Maj',
-    'Czerwiec',
-    'Lipiec',
-    'Sierpień',
-    'Wrzesień',
-    'Pażdziernik',
-    'Listopad',
-    'Grudzień',
+    { name: 'Styczeń', formattedName: 'Stycznia' },
+    { name: 'Luty', formattedName: 'Lutego' },
+    { name: 'Marzec', formattedName: 'Marca' },
+    { name: 'Kwiecień', formattedName: 'Kwietnia' },
+    { name: 'Maj', formattedName: 'Maja' },
+    { name: 'Czerwiec', formattedName: 'Czerwca' },
+    { name: 'Lipiec', formattedName: 'Lipca' },
+    { name: 'Sierpień', formattedName: 'Sierpnia' },
+    { name: 'Wrzesień', formattedName: 'Września' },
+    { name: 'Pażdziernik', formattedName: 'Października' },
+    { name: 'Listopad', formattedName: 'Listopada' },
+    { name: 'Grudzień', formattedName: 'Grudnia' },
 ]
