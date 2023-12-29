@@ -66,5 +66,11 @@ const modalComponents = [
       () => import('components/modal/ModalAddVacation.vue')
     ),
   },
+  {
+    name: 'showVacation',
+    comp: defineAsyncComponent(
+      () => import('components/modal/ModalShowVacation.vue')
+    ),
+  },
 ];
 </script>

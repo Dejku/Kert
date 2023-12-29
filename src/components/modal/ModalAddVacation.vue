@@ -1,16 +1,11 @@
 <template>
-  <div
-    ref="modalComponent"
-    class="relative-position column gap-10 text-weight-300 text-size-7"
-    style="transition: min-height 0.3s ease"
-    :style="`min-height: ${modalHeight}px`"
-  >
+  <div class="relative-position column gap-10 text-weight-300 text-size-7">
     <div class="row justify-between">
       <div class="row items-center gap-5">
         <q-icon :name="iconsStore.icons.calendar" class="text-size-10" />
         Dzień
       </div>
-      <span>{{ vacation.title }}</span>
+      <span>{{ formattedDate }}</span>
     </div>
 
     <div class="row justify-between" style="height: 40px">
@@ -19,8 +14,9 @@
         Typ
       </div>
       <q-select
-        v-model="vacation.type"
-        :options="['Urlop wypoczynkowy', 'Na żądanie', 'Siła wyższa']"
+        v-model="modalStore.component.vacationDays"
+        :options="[Normal, OnDemand, Force]"
+        option-label="name"
         color="primary"
         bg-color="surfaceVariant"
         dense
@@ -38,95 +34,64 @@
         Czas trwania
       </div>
       <div>
-        <q-checkbox
-          v-model="vacation.time.type"
-          label="Cały dzień?"
-          class="shadow-drop"
-          color="infoContainer"
-          true-value="day"
-          false-value="hour"
-          @click="resizeModal"
-          left-label
-        />
+        <Transition name="fade" mode="out-in">
+          <span v-if="modalStore.component.vacationDays.time.type == 'day'">
+            Cały dzień
+          </span>
+
+          <div v-else class="row gap-10">
+            <q-icon
+              :name="iconsStore.icons.arrowLeft"
+              class="text-size-10"
+              v-touch-repeat:0:100.mouse="decrement"
+            />
+            <span>{{ modalStore.component.vacationDays.time.hours }}</span>
+            <q-icon
+              :name="iconsStore.icons.arrowRight"
+              class="text-size-10"
+              v-touch-repeat:0:100.mouse="increment"
+            />
+          </div>
+        </Transition>
       </div>
     </div>
-
-    <transition
-      enter-active-class="animated fadeInUp"
-      leave-active-class="animated fadeOutDown"
-    >
-      <div
-        v-if="vacation.time.type == 'hour'"
-        class="row justify-between items-center q-pl-md absolute-bottom"
-      >
-        <div>...w godzinach</div>
-        <div class="row gap-5">
-          <q-icon
-            :name="iconsStore.icons.arrowLeft"
-            class="text-size-10"
-            v-touch-repeat:0:100.mouse="decrement"
-          />
-          <span>{{ vacation.time.hours }}</span>
-          <q-icon
-            :name="iconsStore.icons.arrowRight"
-            class="text-size-10"
-            v-touch-repeat:0:100.mouse="increment"
-          />
-        </div>
-      </div>
-    </transition>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Normal, OnDemand, Force } from 'components/models';
+import { Months } from '../utils';
+
 import { useIconsStore } from 'stores/iconsStore';
 import { useModalStore } from 'stores/modalStore';
-import { onMounted, ref, watch } from 'vue';
-import { Months } from '../utils';
+
+import { ref, watch } from 'vue';
+
 const iconsStore = useIconsStore();
 const modalStore = useModalStore();
 
-const modalComponent = ref();
-const modalHeight = ref(100);
+const formattedDate = ref<string>('Brak tytułu');
 
-let title;
-
-if (modalStore.modal.component.options?.date) {
-  title = `${modalStore.modal.component.options.date.day} ${
+if (modalStore.modal.component.options.date) {
+  formattedDate.value = `${modalStore.modal.component.options.date.day} ${
     Months[modalStore.modal.component.options.date.month - 1].formattedName
   } ${modalStore.modal.component.options.date.year}`;
 }
 
-const vacation = ref({
-  title,
-  date: modalStore.modal.component.options?.date,
-  type: 'Urlop wypoczynkowy',
-  time: {
-    type: 'day',
-    hours: 1,
-  },
-});
-
-const decrement = () => (vacation.value.time.hours -= 1);
-const increment = () => (vacation.value.time.hours += 1);
+const decrement = () => (modalStore.component.vacationDays.time.hours -= 1);
+const increment = () => (modalStore.component.vacationDays.time.hours += 1);
 
 watch(
-  () => vacation.value.time.hours,
+  () => modalStore.component.vacationDays.time.hours,
   () => {
-    vacation.value.time.hours =
-      vacation.value.time.hours < 1 ? 1 : vacation.value.time.hours;
-    vacation.value.time.hours =
-      vacation.value.time.hours > 7 ? 7 : vacation.value.time.hours;
+    modalStore.component.vacationDays.time.hours =
+      modalStore.component.vacationDays.time.hours < 1
+        ? 1
+        : modalStore.component.vacationDays.time.hours;
+    modalStore.component.vacationDays.time.hours =
+      modalStore.component.vacationDays.time.hours > 8
+        ? 8
+        : modalStore.component.vacationDays.time.hours;
   }
 );
-
-const resizeModal = () =>
-  (modalHeight.value =
-    vacation.value.time.type == 'hour'
-      ? modalComponent.value.offsetHeight + 30
-      : modalComponent.value.offsetHeight - 30);
-
-onMounted(() => {
-  modalStore.modal.component.details = vacation.value;
-});
 </script>

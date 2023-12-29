@@ -7,18 +7,27 @@
 </template>
 
 <script setup lang="ts">
+import { OnDemand } from 'components/models';
+
 import { useModalStore } from 'stores/modalStore';
 const modalStore = useModalStore();
 
 const click = async () => {
   const response = await modalStore.showModal({
     component: {
-      type: 'addVacation',
-      options: { date: { day: 29, month: 12, year: 2023 } },
+      type: 'showVacation',
+      options: {
+        date: { day: 29, month: 12, year: 2023 },
+        type: OnDemand,
+        time: {
+          type: 'day',
+        },
+      },
     },
     buttonsOptions: {
       extendedButton: {
-        label: 'Dodaj urlop',
+        label: 'Usuń urlop',
+        color: 'error',
       },
     },
   });

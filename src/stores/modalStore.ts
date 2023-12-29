@@ -1,15 +1,22 @@
 import { defineStore } from 'pinia';
 import { fireEvent, waitForInteraction } from 'components/utils';
-import { ModalStructure, ModalOption, CustomResponse } from 'components/models';
+import { ModalStructure, ModalOption, CustomResponse, VacationTypes } from 'components/models';
 import { useAppStore } from './appStore';
 
 export const useModalStore = defineStore('modal', {
   state: () => ({
     isShowed: false,
     modal: {
-      title: undefined,
+      title: 'Brak tytułu',
       component: {
         type: undefined,
+        options: {
+          date: {
+            day: 0,
+            month: 0,
+            year: 0
+          },
+        }
       },
       buttons: {
         baseButton: {
@@ -17,8 +24,24 @@ export const useModalStore = defineStore('modal', {
           color: 'onBackground',
           transparent: true
         },
+        extendedButton: {
+          label: undefined,
+          color: undefined,
+          transparent: undefined
+        }
       }
-    } as ModalStructure
+    } as ModalStructure,
+
+    component: {
+      vacationDays: {
+        name: 'Urlop wypoczynkowy',
+        isSpecial: false,
+        time: {
+          type: 'day',
+          hours: 0
+        }
+      } as VacationTypes
+    }
   }),
 
   actions: {
@@ -42,7 +65,7 @@ export const useModalStore = defineStore('modal', {
     },
 
     optionChoosen(status: CustomResponse['status']) {
-      fireEvent('modal_userInteraction', { status, message: this.modal.component.details });
+      fireEvent('modal_userInteraction', { status, message: this.modal.component.options });
       this.close();
     },
 
@@ -59,7 +82,7 @@ export const useModalStore = defineStore('modal', {
     },
 
     clear() {
-      this.$reset();
+      setTimeout(() => { this.$reset() }, 100);
     },
   }
 });
