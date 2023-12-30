@@ -113,8 +113,24 @@ export const useVacationStore = defineStore('vacation', {
       return hours;
     },
 
+    countVacationHoursByTypeInMonth(typeName: VacationNames, month: number, year: number): number {
+      let hours = 0;
+      const elements = this.claimedVacationDays.filter(element => this.checkVacationTypeInMonth(element, typeName, month, year));
+      elements.forEach(element => hours += element.type.time.hours);
+
+      return hours;
+    },
+
+    countVacationDaysByTypeInMonth(typeName: VacationNames, month: number, year: number): number {
+      return this.claimedVacationDays.filter(element => this.checkVacationTypeInMonth(element, typeName, month, year)).length;
+    },
+
     countVacationDaysInMonth(month: number, year: number): number {
-      return this.claimedVacationDays.filter(element => this.checkDay(element, month + 1, year)).length;
+      return this.claimedVacationDays.filter(element => this.checkDay(element, month, year)).length;
+    },
+
+    getVacationDaysInMonth(month: number, year: number): ClaimedVacationDays[] {
+      return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year)
     },
 
     countVacationDaysInYear(year: number): number {
@@ -160,16 +176,20 @@ export const useVacationStore = defineStore('vacation', {
       })
     },
 
+    checkVacationTypeInMonth(element: ClaimedVacationDays, typeName: VacationNames, month: number, year: number): boolean {
+      return element.type.name == typeName && element.date.month == month && element.date.year == year
+    },
+
     checkVacationType(element: ClaimedVacationDays, typeName: VacationNames, year: number): boolean {
       return element.type.name == typeName && element.date.year == year
     },
 
     checkDay(element: ClaimedVacationDays, month: number, year: number): boolean {
-      return element.date.month == month && element.date.year == year
+      return element.date.month == month && element.date.year == year && element.type.name != 'Siła wyższa'
     },
 
     checkYear(element: ClaimedVacationDays, year: number): boolean {
-      return element.date.year == year
+      return element.date.year == year && element.type.name != 'Siła wyższa'
     },
   }
 });

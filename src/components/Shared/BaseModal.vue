@@ -16,17 +16,26 @@
           </h5>
 
           <section id="base__modal__desc" class="full-width q-px-sm">
-            <component
-              :is="
-                modalComponents.find(
-                  (comp) => comp.name === modalStore.modal.component.type
-                )?.comp
-              "
-            ></component>
+            <Suspense>
+              <component
+                :is="
+                  modalComponents.find(
+                    (comp) => comp.name === modalStore.modal.component.type
+                  )?.comp
+                "
+              ></component>
+
+              <template #fallback>
+                <ModalLoading />
+              </template>
+            </Suspense>
           </section>
         </div>
 
-        <div id="base__modal__buttons" class="row q-py-sm gap-40">
+        <div
+          id="base__modal__buttons"
+          class="row flex-center absolute-bottom q-pa-lg gap-40"
+        >
           <BaseButton
             :label="modalStore.modal.buttons.baseButton?.label"
             :class="`base__button--color-${modalStore.modal.buttons.baseButton?.color}`"
@@ -48,6 +57,8 @@
 </template>
 
 <script setup lang="ts">
+import ModalLoading from 'components/modal/ModalLoading.vue';
+
 import { useModalStore } from 'stores/modalStore';
 const modalStore = useModalStore();
 

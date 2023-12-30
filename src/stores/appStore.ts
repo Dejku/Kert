@@ -3,7 +3,8 @@ import { useModalStore } from './modalStore';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
-        isOverlayShowed: false
+        todayDate: new Date(),
+        isOverlayShowed: false,
     }),
 
     actions: {
