@@ -1,9 +1,28 @@
 <template>
   <div class="column gap-10">
-    <header class="row justify-between text-size-7">
-      Wykorzystany urlop <span>4 dni</span>
+    <header class="row items-center justify-between text-size-7">
+      <template v-if="allDays || forceDays">
+        Wykorzystany urlop
+        <div>
+          <span>
+            {{
+              allDays && forceDays
+                ? `${allDays} d. / ${forceDays} g.`
+                : allDays
+                ? formatString('dni', allDays)
+                : forceDays
+                ? `${forceDays} g.`
+                : null
+            }}
+          </span>
+        </div>
+      </template>
+      <span v-else class="q-mx-auto q-pa-xl">Brak urlopów</span>
     </header>
-    <div class="column q-px-sm text-weight-300 text-size-6 gap-10">
+    <div
+      v-if="allDays || forceDays"
+      class="column q-px-sm text-weight-300 text-size-6 gap-10"
+    >
       <header class="row flex-center gap-10">
         W tym
         <hr
@@ -11,14 +30,58 @@
         />
       </header>
       <section class="column q-px-xs gap-5">
-        <div class="row justify-between">
-          Urlop wypoczynkowy <span>3 dni</span>
+        <div v-if="normalDays" class="row justify-between">
+          Urlop wypoczynkowy
+          <span>
+            {{ formatString('dni', normalDays) }}
+          </span>
         </div>
-        <div class="row justify-between">Na żądanie <span>1 dni</span></div>
-        <div class="row justify-between">Siła wyższa <span>5 godzin</span></div>
+        <div v-if="onDemandDays" class="row justify-between">
+          Na żądanie
+          <span>
+            {{ formatString('dni', onDemandDays) }}
+          </span>
+        </div>
+        <div v-if="forceDays" class="row justify-between">
+          Siła wyższa
+          <span>
+            {{ forceDays }}
+            godz.
+          </span>
+        </div>
       </section>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { formatString } from '../utils';
+import { useVacationStore } from 'stores/vacationStore';
+import { useModalStore } from 'stores/modalStore';
+
+const vacationStore = useVacationStore();
+const modalStore = useModalStore();
+
+const month = (modalStore.modal.component.options.date?.month || 0) + 1;
+const year = modalStore.modal.component.options.date?.year || 0;
+
+const allDays = vacationStore.countVacationDaysInMonth(month, year);
+
+const normalDays = vacationStore.countVacationDaysByTypeInMonth(
+  'Urlop wypoczynkowy',
+  month,
+  year
+);
+
+const onDemandDays = vacationStore.countVacationDaysByTypeInMonth(
+  'Na żądanie',
+  month,
+  year
+);
+
+const forceDays = vacationStore.countVacationHoursByTypeInMonth(
+  'Siła wyższa',
+  month,
+  year
+);
+</script>

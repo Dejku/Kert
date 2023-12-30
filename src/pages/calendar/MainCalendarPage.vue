@@ -98,9 +98,16 @@
           class="column flex items-center text-size-4 gap-10"
           @click="
             modalStore.showModal({
+              title: `${renderedMonth[0]?.name} ${renderedMonth[0]?.year}`,
               component: {
                 type: 'monthSummary',
-                options: { date: { day: 20, month: 2, year: 2023 } },
+                options: {
+                  date: {
+                    day: 0,
+                    month: selectedDate.getMonth(),
+                    year: selectedDate.getFullYear(),
+                  },
+                },
               },
             })
           "
@@ -108,24 +115,34 @@
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
-              Wykorzystane dni urlopu w tym miesiącu:
-              <span class="text-bold">{{
-                vacationStore.countVacationDaysInMonth(
-                  selectedDate.getMonth(),
-                  selectedDate.getFullYear()
-                )
-              }}</span>
+              Wykorzystany urlop w tym miesiącu:
+              <span class="text-bold">
+                {{
+                  formatString(
+                    'dni',
+                    vacationStore.countVacationDaysInMonth(
+                      selectedDate.getMonth() + 1,
+                      selectedDate.getFullYear()
+                    )
+                  )
+                }}
+              </span>
             </p>
           </div>
           <div class="flex row no-wrap gap-5">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
-              Pozostałe dni urlopu do wykorzystania:
-              <span class="text-bold">{{
-                vacationStore.countAllAvailableVacationDays(
-                  selectedDate.getFullYear()
-                )
-              }}</span>
+              Pozostały urlop do wykorzystania:
+              <span class="text-bold">
+                {{
+                  formatString(
+                    'dni',
+                    vacationStore.countAllAvailableVacationDays(
+                      selectedDate.getFullYear()
+                    )
+                  )
+                }}
+              </span>
             </p>
           </div>
         </div>
@@ -150,7 +167,7 @@
                 {{
                   vacationStore.countVacationDaysByTypeInYear(
                     'Urlop wypoczynkowy',
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -160,7 +177,7 @@
               <span class="text-bold">
                 {{
                   vacationStore.countAvailableNormalVacationDays(
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -179,7 +196,7 @@
                 {{
                   vacationStore.countVacationDaysByTypeInYear(
                     'Na żądanie',
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -189,7 +206,7 @@
               <span class="text-bold">
                 {{
                   vacationStore.countAvailableOnDemandDays(
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -208,7 +225,7 @@
                 {{
                   vacationStore.countVacationHoursByTypeInYear(
                     'Siła wyższa',
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -218,7 +235,7 @@
               <span class="text-bold">
                 {{
                   vacationStore.countAvailableForceDays(
-                    selectedDate.getFullYear()
+                    appStore.todayDate.getFullYear()
                   )
                 }}
               </span>
@@ -231,22 +248,24 @@
 </template>
 
 <script setup lang="ts">
-import { Days, Months } from 'components/utils/index';
-import { Dates, Month } from 'components/models/index';
+import { Days, Months, formatString } from 'components/utils';
+import { Dates, Month } from 'components/models';
 
 import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
 import { useModalStore } from 'stores/modalStore';
+import { useAppStore } from 'stores/appStore';
 
 import { onMounted, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
 const modalStore = useModalStore();
+const appStore = useAppStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
-const selectedDate = ref(new Date());
+const selectedDate = ref<Date>(new Date());
 const renderedMonth = ref<Month[]>([]);
 
 const swipeLeft = () => changeMonth(1);
