@@ -7,20 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from 'stores/modalStore';
-const modalStore = useModalStore();
+import { useAlertsStore } from 'stores/alertsStore';
+const alertsStore = useAlertsStore();
 
-const click = async () => {
-  const response = await modalStore.showModal({
-    component: {
-      type: undefined,
-      options: {},
-    },
-  });
-
-  if (response.status == 'success') console.log(response);
-  else console.log(response);
-};
+const click = async () => alertsStore.createAlert('test', 'warning', 5);
 </script>
 
 <style lang="scss"></style>
