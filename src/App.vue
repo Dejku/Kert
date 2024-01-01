@@ -1,4 +1,6 @@
 <template>
+  <Alerts />
+
   <router-view />
 
   <BaseOverlay />
@@ -8,6 +10,7 @@
 <script setup lang="ts">
 import BaseModal from 'components/Shared/BaseModal.vue';
 import BaseOverlay from 'components/Shared/BaseOverlay.vue';
+import Alerts from 'components/alerts/AlertsContainer.vue';
 
 import { useAppStore } from 'stores/appStore';
 const appStore = useAppStore();
