@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { Normal, ClaimedVacationDays, Date, VacationNames, CustomResponse } from 'components/models';
+import { Normal, ClaimedVacationDays, Date, VacationNames, CustomResponse, Alert } from 'components/models';
 import { useModalStore } from './modalStore';
+import { useAlertsStore } from './alertsStore';
 
 export const useVacationStore = defineStore('vacation', {
   state: () => ({
@@ -14,7 +15,20 @@ export const useVacationStore = defineStore('vacation', {
   }),
 
   actions: {
+    createAlert(data: { message: Alert['message'], state: Alert['state'], duration?: Alert['duration'] }) {
+      const alert = useAlertsStore();
+
+      alert.createAlert({ message: data.message, state: data.state, duration: data.duration });
+    },
+
     addVacationDay(day: ClaimedVacationDays): void {
+      if (this.isVacationLimitReached(day.type.name, day.date))
+        return this.createAlert({
+          message: 'Wykorzystano wszystkie dni urlopu',
+          state: 'warning',
+          duration: 5
+        });
+
       this.claimedVacationDays.push(day);
     },
 
@@ -150,6 +164,12 @@ export const useVacationStore = defineStore('vacation', {
           },
         },
       })
+    },
+
+    isVacationLimitReached(type: VacationNames, date: Date): boolean {
+      if (type == 'Na żądanie' && this.countAvailableVacationByType('Urlop wypoczynkowy', date.year) <= 0) return true;
+
+      return this.countAvailableVacationByType(type, date.year) <= 0
     },
   }
 });
