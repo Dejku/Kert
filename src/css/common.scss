@@ -7,6 +7,15 @@ a {
   }
 }
 
+input {
+  padding: 0;
+  font-size: var(--body-font-size);
+  color: var(--onBackground);
+  border: none;
+  outline: none;
+  background: none;
+}
+
 .hug {
   width: fit-content;
   height: fit-content;
@@ -94,12 +103,12 @@ $font-size: (
   }
 }
 
-.text-weight-200 {
-  font-weight: 200;
-}
+$font-weight: (100, 200, 300, 400, 500, 600, 700, 800, 900);
 
-.text-weight-300 {
-  font-weight: 300;
+@for $number from 1 to 10 {
+  .text-weight-#{$number}00 {
+    font-weight: #{nth($font-weight, $number)} !important;
+  }
 }
 
 .truncate-text {

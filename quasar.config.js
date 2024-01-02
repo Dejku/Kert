@@ -115,6 +115,8 @@ module.exports = configure(function (/* ctx */) {
       'fadeOut',
       'fadeInUp',
       'fadeOutDown',
+      'fadeInDown',
+      'fadeOutUp',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#sourcefiles
