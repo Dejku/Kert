@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isVisible"
-    class="base__alert row items-center full-width gap-5 rounded-borders--small shadow"
+    class="base__alert row items-center q-py-xs q-px-sm full-width gap-5 rounded-borders--small shadow"
     :class="`base__alert--color-${props.state}`"
     @click="hide()"
   >
@@ -58,8 +58,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .base__alert {
-  padding: 5px 10px;
-
   &.base__alert--color-success {
     color: var(--onSuccess);
     background-color: var(--success);

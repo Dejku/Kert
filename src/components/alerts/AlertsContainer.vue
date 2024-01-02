@@ -3,7 +3,7 @@
     tag="div"
     id="alerts"
     name="alerts__element"
-    class="column z-max relative-position"
+    class="column z-max relative-position gap-10"
   >
     <BaseAlert
       v-for="alert in alertsStore.alerts"
@@ -30,8 +30,7 @@ const alertsStore = useAlertsStore();
   top: 25px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(80%, 350px);
-  gap: 10px;
+  min-width: 300px;
 }
 
 .alerts__element-move,

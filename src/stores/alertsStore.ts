@@ -9,16 +9,16 @@ export const useAlertsStore = defineStore('alerts', {
     }),
 
     actions: {
-        async createAlert(message: Alert['message'], state: Alert['state'], duration?: Alert['duration']) {
+        async createAlert(data: { message: Alert['message'], state: Alert['state'], duration?: Alert['duration'] }) {
             const notificationSound = new Audio(alertSound);
             notificationSound.volume = 0.5;
             await notificationSound.play();
 
             this.alerts.push({
                 id: uid(),
-                message,
-                state,
-                duration: duration || 5,
+                message: data.message,
+                state: data.state,
+                duration: data.duration || 0,
             });
         },
 
