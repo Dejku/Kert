@@ -137,7 +137,7 @@
                 {{
                   formatString(
                     'dni',
-                    vacationStore.countAllAvailableVacationDays(
+                    vacationStore.countAvailableNormalVacationDaysInYear(
                       selectedDate.getFullYear()
                     )
                   )
@@ -165,7 +165,7 @@
               Wyk. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationDaysByTypeInYear(
+                  vacationStore.countVacationByType(
                     'Urlop wypoczynkowy',
                     appStore.todayDate.getFullYear()
                   )
@@ -176,7 +176,8 @@
               Poz. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countAvailableNormalVacationDays(
+                  vacationStore.countAvailableVacationByType(
+                    'Urlop wypoczynkowy',
                     appStore.todayDate.getFullYear()
                   )
                 }}
@@ -194,7 +195,7 @@
               Wyk. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationDaysByTypeInYear(
+                  vacationStore.countVacationByType(
                     'Na żądanie',
                     appStore.todayDate.getFullYear()
                   )
@@ -205,7 +206,8 @@
               Poz. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countAvailableOnDemandDays(
+                  vacationStore.countAvailableVacationByType(
+                    'Na żądanie',
                     appStore.todayDate.getFullYear()
                   )
                 }}
@@ -223,7 +225,7 @@
               Wyk. godziny:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationHoursByTypeInYear(
+                  vacationStore.countVacationByType(
                     'Siła wyższa',
                     appStore.todayDate.getFullYear()
                   )
@@ -234,7 +236,8 @@
               Poz. godziny:
               <span class="text-bold">
                 {{
-                  vacationStore.countAvailableForceDays(
+                  vacationStore.countAvailableVacationByType(
+                    'Siła wyższa',
                     appStore.todayDate.getFullYear()
                   )
                 }}
