@@ -6,21 +6,19 @@ export const useVacationStore = defineStore('vacation', {
   state: () => ({
     currentYear: 2023,
     availableLimitsForUser: {
-      vacationDays: 20,
-      onDemandDays: 4,
-      forceHours: 16,
+      'Urlop wypoczynkowy': 20,
+      'Na żądanie': 4,
+      'Siła wyższa': 16,
     },
     claimedVacationDays: [] as ClaimedVacationDays[],
   }),
 
   actions: {
-    // adding days
-
-    addVacationDay(day: ClaimedVacationDays) {
+    addVacationDay(day: ClaimedVacationDays): void {
       this.claimedVacationDays.push(day);
     },
 
-    async selectVacationDay(date: Date) {
+    async selectVacationDay(date: Date): Promise<void> {
       if (!this.isExist(date))
         return this.addVacationDay({
           date,
@@ -37,7 +35,7 @@ export const useVacationStore = defineStore('vacation', {
       this.removeVacationDay(date);
     },
 
-    async holdSelectVacationDay(date: Date) {
+    async holdSelectVacationDay(date: Date): Promise<void> {
       const modalStore = useModalStore();
 
       if (this.isExist(date)) {
@@ -75,9 +73,7 @@ export const useVacationStore = defineStore('vacation', {
       }
     },
 
-    // removing days
-
-    removeVacationDay(date: Date) {
+    removeVacationDay(date: Date): void {
       this.claimedVacationDays = this.claimedVacationDays.filter(claimedDate => {
         return claimedDate.date.day !== date.day || claimedDate.date.month !== date.month || claimedDate.date.year !== date.year
       });
@@ -85,56 +81,36 @@ export const useVacationStore = defineStore('vacation', {
 
     // count functions
 
-    countAllAvailableVacationDays(year: number): number {
-      return this.availableLimitsForUser.vacationDays - this.countVacationDaysInYear(year);
-    },
-
-    countAvailableNormalVacationDays(year: number): number {
-      return this.availableLimitsForUser.vacationDays - this.countVacationDaysByTypeInYear('Urlop wypoczynkowy', year);
-    },
-
-    countAvailableOnDemandDays(year: number): number {
-      return this.availableLimitsForUser.onDemandDays - this.countVacationDaysByTypeInYear('Na żądanie', year);
-    },
-
-    countAvailableForceDays(year: number): number {
-      return this.availableLimitsForUser.forceHours - this.countVacationHoursByTypeInYear('Siła wyższa', year);
-    },
-
-    countVacationDaysByTypeInYear(typeName: VacationNames, year: number): number {
-      return this.claimedVacationDays.filter(element => this.checkVacationType(element, typeName, year)).length;
-    },
-
-    countVacationHoursByTypeInYear(typeName: VacationNames, year: number): number {
-      let hours = 0;
-      const elements = this.claimedVacationDays.filter(element => this.checkVacationType(element, typeName, year));
-      elements.forEach(element => hours += element.type.time.hours);
-
-      return hours;
-    },
-
-    countVacationHoursByTypeInMonth(typeName: VacationNames, month: number, year: number): number {
-      let hours = 0;
-      const elements = this.claimedVacationDays.filter(element => this.checkVacationTypeInMonth(element, typeName, month, year));
-      elements.forEach(element => hours += element.type.time.hours);
-
-      return hours;
-    },
-
-    countVacationDaysByTypeInMonth(typeName: VacationNames, month: number, year: number): number {
-      return this.claimedVacationDays.filter(element => this.checkVacationTypeInMonth(element, typeName, month, year)).length;
+    countAvailableNormalVacationDaysInYear(year: number): number {
+      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.claimedVacationDays.filter(element => element.date.year == year && (element.type.name == 'Urlop wypoczynkowy' || element.type.name == 'Na żądanie')).length
     },
 
     countVacationDaysInMonth(month: number, year: number): number {
-      return this.claimedVacationDays.filter(element => this.checkDay(element, month, year)).length;
+      return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year && (element.type.name == 'Urlop wypoczynkowy' || element.type.name == 'Na żądanie')).length
     },
 
-    getVacationDaysInMonth(month: number, year: number): ClaimedVacationDays[] {
-      return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year)
+    countAvailableVacationByType(type: VacationNames, year: number, month?: number): number {
+      return this.availableLimitsForUser[type] - this.countVacationByType(type, year, month);
     },
 
-    countVacationDaysInYear(year: number): number {
-      return this.claimedVacationDays.filter(element => this.checkYear(element, year)).length;
+    countVacationByType(type: VacationNames, year: number, month?: number): number {
+      let count = 0;
+      const days = month ? this.getDaysInMonth(type, month, year) : this.getDaysInYear(type, year);
+
+      if (days.every(element => element.type.time.type == 'hours'))
+        days.forEach(element => count += element.type.time.hours)
+      else
+        count = days.length;
+
+      return count;
+    },
+
+    getDaysInYear(type: VacationNames, year: number): ClaimedVacationDays[] {
+      return this.claimedVacationDays.filter(element => element.date.year == year && element.type.name == type)
+    },
+
+    getDaysInMonth(type: VacationNames, month: number, year: number): ClaimedVacationDays[] {
+      return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year && element.type.name == type)
     },
 
     // others function
@@ -174,22 +150,6 @@ export const useVacationStore = defineStore('vacation', {
           },
         },
       })
-    },
-
-    checkVacationTypeInMonth(element: ClaimedVacationDays, typeName: VacationNames, month: number, year: number): boolean {
-      return element.type.name == typeName && element.date.month == month && element.date.year == year
-    },
-
-    checkVacationType(element: ClaimedVacationDays, typeName: VacationNames, year: number): boolean {
-      return element.type.name == typeName && element.date.year == year
-    },
-
-    checkDay(element: ClaimedVacationDays, month: number, year: number): boolean {
-      return element.date.month == month && element.date.year == year && element.type.name != 'Siła wyższa'
-    },
-
-    checkYear(element: ClaimedVacationDays, year: number): boolean {
-      return element.date.year == year && element.type.name != 'Siła wyższa'
     },
   }
 });
