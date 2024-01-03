@@ -31,6 +31,7 @@
         </Transition>
 
         <input
+          ref="test"
           class="full-width"
           :class="{ 'text-center': textCenter }"
           v-model="input"
@@ -38,6 +39,7 @@
           :placeholder="placeholder"
           :required="isRequired"
           :maxlength="maxlength"
+          :pattern="(pattern as string)"
           autocomplete="off"
           @input="
             $emit(
@@ -79,7 +81,7 @@ const props = defineProps({
     type: String,
     default: 'text',
     validator(value: string) {
-      return ['text', 'password', 'number'].includes(value);
+      return ['text', 'password', 'number', 'email'].includes(value);
     },
   },
   value: {
@@ -123,18 +125,30 @@ const props = defineProps({
 });
 
 const iconsStore = useIconsStore();
+const test = ref<string>('');
 const input = ref<string>('');
 const error = ref<string>('');
+const pattern = ref<string | RegExp>('');
 
 if (props.value) input.value = props.value;
+
+if (props.type == 'email') {
+  pattern.value =
+    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+}
 
 watch(
   () => input.value,
   () => {
     if (props.minlength > props.maxlength)
       throw new Error('Minimalna wartość jest większa niż maksymalna!');
-
     error.value = '';
+
+    if (
+      props.type == 'email' &&
+      !(test.value as unknown as HTMLInputElement).validity.valid
+    )
+      error.value = 'Wpisz poprawny e-mail';
 
     if (props.isRequired && !input.value) {
       emit('hasError', true);

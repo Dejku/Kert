@@ -3,6 +3,7 @@
     id="base__button"
     class="row flex-center hug text-bold shadow"
     :class="{
+      'no-pointer-events': disabled,
       'base__button--disabled': disabled,
       'base__button--small': small,
       'base__button--transparent': transparent,

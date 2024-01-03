@@ -4,6 +4,14 @@ const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/home' },
   {
     path: '/',
+    component: () => import('layouts/BlankLayout.vue'),
+    children: [
+      { path: '/login', component: () => import('pages/main/LoginPage.vue'), meta: { transition: 'slide-right' } },
+      { path: '/signup', component: () => import('pages/main/SignupPage.vue'), meta: { transition: 'slide-left' } },
+    ],
+  },
+  {
+    path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/calendar', component: () => import('pages/calendar/MainCalendarPage.vue'), meta: { positionOnNavBar: 1 } },
