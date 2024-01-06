@@ -2,15 +2,13 @@
   <q-page>
     Groups
 
-    <BaseButton @click="click" />
+    <BaseInput :icon="iconsStore.icons.success" isRequired :minlength="5" />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { useAlertsStore } from 'stores/alertsStore';
-const alertsStore = useAlertsStore();
-
-const click = async () => alertsStore.createAlert('test', 'warning', 5);
+import { useIconsStore } from 'stores/iconsStore';
+const iconsStore = useIconsStore();
 </script>
 
 <style lang="scss"></style>

@@ -1,8 +1,10 @@
 <template>
   <div
     id="base__button"
-    class="row flex-center hug text-bold shadow"
+    class="row flex-center hug text-bold"
     :class="{
+      shadow: shadow,
+      'no-pointer-events': disabled,
       'base__button--disabled': disabled,
       'base__button--small': small,
       'base__button--transparent': transparent,
@@ -54,6 +56,10 @@ defineProps({
   circle: {
     type: Boolean,
     default: false,
+  },
+  shadow: {
+    type: Boolean,
+    default: true,
   },
 });
 </script>
