@@ -3,7 +3,7 @@
     <q-header></q-header>
 
     <q-page-container>
-      <router-view v-slot="{ Component }" class="column q-px-lg">
+      <router-view v-slot="{ Component }" class="column q-px-lg full-width">
         <transition :name="transition">
           <component :is="Component" />
         </transition>

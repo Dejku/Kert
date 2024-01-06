@@ -4,7 +4,7 @@
     class="text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm bg-surface overflow-hidden shadow text-error"
     :class="{
       error: error || customError,
-      altColor,
+      'base__input--altColor': altColor,
       'base__input--transparent': isTransparent,
     }"
   >
@@ -186,7 +186,7 @@ watch(
     box-shadow: none !important;
   }
 
-  &.altColor {
+  &.base__input--altColor {
     background-color: var(--surfaceVariant) !important;
 
     input::placeholder {
