@@ -3,9 +3,11 @@
     <section class="row justify-between q-pa-md">
       <div class="column" style="gap: 1.5vh">
         <q-avatar size="20vw">
-          <img src="src/assets/default_avatar.png" />
+          <img :src="accountStore.getAvatar" />
         </q-avatar>
-        <h6 class="text-size-7 text-bold text-center no-margin">John</h6>
+        <h6 class="text-size-7 text-bold text-center no-margin">
+          {{ accountStore.nickName }}
+        </h6>
       </div>
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
@@ -57,8 +59,11 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'src/stores/iconsStore';
+import { useIconsStore } from 'stores/iconsStore';
+import { useAccountStore } from 'stores/accountStore';
+
 const iconsStore = useIconsStore();
+const accountStore = useAccountStore();
 
 const slider = {
   top: 'Środa',
