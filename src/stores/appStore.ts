@@ -13,8 +13,7 @@ export const useAppStore = defineStore('app', {
             const modalStore = useModalStore();
 
             this.isOverlayShowed = false;
-            modalStore.isShowed = false;
-            modalStore.clear()
+            modalStore.clear();
         }
     }
 });

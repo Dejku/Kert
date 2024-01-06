@@ -5,11 +5,13 @@
 
   <BaseOverlay />
   <BaseModal />
+  <BaseDialog />
 </template>
 
 <script setup lang="ts">
 import BaseModal from 'components/Shared/BaseModal.vue';
 import BaseOverlay from 'components/Shared/BaseOverlay.vue';
+import BaseDialog from 'components/Shared/BaseDialog.vue';
 import Alerts from 'components/alerts/AlertsContainer.vue';
 
 import { useAppStore } from 'stores/appStore';
