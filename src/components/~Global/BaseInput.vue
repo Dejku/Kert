@@ -9,7 +9,7 @@
     }"
   >
     <div>
-      <div class="row no-wrap gap-5">
+      <div class="row no-wrap gap-xs">
         <Transition
           v-if="icon"
           enter-active-class="animated fadeIn"

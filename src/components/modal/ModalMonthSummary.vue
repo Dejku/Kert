@@ -1,5 +1,5 @@
 <template>
-  <div class="column gap-10">
+  <div class="column gap-sm">
     <header class="row items-center justify-between text-size-7">
       <template v-if="allDays || forceDays">
         Wykorzystany urlop
@@ -21,15 +21,15 @@
     </header>
     <div
       v-if="allDays || forceDays"
-      class="column q-px-sm text-weight-300 text-size-6 gap-10"
+      class="column q-px-sm text-weight-300 text-size-6 gap-sm"
     >
-      <header class="row flex-center gap-10">
+      <header class="row flex-center gap-sm">
         W tym
         <hr
           class="col-grow rounded-borders--big bg-outline no-border no-margin"
         />
       </header>
-      <section class="column q-px-xs gap-5">
+      <section class="column q-px-xs gap-xs">
         <div v-if="normalDays" class="row justify-between">
           Urlop wypoczynkowy
           <span>
@@ -67,21 +67,17 @@ const year = modalStore.modal.component.options.date?.year || 0;
 
 const allDays = vacationStore.countVacationDaysInMonth(month, year);
 
-const normalDays = vacationStore.countVacationDaysByTypeInMonth(
+const normalDays = vacationStore.countVacationByType(
   'Urlop wypoczynkowy',
   month,
   year
 );
 
-const onDemandDays = vacationStore.countVacationDaysByTypeInMonth(
+const onDemandDays = vacationStore.countVacationByType(
   'Na żądanie',
   month,
   year
 );
 
-const forceDays = vacationStore.countVacationHoursByTypeInMonth(
-  'Siła wyższa',
-  month,
-  year
-);
+const forceDays = vacationStore.countVacationByType('Siła wyższa', month, year);
 </script>

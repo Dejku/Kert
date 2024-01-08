@@ -1,25 +1,50 @@
 <template>
-  <q-dialog v-model="dialogStore.isShowed">
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">Alert</div>
-      </q-card-section>
+  <div>
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <div
+        v-if="dialogStore.isShowed"
+        class="column items-center q-mx-auto q-px-sm q-py-md absolute-center bg-surface rounded-borders gap-sm shadow"
+        style="width: max(320px, 90%); z-index: 3000"
+      >
+        <header>
+          <h5 class="no-margin text-bold">{{ dialogStore.dialog.title }}</h5>
+        </header>
 
-      <q-card-section class="q-pt-none">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-        repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis
-        perferendis totam, ea at omnis vel numquam exercitationem aut, natus
-        minima, porro labore.
-      </q-card-section>
+        <section v-if="dialogStore.dialog.desc" class="q-px-xs">
+          {{ dialogStore.dialog.desc }}
+        </section>
 
-      <q-card-actions align="right">
-        <q-btn flat label="OK" color="primary" v-close-popup />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+        <footer class="row gap-xl">
+          <BaseButton
+            :label="dialogStore.dialog.buttons.baseButton?.label"
+            :class="`base__button--color-${dialogStore.dialog.buttons.baseButton?.color}`"
+            :transparent="dialogStore.dialog.buttons.baseButton?.transparent"
+            @click="dialogStore.optionChoosen('failed')"
+          />
+
+          <BaseButton
+            v-if="dialogStore.dialog.buttons.extendedButton?.label"
+            :label="dialogStore.dialog.buttons.extendedButton.label"
+            :class="`base__button--color-${dialogStore.dialog.buttons.extendedButton.color}`"
+            :transparent="dialogStore.dialog.buttons.extendedButton.transparent"
+            @click="dialogStore.optionChoosen('success')"
+          />
+        </footer>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { useDialogStore } from 'stores/dialogStore';
 const dialogStore = useDialogStore();
 </script>
+
+<style lang="scss" scoped>
+h5 {
+  font-size: clamp($body-font-size, 4.5vw, $body-font-size-10);
+}
+</style>

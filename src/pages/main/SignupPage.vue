@@ -17,10 +17,10 @@
     >
       <div
         v-if="codeStage"
-        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-20 shadow"
+        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
       >
         <h6 class="main-title text-size-10">Wpisz kod</h6>
-        <div class="row flex-center full-width gap-10">
+        <div class="row flex-center full-width gap-sm">
           <input
             v-for="(el, ind) in inputs"
             v-model="inputs[ind]"
@@ -39,7 +39,7 @@
 
       <div
         v-else
-        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-20 shadow"
+        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
       >
         <h6 class="main-title text-size-10">Stwórz konto</h6>
 

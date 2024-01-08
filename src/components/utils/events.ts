@@ -1,6 +1,6 @@
 import { CustomResponse } from '../models';
 
-export function fireEvent(eventName: string, detail: object | boolean) {
+export function fireEvent(eventName: string, detail?: object | boolean) {
     const event = new CustomEvent(eventName, { detail });
     window.dispatchEvent(event);
 }
@@ -15,6 +15,6 @@ export function waitForInteraction(eventName: string, once?: boolean): Promise<C
 
         window.addEventListener('showOverlay', listener, { once: true });
 
-        window.addEventListener(eventName, listener, { once });
+        window.addEventListener(eventName, listener, { once: once || true });
     });
 }
