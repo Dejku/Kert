@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useModalStore } from './modalStore';
+import { useDialogStore } from './dialogStore';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
@@ -11,10 +12,11 @@ export const useAppStore = defineStore('app', {
     actions: {
         closeAllPopUps() {
             const modalStore = useModalStore();
+            const dialogStore = useDialogStore();
 
             this.isOverlayShowed = false;
-            modalStore.isShowed = false;
-            modalStore.clear()
+            modalStore.clear();
+            dialogStore.clear();
         }
     }
 });

@@ -11,7 +11,7 @@
     />
 
     <div
-      class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-20 shadow"
+      class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
     >
       <h6 class="main-title text-size-10">Zaloguj się</h6>
 
