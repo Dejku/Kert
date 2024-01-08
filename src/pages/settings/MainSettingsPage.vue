@@ -1,12 +1,12 @@
 <template>
-  <q-page class="column gap-20">
+  <q-page class="column gap-md">
     <h6 class="main-title">Ustawienia</h6>
 
     <section
-      class="column q-px-md q-py-sm bg-surface rounded-borders gap-20 shadow"
+      class="column q-px-md q-py-sm bg-surface rounded-borders gap-m shadow"
     >
       <router-link to="/settings/account" class="row items-center">
-        <div class="row gap-10">
+        <div class="row gap-sm">
           <div>
             <q-avatar size="15vw">
               <img :src="accountStore.getAvatar" />
@@ -36,13 +36,13 @@
     <section
       v-for="(section, index) in sections"
       :key="index"
-      class="column q-px-md q-py-sm bg-surface rounded-borders gap-20 shadow"
+      class="column q-px-md q-py-sm bg-surface rounded-borders gap-md shadow"
     >
       <div
         v-for="element in section"
         :key="element.label"
         @click="element.click"
-        class="row items-center gap-10"
+        class="row items-center gap-sm"
       >
         <q-icon :name="element.icon" class="text-size-10" />
 
@@ -60,12 +60,16 @@
 </template>
 
 <script setup lang="ts">
+import { DialogOption } from 'components/models';
+
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
+import { useDialogStore } from 'stores/dialogStore';
 import { useRouter } from 'vue-router';
 
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();
+const dialogStore = useDialogStore();
 const router = useRouter();
 
 const sections = {
@@ -94,6 +98,13 @@ const sections = {
   ],
   misc: [
     {
+      icon: iconsStore.icons.questionMark,
+      label: 'Centrum Pomocy',
+      click: function () {
+        router.push('/help');
+      },
+    },
+    {
       icon: iconsStore.icons.logout,
       label: 'Wyloguj się',
       click: function () {
@@ -103,7 +114,23 @@ const sections = {
   ],
 };
 
+const dialogOption: DialogOption = {
+  title: 'Czy na pewno chcesz się wylogować?',
+  buttonsOptions: {
+    baseButton: {
+      label: 'Nie',
+      transparent: true,
+    },
+    extendedButton: {
+      label: 'Tak',
+      color: 'error',
+    },
+  },
+};
+
 const logout = async () => {
-  console.log('test');
+  const response = await dialogStore.showDialog(dialogOption);
+
+  console.log(response);
 };
 </script>

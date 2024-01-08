@@ -28,5 +28,5 @@ onUnmounted(() =>
 );
 
 const closePopUps = (e: CustomEvent) =>
-  e.detail == false ? appStore.closeAllPopUps() : null;
+  e.detail == false || 'failed' ? appStore.closeAllPopUps() : null;
 </script>

@@ -108,8 +108,8 @@ const mainLinks = [
   },
   {
     id: 7,
-    icon: iconsStore.icons.questionMarkCircle,
-    to: '/help',
+    icon: iconsStore.icons.questionMark,
+    to: '/login',
   },
 ];
 
