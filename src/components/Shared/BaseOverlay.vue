@@ -8,7 +8,7 @@
         v-if="appStore.isOverlayShowed"
         class="fullscreen"
         style="z-index: 2500; backdrop-filter: brightness(0.75)"
-        @click="fireEvent('showOverlay', false)"
+        @click="fireEvent('showOverlay', { status: 'failed' })"
       ></div>
     </transition>
   </div>

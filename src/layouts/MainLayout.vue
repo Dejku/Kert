@@ -2,13 +2,13 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="q-px-sm bg-surface">
       <q-toolbar>
-        <q-toolbar-title class="text-tertiary text-size-9"
-          >Kert</q-toolbar-title
-        >
+        <q-toolbar-title class="text-tertiary text-size-9">
+          Kert
+        </q-toolbar-title>
         <q-space />
         <router-link to="/settings/account">
           <q-avatar class="text-size-12">
-            <img src="../assets/default_avatar.png" />
+            <img :src="accountStore.getAvatar" />
           </q-avatar>
         </router-link>
       </q-toolbar>
@@ -59,8 +59,11 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'src/stores/iconsStore';
+import { useIconsStore } from 'stores/iconsStore';
+import { useAccountStore } from 'stores/accountStore';
+
 const iconsStore = useIconsStore();
+const accountStore = useAccountStore();
 
 const navigation = [
   {
