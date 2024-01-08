@@ -4,9 +4,9 @@
       <div
         v-if="modalStore.isShowed"
         id="base__modal"
-        class="column flex items-center absolute-bottom gap-10"
+        class="column items-center q-pa-md absolute-bottom gap-sm"
       >
-        <div class="column flex flex-center full-width gap-20">
+        <div class="column flex-center full-width gap-lg">
           <hr
             class="rounded-borders--big bg-outline no-border no-margin shadow"
           />
@@ -17,13 +17,16 @@
 
           <section id="base__modal__desc" class="full-width q-px-sm">
             <Suspense>
+              <ModalError v-if="hasError" />
+
               <component
+                v-else
                 :is="
                   modalComponents.find(
                     (comp) => comp.name === modalStore.modal.component.type
                   )?.comp
                 "
-              ></component>
+              />
 
               <template #fallback>
                 <ModalLoading />
@@ -34,7 +37,7 @@
 
         <div
           id="base__modal__buttons"
-          class="row flex-center absolute-bottom q-pa-lg gap-40"
+          class="row flex-center absolute-bottom q-pa-lg gap-xl"
         >
           <BaseButton
             :label="modalStore.modal.buttons.baseButton?.label"
@@ -58,11 +61,18 @@
 
 <script setup lang="ts">
 import ModalLoading from 'components/modal/ModalLoading.vue';
+import ModalError from 'components/modal/ModalError.vue';
 
 import { useModalStore } from 'stores/modalStore';
 const modalStore = useModalStore();
 
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, onErrorCaptured, ref } from 'vue';
+
+onErrorCaptured(() => {
+  setTimeout(() => (hasError.value = true), 2000);
+});
+
+const hasError = ref<boolean>(false);
 
 const modalComponents = [
   {

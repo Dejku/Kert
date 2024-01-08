@@ -61,7 +61,7 @@ export const useModalStore = defineStore('modal', {
         if (options.buttonsOptions.extendedButton) this.modal.buttons.extendedButton = options.buttonsOptions.extendedButton;
       }
 
-      return await waitForInteraction('modal_userInteraction', true);
+      return await waitForInteraction('modal_userInteraction');
     },
 
     optionChoosen(status: CustomResponse['status']) {

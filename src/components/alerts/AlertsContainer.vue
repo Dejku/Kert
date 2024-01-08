@@ -3,7 +3,7 @@
     tag="div"
     id="alerts"
     name="alerts__element"
-    class="column z-max relative-position gap-10"
+    class="column z-max relative-position gap-sm"
   >
     <BaseAlert
       v-for="alert in alertsStore.alerts"

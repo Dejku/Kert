@@ -1,7 +1,7 @@
 <template>
-  <div class="column gap-10 text-weight-300 text-size-7">
+  <div class="column gap-sm text-weight-300 text-size-7">
     <div class="row justify-between">
-      <div class="row items-center gap-5">
+      <div class="row items-center gap-xs">
         <q-icon :name="iconsStore.icons.calendar" class="text-size-10" />
         Dzień
       </div>
@@ -9,7 +9,7 @@
     </div>
 
     <div class="row justify-between items-center" style="height: 40px">
-      <div class="row items-center gap-5">
+      <div class="row items-center gap-xs">
         <q-icon :name="iconsStore.icons.text" class="text-size-10" />
         Typ
       </div>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="row justify-between">
-      <div class="row items-center gap-5">
+      <div class="row items-center gap-xs">
         <q-icon :name="iconsStore.icons.clock" class="text-size-10" />
         Czas trwania
       </div>

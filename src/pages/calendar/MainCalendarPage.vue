@@ -95,7 +95,7 @@
         <q-separator color="surface" />
 
         <div
-          class="column flex items-center text-size-4 gap-10"
+          class="column flex items-center text-size-4 gap-sm"
           @click="
             modalStore.showModal({
               title: `${renderedMonth[0]?.name} ${renderedMonth[0]?.year}`,
@@ -112,7 +112,7 @@
             })
           "
         >
-          <div class="flex row no-wrap gap-5">
+          <div class="flex row no-wrap gap-xs">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
               Wykorzystany urlop w tym miesiącu:
@@ -129,7 +129,7 @@
               </span>
             </p>
           </div>
-          <div class="flex row no-wrap gap-5">
+          <div class="flex row no-wrap gap-xs">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
               Pozostały urlop do wykorzystania:
@@ -155,9 +155,9 @@
         </section>
       </q-tab-panel>
 
-      <q-tab-panel name="summary" class="column q-pa-md gap-20">
+      <q-tab-panel name="summary" class="column q-pa-md gap-lg">
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-10"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
         >
           <span class="text-bold">Urlop wypoczynkowy</span>
           <div class="row justify-between text-size-4">
@@ -187,7 +187,7 @@
         </div>
 
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-10"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
         >
           <span class="text-bold">Na żądanie</span>
           <div class="row justify-between text-size-4">
@@ -217,7 +217,7 @@
         </div>
 
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-10"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
         >
           <span class="text-bold">Siła wyższa</span>
           <div class="row justify-between text-size-4">
