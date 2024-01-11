@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isVisible"
-    class="base__alert row items-center q-py-xs q-px-sm full-width gap-xs rounded-borders--small shadow"
+    class="base__alert q-py-xs q-px-sm full-width rounded-borders--small shadow"
     :class="`base__alert--color-${props.state}`"
     @click="hide()"
   >

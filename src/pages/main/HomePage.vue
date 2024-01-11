@@ -6,7 +6,7 @@
           <img :src="accountStore.getAvatar" />
         </q-avatar>
         <h6 class="text-size-7 text-bold text-center no-margin">
-          {{ accountStore.nickName }}
+          {{ accountStore.user.displayName }}
         </h6>
       </div>
       <div class="column justify-between">

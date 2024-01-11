@@ -18,7 +18,7 @@
               class="no-margin text-weight-600"
               style="margin-bottom: -5px !important"
             >
-              {{ accountStore.nickName }}
+              {{ accountStore.user.displayName }}
             </h6>
             <span class="text-size-4" style="opacity: 0.75">Twoje konto</span>
           </div>
@@ -60,16 +60,19 @@
 </template>
 
 <script setup lang="ts">
-import { DialogOption } from 'components/models';
+import { DialogOption, ErrorAlert } from 'components/models';
 
+import { getAuth, signOut } from 'firebase/auth';
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useDialogStore } from 'stores/dialogStore';
+import { useAlertsStore } from 'stores/alertsStore';
 import { useRouter } from 'vue-router';
 
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();
-const dialogStore = useDialogStore();
+const { showDialog } = useDialogStore();
+const { createAlert } = useAlertsStore();
 const router = useRouter();
 
 const sections = {
@@ -114,23 +117,29 @@ const sections = {
   ],
 };
 
-const dialogOption: DialogOption = {
-  title: 'Czy na pewno chcesz się wylogować?',
-  buttonsOptions: {
-    baseButton: {
-      label: 'Nie',
-      transparent: true,
-    },
-    extendedButton: {
-      label: 'Tak',
-      color: 'error',
-    },
-  },
-};
-
 const logout = async () => {
-  const response = await dialogStore.showDialog(dialogOption);
+  const dialogOption: DialogOption = {
+    title: 'Czy na pewno chcesz się wylogować?',
+    buttonsOptions: {
+      baseButton: {
+        label: 'Nie',
+        transparent: true,
+      },
+      extendedButton: {
+        label: 'Tak',
+        color: 'error',
+      },
+    },
+  };
 
-  console.log(response);
+  const response = await showDialog(dialogOption);
+
+  if (response.status == 'success') {
+    const auth = getAuth();
+
+    signOut(auth)
+      .then(() => router.push('/'))
+      .catch(() => createAlert(ErrorAlert));
+  }
 };
 </script>

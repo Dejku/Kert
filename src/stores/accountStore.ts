@@ -1,18 +1,21 @@
 import { defineStore } from 'pinia';
+import { Account } from 'components/models';
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
-    id: '0',
-    accountName: 'john',
-    nickName: 'Johnny',
+    isLogged: false,
+    user: {} as Account
   }),
 
   getters: {
-    getAccountName(): string {
-      return '@' + this.accountName;
-    },
     getAvatar(): string {
-      return '../src/assets/default_avatar.png'
+      return this.user.photoURL || '../src/assets/default_avatar.png'
     }
   },
+
+  actions: {
+    saveUser(user: Account) {
+      this.user = user
+    }
+  }
 });
