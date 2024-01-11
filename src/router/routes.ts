@@ -1,13 +1,13 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: '/home' },
   {
     path: '/',
     component: () => import('layouts/BlankLayout.vue'),
     children: [
-      { path: '/login', component: () => import('pages/main/LoginPage.vue'), meta: { transition: 'slide-right' } },
-      { path: '/signup', component: () => import('pages/main/SignupPage.vue'), meta: { transition: 'slide-left' } },
+      { path: '/', component: () => import('pages/main/LandingPage.vue'), meta: { notSecured: true } },
+      { path: '/login', component: () => import('pages/main/LoginPage.vue'), meta: { transition: 'slide-right', notSecured: true } },
+      { path: '/signup', component: () => import('pages/main/SignupPage.vue'), meta: { transition: 'slide-left', notSecured: true } },
     ],
   },
   {

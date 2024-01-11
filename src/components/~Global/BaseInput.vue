@@ -39,7 +39,6 @@
           :placeholder="placeholder"
           :required="isRequired"
           :maxlength="maxlength"
-          :pattern="(pattern as string)"
           autocomplete="off"
           @input="
             $emit(
@@ -49,6 +48,8 @@
           "
         />
       </div>
+
+      <!-- :pattern="(pattern as string)" -->
 
       <Transition
         enter-active-class="animated fadeInDown"

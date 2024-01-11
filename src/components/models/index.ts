@@ -1,3 +1,4 @@
+export * from './modelAccount';
 export * from './modelAlert';
 export * from './modelApp';
 export * from './modelCalendar';

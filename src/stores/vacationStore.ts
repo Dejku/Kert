@@ -15,10 +15,10 @@ export const useVacationStore = defineStore('vacation', {
   }),
 
   actions: {
-    createAlert(data: { message: Alert['message'], state: Alert['state'], duration?: Alert['duration'] }) {
-      const alert = useAlertsStore();
+    createAlert(data: Omit<Alert, 'id'>) {
+      const { createAlert } = useAlertsStore();
 
-      alert.createAlert({ message: data.message, state: data.state, duration: data.duration });
+      createAlert({ message: data.message, state: data.state, duration: data.duration });
     },
 
     addVacationDay(day: ClaimedVacationDays): void {

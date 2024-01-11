@@ -1,7 +1,12 @@
+:root {
+  --transition-duration: 0.3s;
+  --page-transition-duration: 0.5s;
+}
+
 // fade
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-duration) ease;
 }
 
 .fade-enter-from,
@@ -13,7 +18,7 @@
 .scale-enter-active,
 .scale-leave-active {
   position: absolute;
-  transition: all 0.3s ease;
+  transition: all var(--transition-duration) ease;
 }
 
 .scale-enter-from,
@@ -34,7 +39,7 @@
 .slide-right-enter-active,
 .slide-right-leave-active {
   position: absolute;
-  transition: all 0.5s ease-in-out;
+  transition: all var(--page-transition-duration) ease-in-out;
 }
 
 .slide-left-enter-to,

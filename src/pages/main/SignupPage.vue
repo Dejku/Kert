@@ -46,10 +46,11 @@
         <div class="full-width">
           <label class="q-ml-xs text-size-6">Nazwa</label>
           <BaseInput
+            v-model="nick"
             :type="'text'"
             :icon="iconsStore.icons.person"
             :placeholder="'Wpisz swoją nazwę'"
-            :minlength="4"
+            :minlength="3"
             :isRequired="true"
             :altColor="true"
             @has-error="(value: boolean) => (nameError = value)"
@@ -59,6 +60,7 @@
         <div class="full-width">
           <label class="q-ml-xs text-size-6">E-mail</label>
           <BaseInput
+            v-model="email"
             :type="'email'"
             :icon="iconsStore.icons.mail"
             :placeholder="'Wpisz swój e-mail'"
@@ -75,7 +77,7 @@
             @update:model-value="checkPassword"
             :type="'password'"
             :icon="iconsStore.icons.lock"
-            :minlength="5"
+            :minlength="6"
             :placeholder="'Wpisz swoje hasło'"
             :isRequired="true"
             :altColor="true"
@@ -91,7 +93,7 @@
             @update:model-value="checkPassword"
             :type="'password'"
             :icon="iconsStore.icons.lock"
-            :minlength="5"
+            :minlength="6"
             :placeholder="'Powtórz hasło'"
             :isRequired="true"
             :altColor="true"
@@ -103,9 +105,9 @@
         <BaseButton
           label="Stwórz konto"
           :iconRight="iconsStore.icons.login"
-          :disabled="checkValidation()"
+          :disabled="!checkValidation()"
           cornerSmall
-          @click="router.push('/home')"
+          @click="signup"
         />
       </div>
     </transition>
@@ -113,12 +115,18 @@
 </template>
 
 <script setup lang="ts">
+import {
+  getAuth,
+  updateProfile,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
 import { useIconsStore } from 'stores/iconsStore';
-
+import { useAlertsStore } from 'stores/alertsStore';
 import { useRouter } from 'vue-router';
 import { onMounted, reactive, ref } from 'vue';
 
 const iconsStore = useIconsStore();
+const { createAlert, formatMessage } = useAlertsStore();
 const router = useRouter();
 
 const nameError = ref<boolean>(true);
@@ -129,6 +137,9 @@ const isSamePassword = ref<boolean>(true);
 
 const code = ref();
 const codeStage = ref<boolean>(true);
+
+const nick = ref<string>('');
+const email = ref<string>('');
 const password = ref<string>('');
 const confirmPassword = ref<string>('');
 
@@ -174,16 +185,38 @@ const checkCode = () => {
 
 const checkValidation = () => {
   return (
-    nameError.value ||
-    emailError.value ||
-    passwordError.value ||
-    confirmPasswordError.value ||
+    !nameError.value ||
+    !emailError.value ||
+    !passwordError.value ||
+    !confirmPasswordError.value ||
     !isSamePassword.value
   );
 };
 
 const checkPassword = () =>
   (isSamePassword.value = password.value === confirmPassword.value);
+
+const signup = () => {
+  if (!checkValidation() || !checkPassword()) return;
+  const auth = getAuth();
+
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then(() => {
+      if (auth.currentUser)
+        updateProfile(auth.currentUser, {
+          displayName: nick.value,
+        });
+    })
+    .catch((error) => {
+      console.log(error);
+
+      createAlert({
+        message: formatMessage(error),
+        state: 'error',
+        duration: 5,
+      });
+    });
+};
 </script>
 
 <style lang="scss" scoped>
