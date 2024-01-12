@@ -97,7 +97,7 @@
         <div
           class="column flex items-center text-size-4 gap-sm"
           @click="
-            modalStore.showModal({
+            showModal({
               title: `${renderedMonth[0]?.name} ${renderedMonth[0]?.year}`,
               component: {
                 type: 'monthSummary',
@@ -120,7 +120,7 @@
                 {{
                   formatString(
                     'dni',
-                    vacationStore.countVacationDaysInMonth(
+                    vacationStore.countClaimedNormalVacationDaysInMonth(
                       selectedDate.getMonth() + 1,
                       selectedDate.getFullYear()
                     )
@@ -165,7 +165,7 @@
               Wyk. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationByType(
+                  vacationStore.countClaimedVacationByType(
                     'Urlop wypoczynkowy',
                     appStore.todayDate.getFullYear()
                   )
@@ -195,7 +195,7 @@
               Wyk. dni:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationByType(
+                  vacationStore.countClaimedVacationByType(
                     'Na żądanie',
                     appStore.todayDate.getFullYear()
                   )
@@ -225,7 +225,7 @@
               Wyk. godziny:
               <span class="text-bold">
                 {{
-                  vacationStore.countVacationByType(
+                  vacationStore.countClaimedVacationByType(
                     'Siła wyższa',
                     appStore.todayDate.getFullYear()
                   )
@@ -256,14 +256,17 @@ import { Dates, Month } from 'components/models';
 
 import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
+import { useAccountStore } from 'stores/accountStore';
 import { useModalStore } from 'stores/modalStore';
 import { useAppStore } from 'stores/appStore';
 
+import { onSnapshot, doc, getFirestore } from 'firebase/firestore';
 import { onMounted, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
-const modalStore = useModalStore();
+const accountStore = useAccountStore()
+const { showModal } = useModalStore();
 const appStore = useAppStore();
 
 const activeTab = ref<string>('calendar');
@@ -364,5 +367,12 @@ function renderCalendar() {
 onMounted(() => {
   transition.value = 'fade';
   renderCalendar();
+});
+
+const db = getFirestore();
+onSnapshot(doc(db, 'vacationStore', accountStore.user.id), (doc) => {
+  const vacationStore = useVacationStore();
+
+  vacationStore.claimedVacationDays = doc.data()?.claimedVacationDays;
 });
 </script>

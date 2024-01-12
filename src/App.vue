@@ -14,10 +14,16 @@ import BaseOverlay from 'components/Shared/BaseOverlay.vue';
 import BaseDialog from 'components/Shared/BaseDialog.vue';
 import Alerts from 'components/alerts/AlertsContainer.vue';
 
+import { resetPinia } from 'components/utils/stores';
 import { useAppStore } from 'stores/appStore';
-import { useAccountStore } from 'src/stores/accountStore';
+import { useAccountStore } from 'stores/accountStore';
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  connectAuthEmulator,
+} from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
 import { useRouter } from 'vue-router';
@@ -47,10 +53,16 @@ const firebaseConfig = {
   appId: process.env.appId,
   measurementId: process.env.measurementId,
 };
-
 initializeApp(firebaseConfig);
 
 const auth = getAuth();
+
+if (location.hostname === 'localhost') {
+  const db = getFirestore();
+  connectFirestoreEmulator(db, '127.0.0.1', 8080);
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+}
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     accountStore.isLogged = true;
@@ -61,7 +73,8 @@ onAuthStateChanged(auth, (user) => {
       photoURL: user.photoURL,
     });
 
+    appStore.fetchData();
     router.push('/home');
-  } else accountStore.$reset();
+  } else resetPinia();
 });
 </script>

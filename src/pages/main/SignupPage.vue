@@ -115,18 +115,22 @@
 </template>
 
 <script setup lang="ts">
+import { useIconsStore } from 'stores/iconsStore';
+import { useAccountStore } from 'stores/accountStore';
+import { useAlertsStore } from 'stores/alertsStore';
+
+import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import {
   getAuth,
   updateProfile,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { useIconsStore } from 'stores/iconsStore';
-import { useAlertsStore } from 'stores/alertsStore';
-import { useRouter } from 'vue-router';
-import { onMounted, reactive, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const { createAlert, formatMessage } = useAlertsStore();
+const accountStore = useAccountStore();
 const router = useRouter();
 
 const nameError = ref<boolean>(true);
@@ -201,14 +205,30 @@ const signup = () => {
   const auth = getAuth();
 
   createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then(() => {
+    .then(async (result) => {
+      const user = result.user;
+      const db = getFirestore();
+
+      await setDoc(doc(db, 'vacationStore', user.uid), {
+        currentYear: new Date().getFullYear(),
+        overdueVacationDays: 0,
+        numberOfVacationDaysPerYear: 20,
+        claimedVacationDays: [],
+      });
+
       if (auth.currentUser)
         updateProfile(auth.currentUser, {
           displayName: nick.value,
         });
+
+      accountStore.saveUser({
+        id: user.uid,
+        displayName: nick.value,
+        photoURL: null,
+      });
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
 
       createAlert({
         message: formatMessage(error),

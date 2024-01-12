@@ -65,19 +65,26 @@ const modalStore = useModalStore();
 const month = (modalStore.modal.component.options.date?.month || 0) + 1;
 const year = modalStore.modal.component.options.date?.year || 0;
 
-const allDays = vacationStore.countVacationDaysInMonth(month, year);
+const allDays = vacationStore.countClaimedNormalVacationDaysInMonth(
+  month,
+  year
+);
 
-const normalDays = vacationStore.countVacationByType(
+const normalDays = vacationStore.countClaimedVacationByType(
   'Urlop wypoczynkowy',
   month,
   year
 );
 
-const onDemandDays = vacationStore.countVacationByType(
+const onDemandDays = vacationStore.countClaimedVacationByType(
   'Na żądanie',
   month,
   year
 );
 
-const forceDays = vacationStore.countVacationByType('Siła wyższa', month, year);
+const forceDays = vacationStore.countClaimedVacationByType(
+  'Siła wyższa',
+  month,
+  year
+);
 </script>
