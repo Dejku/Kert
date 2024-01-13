@@ -34,6 +34,7 @@ export const useAlertsStore = defineStore('alerts', {
                 { name: 'auth/weak-password', value: 'Zbyt krótkie hasło' },
                 { name: 'auth/email-already-in-use', value: 'Email jest już w użyciu' },
                 { name: 'auth/user-not-found', value: 'Konto nie znalezione' },
+                { name: 'auth/wrong-password', value: 'Niepoprawne hasło' },
             ]
 
             return messages.find(ele => JSON.stringify(message).includes(ele.name))?.value as string

@@ -39,7 +39,7 @@
       <div>
         <router-link
           id="home"
-          class="absolute-center flex flex-center bg-background border-circle"
+          class="absolute-center flex flex-center bg-background rounded-borders--circle"
           to="/home"
           exact
         >

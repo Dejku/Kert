@@ -58,7 +58,7 @@
                   v-for="day in month.dates"
                   :key="`${day.day}/${day.month}/${day.year}`"
                   :id="`${day.day}/${day.month}/${day.year}`"
-                  class="date flex flex-center border-circle shadow"
+                  class="date flex flex-center rounded-borders--circle shadow"
                   :data-date="`${day.day}/${day.month}/${day.year}`"
                   v-touch-hold.mouse="holdSelectDay"
                   :class="{
@@ -265,7 +265,7 @@ import { onMounted, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
-const accountStore = useAccountStore()
+const accountStore = useAccountStore();
 const { showModal } = useModalStore();
 const appStore = useAppStore();
 
