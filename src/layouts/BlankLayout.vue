@@ -1,16 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header></q-header>
-
     <q-page-container>
-      <router-view v-slot="{ Component }" class="column q-px-lg full-width">
+      <router-view v-slot="{ Component }" class="column q-pa-lg full-width">
         <transition :name="transition">
           <component :is="Component" />
         </transition>
       </router-view>
     </q-page-container>
-
-    <q-footer></q-footer>
   </q-layout>
 </template>
 

@@ -11,6 +11,12 @@ export default boot(({ router }) => {
       return true;
     }
 
+    // from landing page to login or signup page
+    if ((from.path == '/' || from.path == '/loggedOut' || from.path == '/accountDeleted') && (to.path == '/login' || to.path == '/signup')) {
+      to.meta.transition = 'slide-down'
+      return true;
+    }
+
     // from another page to nav
     if (from.meta.positionOnNavBar == undefined && to.meta.transition == undefined) {
       to.meta.transition = from.meta.transition == 'slide-right' ? 'slide-left' : 'slide-right'

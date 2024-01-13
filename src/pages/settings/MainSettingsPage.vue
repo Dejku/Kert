@@ -138,7 +138,7 @@ const logout = async () => {
     const auth = getAuth();
 
     signOut(auth)
-      .then(() => router.push('/'))
+      .then(() => router.push('/loggedOut'))
       .catch(() => createAlert(ErrorAlert));
   }
 };
