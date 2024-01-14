@@ -69,12 +69,15 @@ import { useAlertsStore } from 'stores/alertsStore';
 
 import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import { onBeforeUnmount } from 'vue';
+import { useQuasar, QSpinnerHourglass } from 'quasar';
 
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();
 const { showDialog } = useDialogStore();
 const { createAlert } = useAlertsStore();
 const router = useRouter();
+const $q = useQuasar();
 
 const sections = {
   links: [
@@ -118,6 +121,8 @@ const sections = {
   ],
 };
 
+onBeforeUnmount(() => $q.loading.hide());
+
 const logout = async () => {
   const dialogOption: DialogOption = {
     title: 'Czy na pewno chcesz się wylogować?',
@@ -136,6 +141,13 @@ const logout = async () => {
   const response = await showDialog(dialogOption);
 
   if (response.status == 'success') {
+    $q.loading.show({
+      spinner: QSpinnerHourglass,
+      spinnerColor: 'primary',
+      spinnerSize: 60,
+      message: 'Wylogowywanie...',
+    });
+
     const auth = getAuth();
 
     signOut(auth)

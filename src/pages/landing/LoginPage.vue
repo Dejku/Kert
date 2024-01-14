@@ -54,21 +54,33 @@
 <script setup lang="ts">
 import { useIconsStore } from 'stores/iconsStore';
 import { useAlertsStore } from 'stores/alertsStore';
+
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
+import { useQuasar, QSpinnerHourglass } from 'quasar';
 
 const iconsStore = useIconsStore();
 const { createAlert, formatMessage } = useAlertsStore();
 const router = useRouter();
+const $q = useQuasar();
 
 const email = ref<string>('');
 const password = ref<string>('');
 const emailError = ref<boolean>(true);
 const passwordError = ref<boolean>(true);
 
+onBeforeUnmount(() => $q.loading.hide());
+
 const login = () => {
   if (emailError.value || passwordError.value) return;
+
+  $q.loading.show({
+    spinner: QSpinnerHourglass,
+    spinnerColor: 'primary',
+    spinnerSize: 60,
+    message: 'Logowanie...',
+  });
 
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email.value, password.value)

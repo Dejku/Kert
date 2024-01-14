@@ -99,19 +99,21 @@ import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertsStore } from 'stores/alertsStore';
 
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import {
   getAuth,
   updateProfile,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
+import { onBeforeUnmount, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuasar, QSpinnerHourglass } from 'quasar';
 
 const iconsStore = useIconsStore();
 const { createAlert, formatMessage } = useAlertsStore();
 const accountStore = useAccountStore();
 const router = useRouter();
+const $q = useQuasar();
 
 const codeStage = ref<boolean>(true);
 const nick = ref<string>('');
@@ -144,8 +146,18 @@ const checkValidation = () => {
 const checkPassword = () =>
   (isSamePassword.value = password.value === confirmPassword.value);
 
+onBeforeUnmount(() => $q.loading.hide());
+
 const signup = () => {
   if (!checkValidation() || !checkPassword()) return;
+
+  $q.loading.show({
+    spinner: QSpinnerHourglass,
+    spinnerColor: 'primary',
+    spinnerSize: 60,
+    message: 'Logowanie...',
+  });
+
   const auth = getAuth();
 
   createUserWithEmailAndPassword(auth, email.value, password.value)
