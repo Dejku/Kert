@@ -5,8 +5,12 @@ export default boot(({ router }) => {
   router.beforeEach((to, from, next) => {
     const accountStore = useAccountStore();
 
-    if (accountStore.isLogged || to.matched.some(record => record.meta.notSecured)) return next();
+    if (!to.matched.some(record => record.meta.requireAuth) && accountStore.isLogged) return next('/home');
 
-    next('/');
+    if (!to.matched.some(record => record.meta.requireAuth)) return next();
+
+    if (to.matched.some(record => record.meta.requireAuth) && accountStore.isLogged) return next();
+
+    next('/')
   })
 })

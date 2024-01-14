@@ -11,15 +11,19 @@
       </div>
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
-          <q-icon class="text-size-10" :name="iconsStore.icons.mail" />
-          <q-icon class="text-size-10" :name="iconsStore.icons.settings" />
+          <router-link to="/news">
+            <q-icon class="text-size-10" :name="iconsStore.icons.mail" />
+          </router-link>
+          <router-link to="/settings">
+            <q-icon class="text-size-10" :name="iconsStore.icons.settings" />
+          </router-link>
         </div>
         <div class="column text-right text-bold">
           <span class="text-secondary text-size-4">
-            {{ slider.top }}
+            {{ todayDate.day }}
           </span>
           <span class="text-size-7">
-            {{ slider.bottom }}
+            {{ todayDate.date }}
           </span>
         </div>
       </div>
@@ -31,6 +35,7 @@
         :key="link.id"
         :to="link.to"
         class="tabs__element flex flex-center q-pa-md bg-surface rounded-borders shadow"
+        :class="{ 'no-pointer-events': link.disabled }"
       >
         <q-icon :name="link.icon" />
       </router-link>
@@ -65,9 +70,12 @@ import { useAccountStore } from 'stores/accountStore';
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();
 
-const slider = {
-  top: 'Środa',
-  bottom: '01.11.2023',
+const today = new Date();
+const todayLocaleDay = today.toLocaleDateString('pl-PL', { weekday: 'long' });
+
+const todayDate = {
+  day: todayLocaleDay.charAt(0).toUpperCase() + todayLocaleDay.slice(1),
+  date: today.toLocaleDateString(),
 };
 
 const mainLinks = [
@@ -88,28 +96,33 @@ const mainLinks = [
   },
   {
     id: 3,
-    icon: iconsStore.icons.questionMarkCircle,
-    to: '/help',
+    icon: iconsStore.icons.plusCircle,
+    to: '/',
+    disabled: true,
   },
   {
     id: 4,
-    icon: iconsStore.icons.questionMarkCircle,
-    to: '/help',
+    icon: iconsStore.icons.plusCircle,
+    to: '/',
+    disabled: true,
   },
   {
     id: 5,
-    icon: iconsStore.icons.questionMarkCircle,
-    to: '/help',
+    icon: iconsStore.icons.plusCircle,
+    to: '/',
+    disabled: true,
   },
   {
     id: 6,
-    icon: iconsStore.icons.questionMarkCircle,
-    to: '/help',
+    icon: iconsStore.icons.plusCircle,
+    to: '/',
+    disabled: true,
   },
   {
     id: 7,
-    icon: iconsStore.icons.questionMark,
-    to: '/login',
+    icon: iconsStore.icons.plusCircle,
+    to: '/',
+    disabled: true,
   },
 ];
 

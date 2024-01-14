@@ -71,8 +71,14 @@ const login = () => {
   if (emailError.value || passwordError.value) return;
 
   const auth = getAuth();
-  signInWithEmailAndPassword(auth, email.value, password.value).catch((error) =>
-    createAlert({ message: formatMessage(error), state: 'error', duration: 5 })
-  );
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then(() => router.push('/home'))
+    .catch((error) =>
+      createAlert({
+        message: formatMessage(error),
+        state: 'error',
+        duration: 5,
+      })
+    );
 };
 </script>

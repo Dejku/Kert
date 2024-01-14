@@ -62,11 +62,12 @@
 <script setup lang="ts">
 import { DialogOption, ErrorAlert } from 'components/models';
 
-import { getAuth, signOut } from 'firebase/auth';
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useDialogStore } from 'stores/dialogStore';
 import { useAlertsStore } from 'stores/alertsStore';
+
+import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
 const iconsStore = useIconsStore();

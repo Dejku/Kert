@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <router-view v-slot="{ Component }" class="column q-pa-lg full-width">
-        <transition :name="transition">
+        <transition :name="(route.meta.transition as string) || 'fade'">
           <component :is="Component" />
         </transition>
       </router-view>
@@ -12,12 +12,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { computed } from 'vue';
-
 const route = useRoute();
-const transition = computed(() => {
-  return (route.meta.transition as string) || 'fade';
-});
 </script>
 
 <style lang="scss" scoped>

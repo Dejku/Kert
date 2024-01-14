@@ -96,21 +96,7 @@
 
         <div
           class="column flex items-center text-size-4 gap-sm"
-          @click="
-            showModal({
-              title: `${renderedMonth[0]?.name} ${renderedMonth[0]?.year}`,
-              component: {
-                type: 'monthSummary',
-                options: {
-                  date: {
-                    day: 0,
-                    month: selectedDate.getMonth(),
-                    year: selectedDate.getFullYear(),
-                  },
-                },
-              },
-            })
-          "
+          @click="$q.screen.height < 700 ? showSummaryModal() : null"
         >
           <div class="flex row no-wrap gap-xs">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
@@ -147,12 +133,13 @@
           </div>
         </div>
 
-        <section
+        <BaseButton
           v-if="$q.screen.height > 700"
-          class="q-pa-md bg-surface rounded-borders shadow"
-        >
-          Lorem Ipsum
-        </section>
+          class="q-mx-auto"
+          label="Podsumowanie"
+          transparent
+          @click="showSummaryModal"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="summary" class="column q-pa-md gap-lg">
@@ -276,6 +263,22 @@ const renderedMonth = ref<Month[]>([]);
 
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
+
+const showSummaryModal = () => {
+  showModal({
+    title: `${renderedMonth.value[0]?.name} ${renderedMonth.value[0]?.year}`,
+    component: {
+      type: 'monthSummary',
+      options: {
+        date: {
+          day: 0,
+          month: selectedDate.value.getMonth(),
+          year: selectedDate.value.getFullYear(),
+        },
+      },
+    },
+  });
+};
 
 const selectDay = (day: number, month: number, year: number) =>
   vacationStore.selectVacationDay({ day, month, year });

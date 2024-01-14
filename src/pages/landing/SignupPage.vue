@@ -170,15 +170,15 @@ const signup = () => {
         displayName: nick.value,
         photoURL: null,
       });
-    })
-    .catch((error) => {
-      console.error(error);
 
+      router.push('/home');
+    })
+    .catch((error) =>
       createAlert({
         message: formatMessage(error),
         state: 'error',
         duration: 5,
-      });
-    });
+      })
+    );
 };
 </script>
