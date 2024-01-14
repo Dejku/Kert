@@ -34,10 +34,7 @@
         </section>
       </div>
 
-      <div
-        id="base__modal__buttons"
-        class="row flex-center absolute-bottom q-pa-lg gap-xl"
-      >
+      <div id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
         <BaseButton
           :label="modalStore.modal.buttons.baseButton?.label"
           :class="`base__button--color-${modalStore.modal.buttons.baseButton?.color}`"

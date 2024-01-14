@@ -7,6 +7,6 @@ export default boot(({ router }) => {
 
     if (accountStore.isLogged || to.matched.some(record => record.meta.notSecured)) return next();
 
-    next({ path: '/' });
+    next('/');
   })
 })

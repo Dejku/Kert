@@ -150,7 +150,7 @@ export const useVacationStore = defineStore('vacation', {
       return this.claimedVacationDays.filter(element => element.date.year == year && (element.type.name == 'Urlop wypoczynkowy' || element.type.name == 'Na żądanie')).length
     },
 
-    countClaimedNormalVacationDaysInMonth(month: number, year: number): number {
+    countClaimedNormalVacationDaysInMonth(year: number, month: number): number {
       return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year && (element.type.name == 'Urlop wypoczynkowy' || element.type.name == 'Na żądanie')).length
     },
 
@@ -160,7 +160,7 @@ export const useVacationStore = defineStore('vacation', {
 
     countClaimedVacationByType(type: VacationNames, year: number, month?: number): number {
       let count = 0;
-      const days = month ? this.getClaimedDaysInMonth(type, month, year) : this.getClaimedDaysInYear(type, year);
+      const days = month ? this.getClaimedDaysInMonth(type, year, month) : this.getClaimedDaysInYear(type, year);
 
       if (days.every(element => element.type.time.type == 'hours'))
         days.forEach(element => count += element.type.time.hours)
@@ -174,7 +174,7 @@ export const useVacationStore = defineStore('vacation', {
       return this.claimedVacationDays.filter(element => element.date.year == year && element.type.name == type)
     },
 
-    getClaimedDaysInMonth(type: VacationNames, month: number, year: number): ClaimedVacationDays[] {
+    getClaimedDaysInMonth(type: VacationNames, year: number, month: number): ClaimedVacationDays[] {
       return this.claimedVacationDays.filter(element => element.date.month == month && element.date.year == year && element.type.name == type)
     },
 

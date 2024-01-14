@@ -4,7 +4,7 @@
       label="Utwórz konto"
       :iconLeft="iconsStore.icons.arrowUpRight"
       class="base__button--color-secondary absolute-top-right q-pa-xs"
-      style="padding: 5px 10px; border-radius: 10px 0 0 10px"
+      style="margin-top: 2vh; padding: 5px 10px; border-radius: 10px 0 0 10px"
       noBorder
       :shadow="false"
       @click="router.push('/signup')"
@@ -15,32 +15,28 @@
     >
       <h6 class="main-title text-size-10">Zaloguj się</h6>
 
-      <div class="full-width">
-        <label class="q-ml-xs text-size-6">E-mail</label>
-        <BaseInput
-          v-model="email"
-          :type="'email'"
-          :icon="iconsStore.icons.mail"
-          :placeholder="'Wpisz swój e-mail'"
-          :isRequired="true"
-          :altColor="true"
-          @has-error="(value: boolean) => (emailError = value)"
-        />
-      </div>
+      <BaseInput
+        v-model="email"
+        type="email"
+        :icon="iconsStore.icons.mail"
+        label="E-mail"
+        placeholder="Wpisz swój e-mail"
+        :isRequired="true"
+        :altColor="true"
+        @has-error="(value: boolean) => (emailError = value)"
+      />
 
-      <div class="full-width">
-        <label class="q-ml-xs text-size-6">Hasło</label>
-        <BaseInput
-          v-model="password"
-          :type="'password'"
-          :icon="iconsStore.icons.lock"
-          :minlength="5"
-          :placeholder="'Wpisz swoje hasło'"
-          :isRequired="true"
-          :altColor="true"
-          @has-error="(value: boolean) => (passwordError = value)"
-        />
-      </div>
+      <BaseInput
+        v-model="password"
+        type="password"
+        :icon="iconsStore.icons.lock"
+        :minlength="5"
+        label="Hasło"
+        placeholder="Wpisz swoje hasło"
+        :isRequired="true"
+        :altColor="true"
+        @has-error="(value: boolean) => (passwordError = value)"
+      />
 
       <q-space />
 

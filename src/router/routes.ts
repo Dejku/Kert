@@ -1,11 +1,13 @@
 import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
+  //{ path: '/', redirect: '/landing' },
   {
     path: '/',
     component: () => import('layouts/BlankLayout.vue'),
     children: [
-      { path: '/', component: () => import('pages/landing/LandingPage.vue'), meta: { transition: 'slide-up', notSecured: true } },
+      { path: '/', component: () => import('pages/other/LoadingPage.vue'), meta: { notSecured: true } },
+      { path: '/landing', component: () => import('pages/landing/LandingPage.vue'), meta: { transition: 'slide-up', notSecured: true } },
       { path: '/login', component: () => import('pages/landing/LoginPage.vue'), meta: { transition: 'slide-right', notSecured: true } },
       { path: '/signup', component: () => import('pages/landing/SignupPage.vue'), meta: { transition: 'slide-left', notSecured: true } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue'), meta: { transition: 'slide-up', notSecured: true } },
