@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/signup', component: () => import('pages/landing/SignupPage.vue'), meta: { transition: 'slide-left' } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue') },
       { path: '/loggedOut', component: () => import('pages/other/LoggedOut.vue') },
-      { path: '/:catchAll(.*)*', component: () => import('pages/other/ErrorNotFound.vue') }
+      { name: 'ErrorNotFound', path: '/:catchAll(.*)*', component: () => import('pages/other/ErrorNotFound.vue') }
     ],
   },
   {
