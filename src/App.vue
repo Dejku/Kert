@@ -1,7 +1,11 @@
 <template>
   <Alerts />
 
-  <router-view />
+  <router-view v-slot="{ Component }">
+    <transition name="fade">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 
   <BaseOverlay />
   <BaseModal />
@@ -14,9 +18,9 @@ import BaseOverlay from 'components/Shared/BaseOverlay.vue';
 import BaseDialog from 'components/Shared/BaseDialog.vue';
 import Alerts from 'components/alerts/AlertsContainer.vue';
 
-import { resetPinia } from 'components/utils/stores';
 import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
+import { useResetStore } from 'components/utils';
 
 import {
   getAuth,
@@ -32,6 +36,7 @@ import { onMounted, onUnmounted } from 'vue';
 const appStore = useAppStore();
 const accountStore = useAccountStore();
 const router = useRouter();
+const resetStore = useResetStore();
 
 onMounted(() =>
   window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent))
@@ -60,7 +65,9 @@ const auth = getAuth();
 if (location.hostname === 'localhost') {
   const db = getFirestore();
   connectFirestoreEmulator(db, '127.0.0.1', 8080);
-  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', {
+    disableWarnings: true,
+  });
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -74,7 +81,11 @@ onAuthStateChanged(auth, (user) => {
     });
 
     appStore.fetchData();
-    router.push('/home');
-  } else resetPinia();
+  } else {
+    accountStore.isLogged = false;
+
+    router.push('/loggedOut');
+    setTimeout(() => resetStore.all(), 500);
+  }
 });
 </script>
