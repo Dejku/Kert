@@ -20,6 +20,8 @@ import Alerts from 'components/alerts/AlertsContainer.vue';
 
 import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
+import { useAlertsStore } from 'stores/alertsStore';
+import { useIconsStore } from 'stores/iconsStore';
 import { useResetStore } from 'components/utils';
 
 import {
@@ -35,19 +37,50 @@ import { onMounted, onUnmounted } from 'vue';
 
 const appStore = useAppStore();
 const accountStore = useAccountStore();
-const router = useRouter();
+const alertsStore = useAlertsStore();
+const iconsStore = useIconsStore();
 const resetStore = useResetStore();
+const router = useRouter();
 
-onMounted(() =>
-  window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent))
-);
+onMounted(() => {
+  window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent));
+  window.addEventListener('online', HandleNetworkChange);
+  window.addEventListener('offline', HandleNetworkChange);
+});
 
-onUnmounted(() =>
-  window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent))
-);
+onUnmounted(() => {
+  window.removeEventListener('showOverlay', (e) =>
+    closePopUps(e as CustomEvent)
+  );
+  window.removeEventListener('online', HandleNetworkChange);
+  window.removeEventListener('offline', HandleNetworkChange);
+});
 
 const closePopUps = (e: CustomEvent) =>
   e.detail == false || 'failed' ? appStore.closeAllPopUps() : null;
+
+const HandleNetworkChange = () => {
+  if (navigator.onLine) {
+    alertsStore.createAlert({
+      message: 'Połączono z internetem',
+      state: 'info',
+      duration: 3,
+    });
+
+    alertsStore.deleteHeaderAlert('noWifi');
+  } else {
+    alertsStore.createAlert({
+      message: 'Brak połączenia z internetem',
+      state: 'noWifi',
+      duration: 5,
+    });
+
+    alertsStore.createHeaderAlert({
+      id: 'noWifi',
+      icon: iconsStore.icons.noWifi,
+    });
+  }
+};
 
 const firebaseConfig = {
   apiKey: process.env.apiKey,

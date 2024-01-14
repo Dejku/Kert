@@ -5,7 +5,7 @@
     :class="`base__alert--color-${props.state}`"
     @click="hide()"
   >
-    <q-icon :name="iconsStore.getAlertIcon(props.state)" size="20px" />
+    <q-icon :name="iconsStore.getAlertIcon(props.state)" class="text-size-7" />
     {{ props.message }}
   </div>
 </template>
@@ -23,9 +23,6 @@ const props = defineProps({
   state: {
     type: String,
     default: 'info',
-    validation(value: string) {
-      return ['success', 'info', 'warning', 'error'].includes(value);
-    },
   },
   message: String,
   duration: {
@@ -70,7 +67,8 @@ onMounted(() => {
     color: var(--onWarning);
     background-color: var(--warning);
   }
-  &.base__alert--color-error {
+  &.base__alert--color-error,
+  &.base__alert--color-noWifi {
     color: var(--onError);
     background-color: var(--error);
   }
