@@ -66,25 +66,25 @@ const month = (modalStore.modal.component.options.date?.month || 0) + 1;
 const year = modalStore.modal.component.options.date?.year || 0;
 
 const allDays = vacationStore.countClaimedNormalVacationDaysInMonth(
-  month,
-  year
+  year,
+  month
 );
 
 const normalDays = vacationStore.countClaimedVacationByType(
   'Urlop wypoczynkowy',
-  month,
-  year
+  year,
+  month
 );
 
 const onDemandDays = vacationStore.countClaimedVacationByType(
   'Na żądanie',
-  month,
-  year
+  year,
+  month
 );
 
 const forceDays = vacationStore.countClaimedVacationByType(
   'Siła wyższa',
-  month,
-  year
+  year,
+  month
 );
 </script>

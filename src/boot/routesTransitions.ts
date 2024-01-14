@@ -11,8 +11,8 @@ export default boot(({ router }) => {
       return true;
     }
 
-    // from landing page to login or signup page
-    if ((from.path == '/' || from.path == '/loggedOut' || from.path == '/accountDeleted') && (to.path == '/login' || to.path == '/signup')) {
+    // from special page to login or signup page
+    if ((from.path == '/landing' || from.path == '/loggedOut' || from.path == '/accountDeleted') && (to.path == '/login' || to.path == '/signup')) {
       to.meta.transition = 'slide-down'
       return true;
     }

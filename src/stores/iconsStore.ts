@@ -18,6 +18,8 @@ export const useIconsStore = defineStore('icons', {
       close: 'eva-close-outline',
       email: 'eva-email-outline',
       edit: 'eva-edit-outline',
+      eye: 'eva-eye-outline',
+      eyeOff: 'eva-eye-off-outline',
       filter: 'eva-funnel-outline',
       home: 'eva-home-outline',
       info: 'eva-info-outline',
