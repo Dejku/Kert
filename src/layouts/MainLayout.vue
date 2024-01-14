@@ -2,10 +2,24 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="q-px-sm bg-surface">
       <q-toolbar>
-        <q-toolbar-title class="text-tertiary text-size-9">
+        <q-toolbar-title class="text-tertiary text-size-9" shrink>
           Kert
         </q-toolbar-title>
+
         <q-space />
+
+        <div class="row items-center q-px-md text-size-6 text-onSurface gap-sm">
+          <q-icon
+            v-for="alert in alertsStore.headerAlerts.slice(0, 5)"
+            :key="alert.id"
+            :name="alert.icon"
+          />
+
+          <div v-if="alertsStore.headerAlerts.length > 5">
+            +{{ alertsStore.headerAlerts.length - 5 }}
+          </div>
+        </div>
+
         <router-link to="/settings/account">
           <q-avatar class="text-size-12">
             <img :src="accountStore.getAvatar" />
@@ -61,9 +75,11 @@
 <script setup lang="ts">
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
+import { useAlertsStore } from 'src/stores/alertsStore';
 
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();
+const alertsStore = useAlertsStore();
 
 const navigation = [
   {

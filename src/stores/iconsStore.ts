@@ -28,6 +28,7 @@ export const useIconsStore = defineStore('icons', {
       login: 'eva-log-in-outline',
       logout: 'eva-log-out-outline',
       mail: 'eva-email-outline',
+      noWifi: 'eva-wifi-off-outline',
       person: 'eva-person-outline',
       people: 'eva-people-outline',
       plus: 'eva-plus-outline',
@@ -43,7 +44,6 @@ export const useIconsStore = defineStore('icons', {
       volumeMute: 'eva-volume-mute-outline',
       volumeUp: 'eva-volume-up-outline',
       warning: 'eva-alert-triangle-outline',
-      wifiOff: 'eva-wifi-off-outline',
     }
   }),
 
@@ -53,7 +53,7 @@ export const useIconsStore = defineStore('icons', {
       else if (state == 'info') return this.icons.info;
       else if (state == 'warning') return this.icons.warning;
       else if (state == 'error') return this.icons.slash;
-      else if (state == 'noWifi') return this.icons.wifiOff;
+      else if (state == 'noWifi') return this.icons.noWifi;
     }
   }
 });

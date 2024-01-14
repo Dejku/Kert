@@ -1,30 +1,43 @@
 import { defineStore } from 'pinia';
-import { Alert } from 'components/models';
+import { Alert, HeaderAlert } from 'components/models';
 import alertSound from 'src/assets/audio/alert.mp3';
 import { uid } from 'quasar';
 
+const notificationSound = new Audio(alertSound);
+notificationSound.volume = 0.5;
+
 export const useAlertsStore = defineStore('alerts', {
     state: () => ({
-        alerts: [] as Alert[]
+        alerts: [] as Alert[],
+        headerAlerts: [] as HeaderAlert[]
     }),
 
     actions: {
-        async createAlert(data: Omit<Alert, 'id'>) {
-            const notificationSound = new Audio(alertSound);
-            notificationSound.volume = 0.5;
-            await notificationSound.play();
-
+        createAlert(data: Omit<Alert, 'id'>) {
             this.alerts.push({
                 id: uid(),
                 message: data.message,
                 state: data.state,
                 duration: data.duration,
             });
+
+            notificationSound.play();
         },
 
         deleteAlert(alert: Alert) {
             const index = this.alerts.indexOf(alert);
             if (index > -1) this.alerts.splice(index, 1);
+        },
+
+        createHeaderAlert(data: HeaderAlert) {
+            this.headerAlerts.push({
+                id: data.id,
+                icon: data.icon,
+            });
+        },
+
+        deleteHeaderAlert(id: HeaderAlert['id']) {
+            this.headerAlerts = this.headerAlerts.filter((ele) => ele.id !== id);
         },
 
         formatMessage(message: string): string {
