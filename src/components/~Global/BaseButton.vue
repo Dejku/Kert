@@ -1,10 +1,10 @@
 <template>
   <div
-    class="base__button row flex-center hug text-bold"
+    class="base__button row flex-center hug text-bold gap-xs"
     :class="{
       'box-shadow': shadow,
-      'no-pointer-events': disabled,
-      'base__button--disabled': disabled,
+      'no-pointer-events': disabled || loading,
+      'base__button--disabled': disabled || loading,
       'base__button--small': small,
       'base__button--transparent': transparent,
       'base__button--no-border': noBorder,
@@ -19,17 +19,31 @@
       'base__button--color-warning': color === 'warning',
       'base__button--color-error': color === 'error',
     }"
+    @click="loadingState ? (loading = true) : null"
   >
-    <q-icon v-if="iconLeft" :name="iconLeft" />
-    <slot>{{ label }}</slot>
-    <q-icon v-if="iconRight" :name="iconRight" />
+    <TransitionGroup name="fade">
+      <q-spinner
+        v-if="loading"
+        key="spinner"
+        class="absolute"
+        color="onPrimary"
+        size="2em"
+        :thickness="3"
+      />
+
+      <div key="content" :style="{ opacity: loading ? 0 : 1 }">
+        <q-icon v-if="iconLeft" :name="iconLeft" />
+        <slot>{{ label }}</slot>
+        <q-icon v-if="iconRight" :name="iconRight" />
+      </div>
+    </TransitionGroup>
   </div>
 </template>
 
 <script setup lang="ts">
-import { appColors, AppColors } from '../models';
+import { onMounted, onUnmounted, ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   iconLeft: {
     type: String,
     default: undefined,
@@ -49,7 +63,16 @@ defineProps({
   color: {
     type: String,
     validator: (value: AppColors) => {
-      return appColors.includes(value);
+      return [
+        'background',
+        'primary',
+        'secondary',
+        'tertiary',
+        'success',
+        'info',
+        'warning',
+        'error',
+      ].includes(value);
     },
   },
   transparent: {
@@ -76,5 +99,29 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  loadingState: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const loading = ref<boolean>(false);
+
+onMounted(() => {
+  if (props.loadingState) {
+    window.addEventListener(
+      'base__button--loadingComplete',
+      () => (loading.value = false)
+    );
+  }
+});
+
+onUnmounted(() => {
+  if (props.loadingState) {
+    window.removeEventListener(
+      'base__button--loadingComplete',
+      () => (loading.value = false)
+    );
+  }
 });
 </script>

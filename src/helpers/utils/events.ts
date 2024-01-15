@@ -1,12 +1,10 @@
-import { CustomResponse } from '../models';
-
 export function fireEvent(eventName: string, detail?: object | boolean) {
     const event = new CustomEvent(eventName, { detail });
     window.dispatchEvent(event);
 }
 
-export function waitForInteraction(eventName: string, once?: boolean): Promise<CustomResponse> {
-    return new Promise<CustomResponse>((resolve) => {
+export function waitForInteraction(eventName: string, once?: boolean): Promise<AppResponse> {
+    return new Promise<AppResponse>((resolve) => {
         const listener = (e: object) => {
             window.removeEventListener(eventName, listener);
             resolve((e as CustomEvent).detail);

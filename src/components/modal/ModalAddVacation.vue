@@ -59,8 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import { Normal, OnDemand, Force } from 'components/models';
-import { Months } from '../utils';
+import { Normal, OnDemand, Force } from 'models';
+import { Months } from 'utils';
 
 import { useIconsStore } from 'stores/iconsStore';
 import { useModalStore } from 'stores/modalStore';

@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'src/stores/iconsStore';
+import { useIconsStore } from 'stores/iconsStore';
 import { useRouter } from 'vue-router';
 
 const iconsStore = useIconsStore();

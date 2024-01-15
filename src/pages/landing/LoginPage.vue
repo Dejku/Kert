@@ -47,6 +47,7 @@
         label="Zaloguj się"
         :icon-right="iconsStore.icons.login"
         :disabled="emailError || passwordError"
+        loading-state
         corner-small
         @click="login"
       />
@@ -55,45 +56,38 @@
 </template>
 
 <script setup lang="ts">
+import { fireEvent } from 'utils';
+
 import { useIconsStore } from 'stores/iconsStore';
 import { useAlertsStore } from 'stores/alertsStore';
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
-import { onBeforeUnmount, ref } from 'vue';
-import { useQuasar, QSpinnerHourglass } from 'quasar';
+import { ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const { createAlert, formatMessage } = useAlertsStore();
 const router = useRouter();
-const $q = useQuasar();
 
 const email = ref<string>('');
 const password = ref<string>('');
 const emailError = ref<boolean>(true);
 const passwordError = ref<boolean>(true);
 
-onBeforeUnmount(() => $q.loading.hide());
-
 const login = () => {
   if (emailError.value || passwordError.value) return;
-
-  $q.loading.show({
-    spinner: QSpinnerHourglass,
-    spinnerColor: 'primary',
-    spinnerSize: 60,
-    message: 'Logowanie...',
-  });
 
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then(() => router.push('/home'))
-    .catch((error) =>
+    .catch((error) => {
       createAlert({
         message: formatMessage(error),
         state: 'error',
         duration: 5,
-      })
-    );
+      });
+
+      fireEvent('base__button--loadingComplete');
+    });
 };
 </script>

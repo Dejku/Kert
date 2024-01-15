@@ -238,8 +238,7 @@
 </template>
 
 <script setup lang="ts">
-import { Days, Months, formatString } from 'components/utils';
-import { Dates, Month } from 'components/models';
+import { Days, Months, formatString } from 'utils';
 
 import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
@@ -259,7 +258,7 @@ const appStore = useAppStore();
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
 const selectedDate = ref<Date>(new Date());
-const renderedMonth = ref<Month[]>([]);
+const renderedMonth = ref<CalendarMonth[]>([]);
 
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
@@ -307,7 +306,7 @@ function renderCalendar() {
   let currMonth: number = selectedDate.value.getMonth();
   let currYear: number = selectedDate.value.getFullYear();
 
-  let dates: Dates[] = [];
+  let dates: CalendarDates[] = [];
 
   const lastDayOfPrevMonth = new Date(currYear, currMonth, 0).getDay();
   const lastDateOfPrevMonth = new Date(currYear, currMonth, 0).getDate();

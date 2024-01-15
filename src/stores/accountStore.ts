@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { Account } from 'components/models';
 
 export const useAccountStore = defineStore('account', {
   state: () => ({

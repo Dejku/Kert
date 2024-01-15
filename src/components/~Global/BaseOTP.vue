@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue';
+import { computed, onMounted, reactive, watch } from 'vue';
 
 const emit = defineEmits<{
   'update:modelValue': [value: string];
@@ -67,6 +67,13 @@ const onKeyUp = (event: KeyboardEvent, index: number) => {
     if (next) next.focus();
   }
 };
+
+onMounted(() =>
+  setTimeout(() => {
+    const input = document.getElementById('input1') as HTMLInputElement;
+    if (input) input.focus();
+  }, 500)
+);
 </script>
 
 <style lang="scss" scoped>

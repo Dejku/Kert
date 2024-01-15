@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { Months } from '../utils';
+import { Months } from 'utils';
 import { useIconsStore } from 'stores/iconsStore';
 import { useModalStore } from 'stores/modalStore';
 import { ref } from 'vue';

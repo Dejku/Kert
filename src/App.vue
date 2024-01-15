@@ -22,7 +22,7 @@ import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertsStore } from 'stores/alertsStore';
 import { useIconsStore } from 'stores/iconsStore';
-import { useResetStore } from 'components/utils';
+import { useResetStore } from 'utils';
 
 import {
   getAuth,
@@ -32,7 +32,6 @@ import {
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 
-import { useRouter } from 'vue-router';
 import { onMounted, onUnmounted } from 'vue';
 
 const appStore = useAppStore();
@@ -40,7 +39,6 @@ const accountStore = useAccountStore();
 const alertsStore = useAlertsStore();
 const iconsStore = useIconsStore();
 const resetStore = useResetStore();
-const router = useRouter();
 
 onMounted(() => {
   window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent));
@@ -117,7 +115,6 @@ onAuthStateChanged(auth, (user) => {
   } else {
     accountStore.isLogged = false;
 
-    router.push('/loggedOut');
     setTimeout(() => resetStore.all(), 500);
   }
 });

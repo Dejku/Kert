@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { useModalStore } from './modalStore';
-import { useDialogStore } from './dialogStore';
-import { useVacationStore } from './vacationStore';
+import { useModalStore } from 'stores/modalStore';
+import { useDialogStore } from 'stores/dialogStore';
+import { useVacationStore } from 'stores/vacationStore';
 
 export const useAppStore = defineStore('app', {
     state: () => ({

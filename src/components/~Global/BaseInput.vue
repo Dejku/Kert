@@ -2,14 +2,13 @@
   <div class="full-width">
     <label
       v-if="label"
-      :for="`base__input-${label}`"
+      :for="`base__input-${label.toLowerCase()}`"
       class="q-ml-xs text-size-6"
     >
       {{ label }}
     </label>
 
     <div
-      :id="`base__input-${label}`"
       class="base__input text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm bg-surface overflow-hidden box-shadow text-error"
       :class="{
         error: error || customError,
@@ -40,6 +39,7 @@
           </Transition>
 
           <input
+            :id="`base__input-${label?.toLowerCase()}`"
             ref="input"
             class="full-width"
             :class="{ 'text-center': textCenter }"

@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
-import { useAlertsStore } from 'src/stores/alertsStore';
+import { useAlertsStore } from 'stores/alertsStore';
 
 const iconsStore = useIconsStore();
 const accountStore = useAccountStore();

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { Alert, HeaderAlert } from 'components/models';
-import alertSound from 'src/assets/audio/alert.mp3';
+import alertSound from 'assets/audio/alert.mp3';
 import { uid } from 'quasar';
 
 const notificationSound = new Audio(alertSound);
@@ -44,9 +43,9 @@ export const useAlertsStore = defineStore('alerts', {
             const messages = [
                 { name: 'auth/invalid-credential', value: 'Email lub hasło się nie zgadza' },
                 { name: 'auth/invalid-email', value: 'Niepoprawny email' },
-                { name: 'auth/weak-password', value: 'Zbyt krótkie hasło' },
+                { name: 'auth/weak-password', value: 'Zbyt krótkie hasło (min. 6 znaków)' },
                 { name: 'auth/email-already-in-use', value: 'Email jest już w użyciu' },
-                { name: 'auth/user-not-found', value: 'Konto nie znalezione' },
+                { name: 'auth/user-not-found', value: 'Konto nie zostało znalezione' },
                 { name: 'auth/wrong-password', value: 'Niepoprawne hasło' },
             ]
 

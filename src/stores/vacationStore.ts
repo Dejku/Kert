@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { Normal, ClaimedVacationDays, Date as DateModel, VacationNames, CustomResponse, Alert, ErrorAlert } from 'components/models';
-import { useModalStore } from './modalStore';
-import { useAlertsStore } from './alertsStore';
-import { useAccountStore } from './accountStore';
+import { Normal, ErrorAlert } from 'models';
+import { useModalStore } from 'stores/modalStore';
+import { useAlertsStore } from 'stores/alertsStore';
+import { useAccountStore } from 'stores/accountStore';
 import { doc, getFirestore, updateDoc, getDoc } from 'firebase/firestore';
 
 const today = new Date();
@@ -74,7 +74,7 @@ export const useVacationStore = defineStore('vacation', {
       await updateDoc(docRef, { 'claimedVacationDays': this.claimedVacationDays, });
     },
 
-    async selectVacationDay(date: DateModel): Promise<void> {
+    async selectVacationDay(date: AppDate): Promise<void> {
       if (!this.isExist(date))
         return this.addVacationDay({
           date,
@@ -91,7 +91,7 @@ export const useVacationStore = defineStore('vacation', {
       this.removeVacationDay(date);
     },
 
-    async holdSelectVacationDay(date: DateModel): Promise<void> {
+    async holdSelectVacationDay(date: AppDate): Promise<void> {
       const modalStore = useModalStore();
 
       if (this.isExist(date)) {
@@ -129,7 +129,7 @@ export const useVacationStore = defineStore('vacation', {
       }
     },
 
-    async removeVacationDay(date: DateModel): Promise<void> {
+    async removeVacationDay(date: AppDate): Promise<void> {
       const accountStore = useAccountStore();
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', accountStore.user.id);
@@ -179,23 +179,23 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     // OTHERS FUNCTIONS
-    isExist(date: DateModel): boolean {
+    isExist(date: AppDate): boolean {
       return this.claimedVacationDays.some(claimedDate => {
         return claimedDate.date.day == date.day && claimedDate.date.month == date.month && claimedDate.date.year == date.year;
       });
     },
 
-    checkType(date: DateModel, isSpecial: boolean): boolean {
+    checkType(date: AppDate, isSpecial: boolean): boolean {
       return this.claimedVacationDays.some(claimedDate => {
         return claimedDate.date.day == date.day && claimedDate.date.month == date.month && claimedDate.date.year == date.year && claimedDate.type.isSpecial == isSpecial;
       });
     },
 
-    findVacation(date: DateModel): ClaimedVacationDays {
+    findVacation(date: AppDate): ClaimedVacationDays {
       return this.claimedVacationDays.filter(claimedDate => claimedDate.date.day == date.day && claimedDate.date.month == date.month && claimedDate.date.year == date.year)[0]
     },
 
-    async showVacation(date: DateModel): Promise<CustomResponse> {
+    async showVacation(date: AppDate): Promise<AppResponse> {
       const modalStore = useModalStore();
 
       modalStore.component.vacationDays = this.findVacation(date).type;
@@ -216,7 +216,7 @@ export const useVacationStore = defineStore('vacation', {
       })
     },
 
-    isVacationLimitReached(type: VacationNames, date: DateModel): boolean {
+    isVacationLimitReached(type: VacationNames, date: AppDate): boolean {
       if (type == 'Na żądanie' && this.countAvailableVacationByType('Urlop wypoczynkowy', date.year) <= 0) return true;
 
       return this.countAvailableVacationByType(type, date.year) <= 0
