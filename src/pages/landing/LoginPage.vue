@@ -1,17 +1,18 @@
 <template>
   <q-page class="flex-center">
     <BaseButton
+      :icon-left="iconsStore.icons.arrowUpRight"
       label="Utwórz konto"
-      :iconLeft="iconsStore.icons.arrowUpRight"
-      class="base__button--color-secondary absolute-top-right q-pa-xs"
+      color="secondary"
+      class="absolute-top-right q-pa-xs"
       style="margin-top: 2vh; padding: 5px 10px; border-radius: 10px 0 0 10px"
-      noBorder
+      no-border
       :shadow="false"
       @click="router.push('/signup')"
     />
 
     <div
-      class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
+      class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
     >
       <h6 class="main-title text-size-10">Zaloguj się</h6>
 
@@ -21,8 +22,9 @@
         :icon="iconsStore.icons.mail"
         label="E-mail"
         placeholder="Wpisz swój e-mail"
-        :isRequired="true"
-        :altColor="true"
+        :is-required="true"
+        :alt-color="true"
+        autocomplete="email"
         @has-error="(value: boolean) => (emailError = value)"
       />
 
@@ -33,8 +35,9 @@
         :minlength="5"
         label="Hasło"
         placeholder="Wpisz swoje hasło"
-        :isRequired="true"
-        :altColor="true"
+        :is-required="true"
+        :alt-color="true"
+        autocomplete="current-password"
         @has-error="(value: boolean) => (passwordError = value)"
       />
 
@@ -42,9 +45,9 @@
 
       <BaseButton
         label="Zaloguj się"
-        :iconRight="iconsStore.icons.login"
+        :icon-right="iconsStore.icons.login"
         :disabled="emailError || passwordError"
-        cornerSmall
+        corner-small
         @click="login"
       />
     </div>

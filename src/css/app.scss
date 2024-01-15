@@ -1,9 +1,11 @@
-@import './themes.scss';
-@import './common.scss';
-@import './transitions.scss';
+@import './borders.scss';
 @import './calendar.scss';
-@import './modal.scss';
-
-.q-loading__message {
-  margin: 20px 20px 0;
-}
+@import './common.scss';
+@import './gaps.scss';
+@import './text.scss';
+@import './themes.scss';
+@import './transitions.scss';
+@import './components/BaseAlert.scss';
+@import './components/BaseButton.scss';
+@import './components/BaseInput.scss';
+@import './components/BaseModal.scss';

@@ -5,7 +5,7 @@
   >
     <div
       v-if="dialogStore.isShowed"
-      class="column items-center q-mx-auto q-px-sm q-py-md absolute-center bg-surface rounded-borders gap-sm shadow"
+      class="column items-center q-mx-auto q-px-sm q-py-md absolute-center bg-surface rounded-borders gap-sm box-shadow"
       style="width: max(320px, 90%); z-index: 3000"
     >
       <header>
@@ -19,7 +19,7 @@
       <footer class="row gap-xl">
         <BaseButton
           :label="dialogStore.dialog.buttons.baseButton?.label"
-          :class="`base__button--color-${dialogStore.dialog.buttons.baseButton?.color}`"
+          :color="dialogStore.dialog.buttons.baseButton?.color"
           :transparent="dialogStore.dialog.buttons.baseButton?.transparent"
           @click="dialogStore.optionChoosen('failed')"
         />
@@ -27,7 +27,7 @@
         <BaseButton
           v-if="dialogStore.dialog.buttons.extendedButton?.label"
           :label="dialogStore.dialog.buttons.extendedButton.label"
-          :class="`base__button--color-${dialogStore.dialog.buttons.extendedButton.color}`"
+          :color="dialogStore.dialog.buttons.extendedButton.color"
           :transparent="dialogStore.dialog.buttons.extendedButton.transparent"
           @click="dialogStore.optionChoosen('success')"
         />

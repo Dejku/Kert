@@ -1,11 +1,12 @@
 <template>
   <q-page class="flex-center">
     <BaseButton
-      label="Zaloguj się"
       :iconRight="iconsStore.icons.arrowUpLeft"
-      class="base__button--color-secondary absolute-top-left q-pa-xs"
+      label="Zaloguj się"
+      color="secondary"
+      class="absolute-top-left q-pa-xs"
       style="margin-top: 2vh; padding: 5px 10px; border-radius: 0 10px 10px 0"
-      noBorder
+      no-border
       :shadow="false"
       @click="router.push('/login')"
     />
@@ -19,7 +20,7 @@
 
       <div
         v-else
-        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
+        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
       >
         <h6 class="main-title text-size-10">Stwórz konto</h6>
 
@@ -31,8 +32,9 @@
             label="Nazwa"
             placeholder="Wpisz swoją nazwę"
             :minlength="3"
-            :isRequired="true"
-            :altColor="true"
+            :is-required="true"
+            :alt-color="true"
+            autocomplete="nickname"
             @has-error="(value: boolean) => (nameError = value)"
           />
         </div>
@@ -44,8 +46,9 @@
             :icon="iconsStore.icons.mail"
             label="E-mail"
             placeholder="Wpisz swój e-mail"
-            :isRequired="true"
-            :altColor="true"
+            :is-required="true"
+            :alt-color="true"
+            autocomplete="email"
             @has-error="(value: boolean) => (emailError = value)"
           />
         </div>
@@ -59,8 +62,9 @@
             :minlength="6"
             label="Hasło"
             placeholder="Wpisz swoje hasło"
-            :isRequired="true"
-            :altColor="true"
+            :is-required="true"
+            :alt-color="true"
+            autocomplete="new-password"
             :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
             @has-error="(value: boolean) => (passwordError = value)"
           />
@@ -75,8 +79,9 @@
             :minlength="6"
             label="Powtórz hasło"
             placeholder="Powtórz hasło"
-            :isRequired="true"
-            :altColor="true"
+            :is-required="true"
+            :alt-color="true"
+            autocomplete="new-password"
             :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
             @has-error="(value: boolean) => (confirmPasswordError = value)"
           />
@@ -84,9 +89,9 @@
 
         <BaseButton
           label="Stwórz konto"
-          :iconRight="iconsStore.icons.login"
+          :icon-right="iconsStore.icons.login"
           :disabled="!checkValidation()"
-          cornerSmall
+          corner-small
           @click="signup"
         />
       </div>

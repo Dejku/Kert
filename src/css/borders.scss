@@ -1,0 +1,15 @@
+.rounded-borders--circle {
+  border-radius: 50%;
+}
+
+.rounded-borders {
+  border-radius: $border-radius;
+}
+
+.rounded-borders--small {
+  border-radius: $border-radius-small;
+}
+
+.rounded-borders--big {
+  border-radius: $border-radius-big;
+}

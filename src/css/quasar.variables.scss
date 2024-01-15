@@ -27,12 +27,12 @@ $border-radius-big: $body-font-size-9;
 $shadow: 4px 4px 4px rgba(0, 0, 0, 0.4);
 
 $appColor: (
-  'none': var(--onBackground),
-  'primary': var(--primary),
-  'secondary': var(--secondary),
-  'tertiary': var(--tertiary),
-  'success': var(--success),
-  'info': var(--info),
-  'warning': var(--warning),
-  'error': var(--error),
+  'background' 'onBackground',
+  'primary' 'onPrimary',
+  'secondary' 'onSecondary',
+  'tertiary' 'onTertiary',
+  'success' 'onSuccess',
+  'info' 'onInfo',
+  'warning' 'onWarning',
+  'error' 'onError'
 );

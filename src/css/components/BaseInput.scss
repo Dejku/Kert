@@ -1,0 +1,29 @@
+.base__input {
+  max-height: 36px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    appearance: none;
+  }
+
+  &.base__input--transparent {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  &.base__input--altColor {
+    background-color: var(--surfaceVariant) !important;
+
+    input::placeholder {
+      color: var(--onSurfaceVariant);
+      opacity: 0.75;
+    }
+  }
+
+  &.error {
+    max-height: 60px;
+    border: 1px solid var(--error);
+  }
+}

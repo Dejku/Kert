@@ -13,7 +13,7 @@
     <q-tab-panels v-model="activeTab" animated class="bg-background col-grow">
       <q-tab-panel name="calendar" class="column" style="gap: 3.5vh">
         <div
-          class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big shadow"
+          class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big box-shadow"
         >
           <q-icon
             :name="iconsStore.icons.arrowLeft"
@@ -58,7 +58,7 @@
                   v-for="day in month.dates"
                   :key="`${day.day}/${day.month}/${day.year}`"
                   :id="`${day.day}/${day.month}/${day.year}`"
-                  class="date flex flex-center rounded-borders--circle shadow"
+                  class="date flex flex-center rounded-borders--circle box-shadow"
                   :data-date="`${day.day}/${day.month}/${day.year}`"
                   v-touch-hold.mouse="holdSelectDay"
                   :class="{
@@ -144,7 +144,7 @@
 
       <q-tab-panel name="summary" class="column q-pa-md gap-lg">
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders box-shadow gap-sm"
         >
           <span class="text-bold">Urlop wypoczynkowy</span>
           <div class="row justify-between text-size-4">
@@ -174,7 +174,7 @@
         </div>
 
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders box-shadow gap-sm"
         >
           <span class="text-bold">Na żądanie</span>
           <div class="row justify-between text-size-4">
@@ -204,7 +204,7 @@
         </div>
 
         <div
-          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders shadow gap-sm"
+          class="column q-px-md q-py-sm bg-surface-gradient rounded-borders box-shadow gap-sm"
         >
           <span class="text-bold">Siła wyższa</span>
           <div class="row justify-between text-size-4">

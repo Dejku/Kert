@@ -1,6 +1,6 @@
 <template>
   <div
-    class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg shadow"
+    class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
   >
     <h6 class="main-title text-size-10">{{ label }}</h6>
     <div class="row flex-center full-width gap-sm">
@@ -10,7 +10,7 @@
         :id="`input${i}`"
         :key="i"
         type="number"
-        class="codesContainer__input text-weight-600 text-center rounded-borders--small bg-surfaceVariant q-py-xs q-px-sm overflow-hidden shadow"
+        class="codeInput text-weight-600 text-center rounded-borders--small bg-surfaceVariant q-py-xs q-px-sm overflow-hidden box-shadow"
         placeholder="0"
         maxlength="1"
         @keyup="onKeyUp($event, i)"
@@ -70,7 +70,7 @@ const onKeyUp = (event: KeyboardEvent, index: number) => {
 </script>
 
 <style lang="scss" scoped>
-.codesContainer__input {
+.codeInput {
   width: calc(100% / 6 - 10px);
 }
 

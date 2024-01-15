@@ -31,15 +31,15 @@
         <div class="column items-center gap-sm">
           <BaseButton
             label="Stwórz konto"
+            color="primary"
             transparent
-            class="base__button--color-primary"
             @click="router.push('/signup')"
           />
           <span class="text-bold">LUB</span>
           <BaseButton
             label="Zaloguj się"
+            color="secondary"
             transparent
-            class="base__button--color-secondary"
             @click="router.push('/login')"
           />
         </div>

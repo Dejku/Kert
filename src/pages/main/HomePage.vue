@@ -34,7 +34,7 @@
         v-for="link in mainLinks"
         :key="link.id"
         :to="link.to"
-        class="tabs__element flex flex-center q-pa-md bg-surface rounded-borders shadow"
+        class="tabs__element flex flex-center q-pa-md bg-surface rounded-borders box-shadow"
         :class="{ 'no-pointer-events': link.disabled }"
       >
         <q-icon :name="link.icon" />
@@ -42,7 +42,7 @@
     </section>
 
     <section
-      class="reminder column flex relative-position z-zero overflow-hidden q-py-xs q-px-sm bg-surface-gradient rounded-borders shadow"
+      class="reminder column flex relative-position z-zero overflow-hidden q-py-xs q-px-sm bg-surface-gradient rounded-borders box-shadow"
     >
       <h6 class="text-bold text-size-7 no-margin">
         {{ reminder.title }}

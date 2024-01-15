@@ -13,7 +13,7 @@
 
     <BaseButton
       label="Zaloguj się"
-      :iconRight="iconsStore.icons.login"
+      :icon-right="iconsStore.icons.login"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
       @click="router.replace('/login')"

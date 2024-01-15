@@ -23,7 +23,7 @@
         standout
         options-dark
         behavior="menu"
-        class="rounded-borders shadow"
+        class="rounded-borders box-shadow"
         style="width: max(55%, 190px)"
       />
     </div>

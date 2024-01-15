@@ -3,7 +3,7 @@
     <h6 class="main-title">Ustawienia</h6>
 
     <section
-      class="column q-px-md q-py-sm bg-surface rounded-borders gap-m shadow"
+      class="column q-px-md q-py-sm bg-surface rounded-borders gap-m box-shadow"
     >
       <router-link to="/settings/account" class="row items-center">
         <div class="row gap-sm">
@@ -36,7 +36,7 @@
     <section
       v-for="(section, index) in sections"
       :key="index"
-      class="column q-px-md q-py-sm bg-surface rounded-borders gap-md shadow"
+      class="column q-px-md q-py-sm bg-surface rounded-borders gap-md box-shadow"
     >
       <div
         v-for="element in section"
