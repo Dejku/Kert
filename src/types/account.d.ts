@@ -1,4 +1,4 @@
-export type Account = {
+type Account = {
     id: string,
     displayName: string | null,
     photoURL: string | null

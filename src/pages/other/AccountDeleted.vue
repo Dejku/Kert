@@ -13,7 +13,7 @@
 
     <BaseButton
       label="Stwórz konto"
-      :iconRight="iconsStore.icons.login"
+      :icon-right="iconsStore.icons.login"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
       @click="router.replace('/signup')"
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'src/stores/iconsStore';
+import { useIconsStore } from 'stores/iconsStore';
 import { useRouter } from 'vue-router';
 
 const iconsStore = useIconsStore();

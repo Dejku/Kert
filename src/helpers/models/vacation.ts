@@ -1,21 +1,3 @@
-import { Date } from '.';
-
-export interface ClaimedVacationDays {
-    date: Date,
-    type: VacationTypes
-}
-
-export type VacationNames = 'Urlop wypoczynkowy' | 'Na żądanie' | 'Siła wyższa';
-
-export interface VacationTypes {
-    name: VacationNames,
-    isSpecial: boolean,
-    time: {
-        type: 'day' | 'hours'
-        hours: number
-    }
-};
-
 export const Normal: VacationTypes = {
     name: 'Urlop wypoczynkowy',
     isSpecial: false,

@@ -1,10 +1,15 @@
 <template>
   <div class="full-width">
-    <label v-if="label" class="q-ml-xs text-size-6">{{ label }}</label>
+    <label
+      v-if="label"
+      :for="`base__input-${label.toLowerCase()}`"
+      class="q-ml-xs text-size-6"
+    >
+      {{ label }}
+    </label>
 
     <div
-      id="base__input"
-      class="text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm bg-surface overflow-hidden shadow text-error"
+      class="base__input text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm bg-surface overflow-hidden box-shadow text-error"
       :class="{
         error: error || customError,
         'base__input--altColor': altColor,
@@ -34,6 +39,7 @@
           </Transition>
 
           <input
+            :id="`base__input-${label?.toLowerCase()}`"
             ref="input"
             class="full-width"
             :class="{ 'text-center': textCenter }"
@@ -42,7 +48,7 @@
             :placeholder="placeholder"
             :required="isRequired"
             :maxlength="maxlength"
-            autocomplete="off"
+            :autocomplete="autocomplete"
             @input="
               $emit(
                 'update:modelValue',
@@ -135,13 +141,16 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  autocomplete: {
+    type: String,
+    default: 'off',
+  },
   minlength: {
     type: Number,
     default: 0,
   },
   maxlength: {
     type: Number,
-    default: 9999,
   },
 });
 
@@ -156,7 +165,7 @@ if (props.value) inputValue.value = props.value;
 watch(
   () => inputValue.value,
   () => {
-    if (props.minlength > props.maxlength)
+    if (props.maxlength && props.minlength > props.maxlength)
       throw new Error('Minimalna wartość jest większa niż maksymalna!');
     error.value = '';
 
@@ -173,7 +182,7 @@ watch(
       return (error.value = `Minimalna ilość znaków to ${props.minlength}`);
     }
 
-    if (inputValue.value.length > props.maxlength) {
+    if (props.maxlength && inputValue.value.length > props.maxlength) {
       emit('hasError', true);
       return (error.value = `Maksymalna ilość znaków to ${props.maxlength}`);
     }
@@ -182,35 +191,3 @@ watch(
   }
 );
 </script>
-
-<style lang="scss" scoped>
-#base__input {
-  max-height: 36px;
-  border: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    appearance: none;
-  }
-
-  &.base__input--transparent {
-    background-color: transparent !important;
-    box-shadow: none !important;
-  }
-
-  &.base__input--altColor {
-    background-color: var(--surfaceVariant) !important;
-
-    input::placeholder {
-      color: var(--onSurfaceVariant);
-      opacity: 0.75;
-    }
-  }
-
-  &.error {
-    max-height: 60px;
-    border: 1px solid var(--error);
-  }
-}
-</style>

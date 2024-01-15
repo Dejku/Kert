@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isVisible"
-    class="base__alert q-py-xs q-px-sm full-width rounded-borders--small shadow"
+    class="base__alert q-py-xs q-px-sm full-width rounded-borders--small box-shadow"
     :class="`base__alert--color-${props.state}`"
     @click="hide()"
   >
@@ -52,25 +52,3 @@ onMounted(() => {
   isVisible.value = true;
 });
 </script>
-
-<style lang="scss" scoped>
-.base__alert {
-  &.base__alert--color-success {
-    color: var(--onSuccess);
-    background-color: var(--success);
-  }
-  &.base__alert--color-info {
-    color: var(--onInfo);
-    background-color: var(--info);
-  }
-  &.base__alert--color-warning {
-    color: var(--onWarning);
-    background-color: var(--warning);
-  }
-  &.base__alert--color-error,
-  &.base__alert--color-noWifi {
-    color: var(--onError);
-    background-color: var(--error);
-  }
-}
-</style>

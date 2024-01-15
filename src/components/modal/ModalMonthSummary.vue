@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatString } from '../utils';
+import { formatString } from 'utils';
 import { useVacationStore } from 'stores/vacationStore';
 import { useModalStore } from 'stores/modalStore';
 

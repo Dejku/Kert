@@ -2,12 +2,11 @@
   <Transition name="modal-slide">
     <div
       v-if="modalStore.isShowed"
-      id="base__modal"
-      class="column items-center q-pa-md absolute-bottom gap-sm"
+      class="base__modal column items-center q-pa-md absolute-bottom gap-sm"
     >
       <div class="column flex-center full-width gap-lg">
         <hr
-          class="rounded-borders--big bg-outline no-border no-margin shadow"
+          class="rounded-borders--big bg-outline no-border no-margin box-shadow"
         />
 
         <h5 id="base__modal__title" class="no-margin text-bold">
@@ -37,7 +36,7 @@
       <div id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
         <BaseButton
           :label="modalStore.modal.buttons.baseButton?.label"
-          :class="`base__button--color-${modalStore.modal.buttons.baseButton?.color}`"
+          :color="modalStore.modal.buttons.baseButton?.color"
           :transparent="modalStore.modal.buttons.baseButton?.transparent"
           @click="modalStore.optionChoosen('failed')"
         />
@@ -45,7 +44,7 @@
         <BaseButton
           v-if="modalStore.modal.buttons.extendedButton?.label"
           :label="modalStore.modal.buttons.extendedButton.label"
-          :class="`base__button--color-${modalStore.modal.buttons.extendedButton.color}`"
+          :color="modalStore.modal.buttons.extendedButton.color"
           :transparent="modalStore.modal.buttons.extendedButton.transparent"
           @click="modalStore.optionChoosen('success')"
         />

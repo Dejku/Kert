@@ -1,4 +1,4 @@
-export interface Dates {
+type CalendarDates = {
     day: number;
     month: number;
     year: number;
@@ -8,10 +8,10 @@ export interface Dates {
     next?: boolean;
 }
 
-export interface Month {
+type CalendarMonth = {
     index: number;
     name: string;
     claimedVacationDaysInMonth: 0;
-    dates: Dates[];
+    dates: CalendarDates[];
     year: number;
 }

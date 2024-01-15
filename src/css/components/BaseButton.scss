@@ -1,0 +1,74 @@
+.base__button {
+  padding: 5px 20px;
+  font-size: $body-font-size;
+  letter-spacing: 2px;
+  border: 1px solid transparent;
+  border-radius: $border-radius-big;
+  transition: all 0.2s ease-in-out;
+  background-color: var(--primary);
+  color: var(--onPrimary);
+
+  i {
+    font-size: $body-font-size-10;
+  }
+
+  &.base__button--circle {
+    padding: 5px;
+  }
+
+  &.base__button--disabled {
+    filter: brightness(0.75);
+  }
+
+  &.base__button--no-border {
+    border: none !important;
+  }
+
+  &.base__button--corner-small {
+    border-radius: $border-radius;
+  }
+
+  &.base__button--small {
+    padding: 2.5px 10px;
+    font-size: $body-font-size-3;
+    letter-spacing: 1px;
+
+    i {
+      font-size: $body-font-size-6;
+    }
+  }
+
+  &.base__button--transparent {
+    background-color: transparent !important;
+    border: 1px solid;
+    box-shadow: none !important;
+
+    color: var(--onBackground);
+    border-color: var(--outline);
+
+    @each $color, $onColor in $appColor {
+      &.base__button--color-#{$color} {
+        @if $color == 'background' {
+          color: var(--#{$onColor});
+          border-color: var(--#{$onColor});
+        } @else {
+          color: var(--#{$color});
+          border-color: var(--#{$color});
+        }
+      }
+    }
+  }
+
+  // ----------------------
+
+  @each $color, $onColor in $appColor {
+    &.base__button--color-#{$color} {
+      color: var(--#{$onColor});
+      background-color: var(--#{$color});
+
+      @if $color == 'background' {
+        box-shadow: none;
+      }
+    }
+  }
+}

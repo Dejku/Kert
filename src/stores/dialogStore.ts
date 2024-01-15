@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import { fireEvent, waitForInteraction } from 'components/utils';
-import { CustomResponse, DialogOption, DialogStructure, } from 'components/models';
-import { useAppStore } from './appStore';
+import { fireEvent, waitForInteraction } from 'utils';
+import { useAppStore } from 'stores/appStore';
 
 export const useDialogStore = defineStore('dialog', {
     state: () => ({
@@ -12,7 +11,7 @@ export const useDialogStore = defineStore('dialog', {
             buttons: {
                 baseButton: {
                     label: 'Okej',
-                    color: 'onBackground',
+                    color: undefined,
                     transparent: true
                 },
                 extendedButton: {
@@ -25,7 +24,7 @@ export const useDialogStore = defineStore('dialog', {
     }),
 
     actions: {
-        async showDialog(options: DialogOption): Promise<CustomResponse> {
+        async showDialog(options: DialogOption): Promise<AppResponse> {
             this.isVisible(true);
 
             this.dialog.title = options.title;
@@ -39,7 +38,7 @@ export const useDialogStore = defineStore('dialog', {
             return await waitForInteraction('dialog_userInteraction');
         },
 
-        optionChoosen(status: CustomResponse['status']) {
+        optionChoosen(status: AppResponse['status']) {
             fireEvent('dialog_userInteraction', { status });
             this.close();
         },

@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { fireEvent } from '../utils';
+import { fireEvent } from 'utils';
 
 import { useAppStore } from 'stores/appStore';
 const appStore = useAppStore();

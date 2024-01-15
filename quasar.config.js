@@ -10,7 +10,7 @@
 
 
 const { configure } = require('quasar/wrappers');
-
+const path = require('node:path')
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -80,6 +80,10 @@ module.exports = configure(function (/* ctx */) {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
+      alias: {
+        models: path.join(__dirname, './src/helpers/models/index'),
+        utils: path.join(__dirname, './src/helpers/utils/index'),
+      }
 
       // vitePlugins: [
       //   [ 'package-name', { ..options.. } ]
@@ -106,7 +110,9 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Loading'
+      ]
     },
 
     // animations: 'all', // --- includes all animations

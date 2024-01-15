@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import { fireEvent, waitForInteraction } from 'components/utils';
-import { ModalStructure, ModalOption, CustomResponse, VacationTypes } from 'components/models';
-import { useAppStore } from './appStore';
+import { fireEvent, waitForInteraction } from 'utils';
+import { useAppStore } from 'stores/appStore';
 
 export const useModalStore = defineStore('modal', {
   state: () => ({
@@ -21,7 +20,7 @@ export const useModalStore = defineStore('modal', {
       buttons: {
         baseButton: {
           label: 'Okej',
-          color: 'onBackground',
+          color: undefined,
           transparent: true
         },
         extendedButton: {
@@ -45,7 +44,7 @@ export const useModalStore = defineStore('modal', {
   }),
 
   actions: {
-    async showModal(options: ModalOption): Promise<CustomResponse> {
+    async showModal(options: ModalOption): Promise<AppResponse> {
       this.isVisible(true);
 
       this.modal.component = options.component;
@@ -64,7 +63,7 @@ export const useModalStore = defineStore('modal', {
       return await waitForInteraction('modal_userInteraction');
     },
 
-    optionChoosen(status: CustomResponse['status']) {
+    optionChoosen(status: AppResponse['status']) {
       fireEvent('modal_userInteraction', { status, message: this.modal.component.options });
       this.close();
     },
