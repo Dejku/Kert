@@ -1,7 +1,7 @@
 .base__input {
   max-height: 36px;
   border: 1px solid transparent;
-  transition: all 0.2s ease-in-out;
+  transition: var(--transition-duration) ease;
 
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -9,12 +9,16 @@
   }
 
   &.base__input--transparent {
-    background-color: transparent !important;
+    background: transparent !important;
     box-shadow: none !important;
   }
 
-  &.base__input--altColor {
-    background-color: var(--surfaceVariant) !important;
+  &.base__input--color-surface {
+    background: var(--surface);
+  }
+
+  &.base__input--color-surfaceVariant {
+    background: var(--surfaceVariant);
 
     input::placeholder {
       color: var(--onSurfaceVariant);
@@ -22,7 +26,11 @@
     }
   }
 
-  &.error {
+  &.base__input--color-background {
+    background: var(--background);
+  }
+
+  &.base__input--error {
     max-height: 60px;
     border: 1px solid var(--error);
   }

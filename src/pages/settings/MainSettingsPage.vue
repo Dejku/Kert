@@ -1,6 +1,6 @@
 <template>
   <q-page class="column gap-md">
-    <h6 class="main-title">Ustawienia</h6>
+    <base-title title="Ustawienia" />
 
     <section
       class="column q-px-md q-py-sm bg-surface rounded-borders gap-m box-shadow"
@@ -9,17 +9,16 @@
         <div class="row gap-sm">
           <div>
             <q-avatar size="15vw">
-              <img :src="accountStore.getAvatar" />
+              <img src="~src/assets/default_avatar.png" />
             </q-avatar>
           </div>
 
           <div>
-            <h6
-              class="no-margin text-weight-600"
+            <base-title
+              :title="(accountStore.user.displayName as string)"
+              size="7"
               style="margin-bottom: -5px !important"
-            >
-              {{ accountStore.user.displayName }}
-            </h6>
+            />
             <span class="text-size-4" style="opacity: 0.75">Twoje konto</span>
           </div>
         </div>

@@ -8,7 +8,7 @@ export const useAccountStore = defineStore('account', {
 
   getters: {
     getAvatar(): string {
-      return this.user.photoURL || '../src/assets/default_avatar.png'
+      return this.user.photoURL || 'src/assets/default_avatar.png'
     }
   },
 

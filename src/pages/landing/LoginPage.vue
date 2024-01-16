@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex-center">
-    <BaseButton
+    <base-button
       :icon-left="iconsStore.icons.arrowUpRight"
       label="Utwórz konto"
       color="secondary"
@@ -14,21 +14,21 @@
     <div
       class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
     >
-      <h6 class="main-title text-size-10">Zaloguj się</h6>
+      <base-title title="Zaloguj się" size="10" />
 
-      <BaseInput
+      <base-input
         v-model="email"
         type="email"
         :icon="iconsStore.icons.mail"
         label="E-mail"
         placeholder="Wpisz swój e-mail"
         :is-required="true"
-        :alt-color="true"
+        bg-color="surfaceVariant"
         autocomplete="email"
         @has-error="(value: boolean) => (emailError = value)"
       />
 
-      <BaseInput
+      <base-input
         v-model="password"
         type="password"
         :icon="iconsStore.icons.lock"
@@ -36,14 +36,14 @@
         label="Hasło"
         placeholder="Wpisz swoje hasło"
         :is-required="true"
-        :alt-color="true"
+        bg-color="surfaceVariant"
         autocomplete="current-password"
         @has-error="(value: boolean) => (passwordError = value)"
       />
 
       <q-space />
 
-      <BaseButton
+      <base-button
         label="Zaloguj się"
         :icon-right="iconsStore.icons.login"
         :disabled="emailError || passwordError"

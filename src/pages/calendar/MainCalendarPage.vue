@@ -46,7 +46,7 @@
           </div>
 
           <div id="calendar__container">
-            <TransitionGroup :name="`calendar__transition--${transition}`">
+            <transition-group :name="`calendar__transition--${transition}`">
               <div
                 v-for="month in renderedMonth"
                 class="calendar__container__dates"
@@ -88,7 +88,7 @@
                   {{ day.day }}
                 </div>
               </div>
-            </TransitionGroup>
+            </transition-group>
           </div>
         </div>
 
@@ -133,7 +133,7 @@
           </div>
         </div>
 
-        <BaseButton
+        <base-button
           v-if="$q.screen.height > 700"
           class="q-mx-auto"
           label="Podsumowanie"
@@ -242,16 +242,13 @@ import { Days, Months, formatString } from 'utils';
 
 import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
-import { useAccountStore } from 'stores/accountStore';
 import { useModalStore } from 'stores/modalStore';
 import { useAppStore } from 'stores/appStore';
 
-import { onSnapshot, doc, getFirestore } from 'firebase/firestore';
 import { onMounted, ref } from 'vue';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
-const accountStore = useAccountStore();
 const { showModal } = useModalStore();
 const appStore = useAppStore();
 
@@ -369,12 +366,5 @@ function renderCalendar() {
 onMounted(() => {
   transition.value = 'fade';
   renderCalendar();
-});
-
-const db = getFirestore();
-onSnapshot(doc(db, 'vacationStore', accountStore.user.id), (doc) => {
-  const vacationStore = useVacationStore();
-
-  vacationStore.claimedVacationDays = doc.data()?.claimedVacationDays;
 });
 </script>

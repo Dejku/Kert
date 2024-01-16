@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex-center">
-    <BaseButton
+    <base-button
       :iconRight="iconsStore.icons.arrowUpLeft"
       label="Zaloguj się"
       color="secondary"
@@ -16,78 +16,70 @@
       leave-active-class="animated fadeOut"
       mode="out-in"
     >
-      <BaseOTP v-if="codeStage" :length="6" @update:modelValue="checkCode" />
+      <base-otp v-if="codeStage" :length="6" @update:modelValue="checkCode" />
 
       <div
         v-else
         class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
       >
-        <h6 class="main-title text-size-10">Stwórz konto</h6>
+        <base-title title="Stwórz konto" size="10" />
 
-        <div class="full-width">
-          <BaseInput
-            v-model="nick"
-            type="text"
-            :icon="iconsStore.icons.person"
-            label="Nazwa"
-            placeholder="Wpisz swoją nazwę"
-            :minlength="3"
-            :is-required="true"
-            :alt-color="true"
-            autocomplete="nickname"
-            @has-error="(value: boolean) => (nameError = value)"
-          />
-        </div>
+        <base-input
+          v-model="nick"
+          type="text"
+          :icon="iconsStore.icons.person"
+          label="Nazwa"
+          placeholder="Wpisz swoją nazwę"
+          :minlength="3"
+          :is-required="true"
+          bg-color="surfaceVariant"
+          autocomplete="nickname"
+          @has-error="(value: boolean) => (nameError = value)"
+        />
 
-        <div class="full-width">
-          <BaseInput
-            v-model="email"
-            type="email"
-            :icon="iconsStore.icons.mail"
-            label="E-mail"
-            placeholder="Wpisz swój e-mail"
-            :is-required="true"
-            :alt-color="true"
-            autocomplete="email"
-            @has-error="(value: boolean) => (emailError = value)"
-          />
-        </div>
+        <base-input
+          v-model="email"
+          type="email"
+          :icon="iconsStore.icons.mail"
+          label="E-mail"
+          placeholder="Wpisz swój e-mail"
+          :is-required="true"
+          bg-color="surfaceVariant"
+          autocomplete="email"
+          @has-error="(value: boolean) => (emailError = value)"
+        />
 
-        <div class="full-width">
-          <BaseInput
-            v-model="password"
-            @update:model-value="checkPassword"
-            type="password"
-            :icon="iconsStore.icons.lock"
-            :minlength="6"
-            label="Hasło"
-            placeholder="Wpisz swoje hasło"
-            :is-required="true"
-            :alt-color="true"
-            autocomplete="new-password"
-            :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
-            @has-error="(value: boolean) => (passwordError = value)"
-          />
-        </div>
+        <base-input
+          v-model="password"
+          @update:model-value="checkPassword"
+          type="password"
+          :icon="iconsStore.icons.lock"
+          :minlength="6"
+          label="Hasło"
+          placeholder="Wpisz swoje hasło"
+          :is-required="true"
+          bg-color="surfaceVariant"
+          autocomplete="new-password"
+          :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
+          @has-error="(value: boolean) => (passwordError = value)"
+        />
 
-        <div class="full-width">
-          <BaseInput
-            v-model="confirmPassword"
-            @update:model-value="checkPassword"
-            type="password"
-            :icon="iconsStore.icons.lock"
-            :minlength="6"
-            label="Powtórz hasło"
-            placeholder="Powtórz hasło"
-            :is-required="true"
-            :alt-color="true"
-            autocomplete="new-password"
-            :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
-            @has-error="(value: boolean) => (confirmPasswordError = value)"
-          />
-        </div>
+        <base-input
+          v-model="confirmPassword"
+          @update:model-value="checkPassword"
+          type="password"
+          :icon="iconsStore.icons.lock"
+          :minlength="6"
+          label="Powtórz hasło"
+          placeholder="Powtórz hasło"
+          :is-required="true"
+          bg-color="surfaceVariant"
+          autocomplete="new-password"
+          :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
+          @has-error="(value: boolean) => (confirmPasswordError = value)"
+        />
 
-        <BaseButton
+        <base-button
           label="Stwórz konto"
           :icon-right="iconsStore.icons.login"
           :disabled="!checkValidation()"
@@ -101,6 +93,8 @@
 </template>
 
 <script setup lang="ts">
+import { fireEvent } from 'utils';
+
 import { useIconsStore } from 'stores/iconsStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertsStore } from 'stores/alertsStore';
@@ -179,12 +173,14 @@ const signup = () => {
 
       router.push('/home');
     })
-    .catch((error) =>
+    .catch((error) => {
       createAlert({
         message: formatMessage(error),
         state: 'error',
         duration: 5,
-      })
-    );
+      });
+
+      fireEvent('base__button--loadingComplete');
+    });
 };
 </script>

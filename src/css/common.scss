@@ -9,12 +9,18 @@ a {
 
 input {
   padding: 0;
-  font-size: $body-font-size;
   font-weight: 400;
   color: var(--onBackground);
   border: none;
   outline: none;
   background: none;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:is(:hover, :focus, :active) {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: var(--onSurfaceVariant);
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 .main-title {
@@ -47,4 +53,8 @@ input {
 
 .q-loading__message {
   margin: 20px 20px 0;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  margin: 0;
 }

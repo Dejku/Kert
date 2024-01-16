@@ -32,14 +32,10 @@ export const useVacationStore = defineStore('vacation', {
       const accountStore = useAccountStore();
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) {
-        console.error('No such document!');
-        this.createAlert(ErrorAlert);
-        return
-      }
+      if (!docSnap.exists()) return this.createAlert(ErrorAlert)
+
       const data = docSnap.data();
 
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
@@ -49,7 +45,7 @@ export const useVacationStore = defineStore('vacation', {
         this.currentYear = today.getFullYear();
         this.overdueVacationDays = this.countClaimedNormalVacationDaysInYear(today.getFullYear() - 1);
 
-        await updateDoc(docRef, { 'currentYear': today.getFullYear(), });
+        this.updateDatabase({ 'currentYear': today.getFullYear() });
       } else {
         this.currentYear = data.currentYear;
         this.overdueVacationDays = data.overdueVacationDays;
@@ -59,10 +55,6 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     async addVacationDay(day: ClaimedVacationDays): Promise<void> {
-      const accountStore = useAccountStore();
-      const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
       if (this.isVacationLimitReached(day.type.name, day.date))
         return this.createAlert({
           message: 'Wykorzystano wszystkie dni urlopu',
@@ -71,7 +63,7 @@ export const useVacationStore = defineStore('vacation', {
         });
 
       this.claimedVacationDays.push(day);
-      await updateDoc(docRef, { 'claimedVacationDays': this.claimedVacationDays, });
+      this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays });
     },
 
     async selectVacationDay(date: AppDate): Promise<void> {
@@ -130,15 +122,25 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     async removeVacationDay(date: AppDate): Promise<void> {
-      const accountStore = useAccountStore();
-      const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
       this.claimedVacationDays = this.claimedVacationDays.filter(claimedDate => {
         return claimedDate.date.day !== date.day || claimedDate.date.month !== date.month || claimedDate.date.year !== date.year
       });
 
-      await updateDoc(docRef, { 'claimedVacationDays': this.claimedVacationDays, });
+      this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays });
+    },
+
+    // UPDATE FUNCTIONS
+
+    async updateDatabase(data: object) {
+      const accountStore = useAccountStore();
+      const db = getFirestore();
+      const docRef = doc(db, 'vacationStore', accountStore.user.id);
+
+      await updateDoc(docRef, data)
+    },
+
+    setNumberOfVacationDaysPerYear(numberOfVacationDaysPerYear: number) {
+      this.updateDatabase({ 'numberOfVacationDaysPerYear': numberOfVacationDaysPerYear })
     },
 
     // COUNT FUNCTIONS

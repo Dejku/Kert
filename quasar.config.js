@@ -30,9 +30,9 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      'routesTransitions.ts',
+      'checkAuth.ts',
       'globalComponents.ts',
-      'checkAuth.ts'
+      'routesTransitions.ts',
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -81,6 +81,8 @@ module.exports = configure(function (/* ctx */) {
       // viteVuePluginOptions: {},
 
       alias: {
+        helpers: path.join(__dirname, './src/helpers'),
+        database: path.join(__dirname, './src/helpers/database'),
         models: path.join(__dirname, './src/helpers/models/index'),
         utils: path.join(__dirname, './src/helpers/utils/index'),
       }
