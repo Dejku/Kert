@@ -16,7 +16,7 @@ export const useAlertsStore = defineStore('alerts', {
             this.alerts.push({
                 id: uid(),
                 message: data.message,
-                state: data.state,
+                status: data.status,
                 duration: data.duration,
             });
 

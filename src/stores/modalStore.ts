@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fireEvent, waitForInteraction } from 'utils';
+import { fireEvent, waitForEvent } from 'utils';
 import { useAppStore } from 'stores/appStore';
 
 export const useModalStore = defineStore('modal', {
@@ -60,7 +60,7 @@ export const useModalStore = defineStore('modal', {
         if (options.buttonsOptions.extendedButton) this.modal.buttons.extendedButton = options.buttonsOptions.extendedButton;
       }
 
-      return await waitForInteraction('modal_userInteraction');
+      return await waitForEvent('modal_userInteraction');
     },
 
     optionChoosen(status: AppResponse['status']) {

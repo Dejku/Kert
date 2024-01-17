@@ -11,6 +11,7 @@ export default function snapshotStart() {
     onSnapshot(doc(db, 'vacationStore', accountStore.user.id), (doc) => {
         vacationStore.overdueVacationDays = doc.data()?.overdueVacationDays;
         vacationStore.numberOfVacationDaysPerYear = doc.data()?.numberOfVacationDaysPerYear;
+        vacationStore.availableLimitsForUser['Urlop wypoczynkowy'] = doc.data()?.availableLimitsForUser['Urlop wypoczynkowy'];
         vacationStore.claimedVacationDays = doc.data()?.claimedVacationDays;
     });
 }

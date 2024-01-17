@@ -2,10 +2,10 @@
   <div
     v-if="isVisible"
     class="base__alert q-py-xs q-px-sm full-width rounded-borders--small box-shadow"
-    :class="`base__alert--color-${props.state}`"
+    :class="`base__alert--color-${props.status}`"
     @click="hide()"
   >
-    <q-icon :name="iconsStore.getAlertIcon(props.state)" class="text-size-7" />
+    <q-icon :name="iconsStore.getAlertIcon(props.status)" class="text-size-7" />
     {{ props.message }}
   </div>
 </template>
@@ -20,7 +20,7 @@ const emit = defineEmits(['remove']);
 
 const props = defineProps({
   id: String,
-  state: {
+  status: {
     type: String,
     default: 'info',
   },

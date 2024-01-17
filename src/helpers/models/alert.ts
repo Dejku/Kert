@@ -1,5 +1,5 @@
 export const ErrorAlert: Omit<Alert, 'id'> = {
-    state: 'error',
+    status: 'error',
     message: 'Coś poszło nie tak',
     duration: 5
 }

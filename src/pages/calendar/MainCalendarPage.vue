@@ -115,6 +115,7 @@
               </span>
             </p>
           </div>
+
           <div class="flex row no-wrap gap-xs">
             <q-icon :name="iconsStore.icons.info" class="text-size-7" />
             <p class="no-margin">
@@ -127,7 +128,16 @@
                       selectedDate.getFullYear()
                     )
                   )
-                }}
+                }}{{ vacationStore.overdueVacationDays ? '*' : '' }}
+              </span>
+            </p>
+          </div>
+
+          <div class="flex row no-wrap gap-xs">
+            <p class="no-margin">
+              * W tym zeszłoroczny urlop:
+              <span class="text-bold">
+                {{ formatString('dni', vacationStore.overdueVacationDays) }}
               </span>
             </p>
           </div>

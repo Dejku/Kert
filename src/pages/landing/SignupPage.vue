@@ -157,6 +157,11 @@ const signup = () => {
         currentYear: new Date().getFullYear(),
         overdueVacationDays: 0,
         numberOfVacationDaysPerYear: 20,
+        availableLimitsForUser: {
+          'Urlop wypoczynkowy': 20,
+          'Na żądanie': 4,
+          'Siła wyższa': 16,
+        },
         claimedVacationDays: [],
       });
 
@@ -176,7 +181,7 @@ const signup = () => {
     .catch((error) => {
       createAlert({
         message: formatMessage(error),
-        state: 'error',
+        status: 'error',
         duration: 5,
       });
 

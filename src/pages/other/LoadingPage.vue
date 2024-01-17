@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex-center gap-sm">
     <q-spinner-hourglass color="primary" size="2em" />
-    <h6 class="no-margin">Ładowanie...</h6>
+    <base-title title="Ładowanie..." size="7" />
   </q-page>
 </template>
 

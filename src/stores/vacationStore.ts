@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { Normal, ErrorAlert } from 'models';
+import { fireEvent } from 'utils';
 import { useModalStore } from 'stores/modalStore';
 import { useAlertsStore } from 'stores/alertsStore';
 import { useAccountStore } from 'stores/accountStore';
@@ -24,7 +25,7 @@ export const useVacationStore = defineStore('vacation', {
     createAlert(data: Omit<Alert, 'id'>) {
       const { createAlert } = useAlertsStore();
 
-      createAlert({ message: data.message, state: data.state, duration: data.duration });
+      createAlert({ message: data.message, status: data.status, duration: data.duration });
     },
 
     // VACATION DAYS
@@ -57,8 +58,8 @@ export const useVacationStore = defineStore('vacation', {
     async addVacationDay(day: ClaimedVacationDays): Promise<void> {
       if (this.isVacationLimitReached(day.type.name, day.date))
         return this.createAlert({
-          message: 'Wykorzystano wszystkie dni urlopu',
-          state: 'warning',
+          message: 'Wykorzystano cały urlop',
+          status: 'warning',
           duration: 5
         });
 
@@ -121,7 +122,7 @@ export const useVacationStore = defineStore('vacation', {
       }
     },
 
-    async removeVacationDay(date: AppDate): Promise<void> {
+    removeVacationDay(date: AppDate) {
       this.claimedVacationDays = this.claimedVacationDays.filter(claimedDate => {
         return claimedDate.date.day !== date.day || claimedDate.date.month !== date.month || claimedDate.date.year !== date.year
       });
@@ -131,21 +132,22 @@ export const useVacationStore = defineStore('vacation', {
 
     // UPDATE FUNCTIONS
 
-    async updateDatabase(data: object) {
+    async updateDatabase(data: object, waitForEvent?: string) {
       const accountStore = useAccountStore();
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', accountStore.user.id);
 
+      let status = 'unknown';
       await updateDoc(docRef, data)
-    },
+        .then(() => status = 'success')
+        .catch(() => status = 'error')
 
-    setNumberOfVacationDaysPerYear(numberOfVacationDaysPerYear: number) {
-      this.updateDatabase({ 'numberOfVacationDaysPerYear': numberOfVacationDaysPerYear })
+      if (waitForEvent) fireEvent(waitForEvent, { status })
     },
 
     // COUNT FUNCTIONS
     countAvailableNormalVacationDaysInYear(year: number): number {
-      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year);
+      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year) + this.overdueVacationDays;
     },
 
     countClaimedNormalVacationDaysInYear(year: number): number {
@@ -157,7 +159,10 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     countAvailableVacationByType(type: VacationNames, year: number, month?: number): number {
-      return this.availableLimitsForUser[type] - this.countClaimedVacationByType(type, year, month);
+      let overdueVacationDays = 0;
+      if (type == 'Urlop wypoczynkowy') overdueVacationDays = this.overdueVacationDays
+
+      return this.availableLimitsForUser[type] - this.countClaimedVacationByType(type, year, month) + overdueVacationDays;
     },
 
     countClaimedVacationByType(type: VacationNames, year: number, month?: number): number {

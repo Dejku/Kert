@@ -83,7 +83,7 @@ const login = () => {
     .catch((error) => {
       createAlert({
         message: formatMessage(error),
-        state: 'error',
+        status: 'error',
         duration: 5,
       });
 

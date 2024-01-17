@@ -1,13 +1,12 @@
 <template>
   <div
-    class="row items-center gap-sm text-size-10"
+    class="row items-center gap-sm"
     @click="go ? $router.go(go as number) : null"
   >
-    <q-icon v-if="iconLeft" :name="iconLeft" />
+    <q-icon v-if="iconLeft" :name="iconLeft" class="text-size-10" />
     <h6
-      class="text-bold"
-      :class="`text-size-${size}`"
-      style="letter-spacing: 1px"
+      :class="`text-size-${size} text-weight-${weight}`"
+      :style="{ 'letter-spacing': letterSpacing ? '1px' : '0px' }"
     >
       {{ title }}
     </h6>
@@ -30,6 +29,19 @@ defineProps({
   size: {
     type: String,
     default: '8',
+  },
+  weight: {
+    type: [String, Number],
+    default: 700,
+    validator: (value: string | number) => {
+      return typeof value === 'number'
+        ? value / 100 >= 1 && value / 100 <= 9
+        : new RegExp('[1-9]00').test(value);
+    },
+  },
+  letterSpacing: {
+    type: Boolean,
+    default: true,
   },
   go: {
     type: [String, Number],

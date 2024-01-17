@@ -21,7 +21,7 @@
     >
       <div>
         <div class="row no-wrap items-center gap-xs">
-          <Transition
+          <transition
             v-if="icon"
             enter-active-class="animated fadeIn"
             leave-active-class="animated fadeOut"
@@ -39,7 +39,7 @@
               :class="{ hidden: icon == undefined }"
               :name="icon"
             />
-          </Transition>
+          </transition>
 
           <input
             :id="label ? `base__input-${label?.toLowerCase()}` : 'base__input'"
@@ -75,14 +75,14 @@
           />
         </div>
 
-        <Transition
+        <transition
           enter-active-class="animated fadeInDown"
           leave-active-class="animated fadeOutUp"
         >
           <div v-if="error || customError">
             {{ error || customError }}
           </div>
-        </Transition>
+        </transition>
       </div>
     </div>
   </div>
@@ -111,10 +111,7 @@ const props = defineProps({
       return ['text', 'password', 'number', 'email'].includes(value);
     },
   },
-  value: {
-    type: String,
-    required: false,
-  },
+  value: [String, Number],
   label: {
     type: String || undefined,
     validator(value: string) {
@@ -183,7 +180,7 @@ const inputValue = ref<string>('');
 const eyeIcon = ref(iconsStore.icons.eye);
 const error = ref<string>('');
 
-if (props.value) inputValue.value = props.value;
+if (props.value) inputValue.value = props.value as string;
 
 watch(
   () => inputValue.value,
