@@ -3,6 +3,10 @@
   --page-transition-duration: 0.5s;
 }
 
+.transition-03 {
+  transition: var(--transition-duration) ease;
+}
+
 // fade
 .fade-enter-active,
 .fade-leave-active {

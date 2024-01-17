@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <Transition name="modal-slide">
+    <transition name="modal-slide">
       <section
         v-if="isShowed"
         class="column flex-center absolute-bottom q-px-md q-py-lg bg-surface gap-xl"
@@ -10,14 +10,14 @@
           class="absolute absolute-center hug bg-background rounded-borders--circle"
           style="top: 0; border: 4px solid var(--surface)"
         >
-          <img src="src/assets/logos/logo_mdpi.png" />
+          <img src="~src/assets/logos/logo_mdpi.png" />
         </header>
 
         <q-space />
         <q-space />
 
         <div class="column gap-md">
-          <h5 class="no-margin text-bold">Dołącz już teraz, aby móc:</h5>
+          <base-title title="Dołącz już teraz, aby móc:" />
 
           <ul class="column no-padding q-my-none q-mx-auto gap-xs text-size-6">
             <li>Zarządzać swoim urlopem</li>
@@ -29,14 +29,14 @@
         </div>
 
         <div class="column items-center gap-sm">
-          <BaseButton
+          <base-button
             label="Stwórz konto"
             color="primary"
             transparent
             @click="router.push('/signup')"
           />
           <span class="text-bold">LUB</span>
-          <BaseButton
+          <base-button
             label="Zaloguj się"
             color="secondary"
             transparent
@@ -44,7 +44,7 @@
           />
         </div>
       </section>
-    </Transition>
+    </transition>
   </q-page>
 </template>
 

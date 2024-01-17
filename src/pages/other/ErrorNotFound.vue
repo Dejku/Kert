@@ -7,19 +7,22 @@
       4<span class="text-errorContainer">0</span>4
     </div>
 
-    <h6 class="no-margin text-bold text-size-7">
-      Strona nie została odnaleziona
-    </h6>
+    <base-title
+      title="Strona nie została odnaleziona"
+      size="7"
+      :letter-spacing="false"
+    />
+
     <p class="no-margin text-center text-weight-200">
       Kliknij poniższy przycisk aby wrócić na poprzednią stronę
     </p>
 
-    <BaseButton
+    <base-button
       label="Cofnij"
       :icon-right="iconsStore.icons.arrowUpLeft"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
-      @click="router.replace('/home')"
+      @click="router.back()"
     />
   </q-page>
 </template>

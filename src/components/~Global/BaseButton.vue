@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { watch, onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps({
   iconLeft: {
@@ -107,6 +107,15 @@ const props = defineProps({
 
 const loading = ref<boolean>(false);
 
+watch(
+  () => props.loadingState,
+  () =>
+    window.addEventListener(
+      'base__button--loadingComplete',
+      () => (loading.value = false)
+    )
+);
+
 onMounted(() => {
   if (props.loadingState) {
     window.addEventListener(
@@ -117,11 +126,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (props.loadingState) {
-    window.removeEventListener(
-      'base__button--loadingComplete',
-      () => (loading.value = false)
-    );
-  }
+  window.removeEventListener(
+    'base__button--loadingComplete',
+    () => (loading.value = false)
+  );
 });
 </script>

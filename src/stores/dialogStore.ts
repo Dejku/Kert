@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { fireEvent, waitForInteraction } from 'utils';
+import { fireEvent, waitForEvent } from 'utils';
 import { useAppStore } from 'stores/appStore';
 
 export const useDialogStore = defineStore('dialog', {
@@ -35,7 +35,7 @@ export const useDialogStore = defineStore('dialog', {
                 if (options.buttonsOptions.extendedButton) this.dialog.buttons.extendedButton = options.buttonsOptions.extendedButton;
             }
 
-            return await waitForInteraction('dialog_userInteraction');
+            return await waitForEvent('dialog_userInteraction');
         },
 
         optionChoosen(status: AppResponse['status']) {

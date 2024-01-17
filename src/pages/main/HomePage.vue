@@ -1,13 +1,15 @@
 <template>
   <q-page class="justify-around">
     <section class="row justify-between q-pa-md">
-      <div class="column" style="gap: 1.5vh">
+      <div class="column items-center" style="gap: 1.5vh">
         <q-avatar size="20vw">
-          <img :src="accountStore.getAvatar" />
+          <img src="~src/assets/default_avatar.png" />
         </q-avatar>
-        <h6 class="text-size-7 text-bold text-center no-margin">
-          {{ accountStore.user.displayName }}
-        </h6>
+
+        <base-title
+          :title="(accountStore.user.displayName as string)"
+          size="7"
+        />
       </div>
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
@@ -44,9 +46,7 @@
     <section
       class="reminder column flex relative-position z-zero overflow-hidden q-py-xs q-px-sm bg-surface-gradient rounded-borders box-shadow"
     >
-      <h6 class="text-bold text-size-7 no-margin">
-        {{ reminder.title }}
-      </h6>
+      <base-title :title="reminder.title" size="7" />
       <span>{{ reminder.desc }}</span>
       <q-space />
       <span class="text-right text-size-3">

@@ -11,6 +11,8 @@
       "assets/*": ["src/assets/*"],
       "boot/*": ["src/boot/*"],
       "stores/*": ["src/stores/*"],
+      "helpers/*": ["src/helpers/*"],
+      "database/*": ["src/helpers/database/*"],
       "models*": ["src/helpers/models/index"],
       "utils*": ["src/helpers/utils/index"]
     }

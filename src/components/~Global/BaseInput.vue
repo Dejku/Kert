@@ -1,5 +1,8 @@
 <template>
-  <div class="full-width">
+  <div
+    :class="{ 'full-width': !width }"
+    :style="{ width: `${width}px`, height: `${height}px` }"
+  >
     <label
       v-if="label"
       :for="`base__input-${label.toLowerCase()}`"
@@ -9,16 +12,16 @@
     </label>
 
     <div
-      class="base__input text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm bg-surface overflow-hidden box-shadow text-error"
-      :class="{
-        error: error || customError,
-        'base__input--altColor': altColor,
-        'base__input--transparent': isTransparent,
-      }"
+      class="base__input text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm overflow-hidden text-error"
+      :class="`base__input--color-${bgColor} ${
+        transparent ? 'base__input--transparent' : ''
+      } ${shadow ? 'box-shadow' : ''} ${
+        error || customError ? 'base__input--error' : ''
+      }`"
     >
       <div>
         <div class="row no-wrap items-center gap-xs">
-          <Transition
+          <transition
             v-if="icon"
             enter-active-class="animated fadeIn"
             leave-active-class="animated fadeOut"
@@ -36,18 +39,21 @@
               :class="{ hidden: icon == undefined }"
               :name="icon"
             />
-          </Transition>
+          </transition>
 
           <input
-            :id="`base__input-${label?.toLowerCase()}`"
+            :id="label ? `base__input-${label?.toLowerCase()}` : 'base__input'"
             ref="input"
             class="full-width"
-            :class="{ 'text-center': textCenter }"
+            :class="`text-size-${textSize} ${textCenter ? 'text-center' : ''}`"
             v-model="inputValue"
             :type="inputType"
             :placeholder="placeholder"
-            :required="isRequired"
+            :required="required"
+            :disabled="disabled"
             :maxlength="maxlength"
+            :min="type == 'number' ? minlength : undefined"
+            :max="type == 'number' ? maxlength : undefined"
             :autocomplete="autocomplete"
             @input="
               $emit(
@@ -69,14 +75,14 @@
           />
         </div>
 
-        <Transition
+        <transition
           enter-active-class="animated fadeInDown"
           leave-active-class="animated fadeOutUp"
         >
           <div v-if="error || customError">
             {{ error || customError }}
           </div>
-        </Transition>
+        </transition>
       </div>
     </div>
   </div>
@@ -105,10 +111,7 @@ const props = defineProps({
       return ['text', 'password', 'number', 'email'].includes(value);
     },
   },
-  value: {
-    type: String,
-    required: false,
-  },
+  value: [String, Number],
   label: {
     type: String || undefined,
     validator(value: string) {
@@ -119,23 +122,34 @@ const props = defineProps({
     type: String,
     default: 'Wypełnij pole',
     validator(value: string) {
-      return value.length > 3;
+      return value.length > 0;
     },
   },
-  isRequired: {
+  required: {
     type: Boolean,
     default: false,
   },
-  isTransparent: {
+  transparent: {
     type: Boolean,
     default: false,
   },
-  altColor: {
+  bgColor: {
+    type: String,
+    default: 'surface',
+    validator: (value: string) => {
+      return ['surface', 'surfaceVariant', 'background'].includes(value);
+    },
+  },
+  disabled: {
     type: Boolean,
     default: false,
   },
   customError: {
     type: String,
+  },
+  textSize: {
+    type: String,
+    default: '5',
   },
   textCenter: {
     type: Boolean,
@@ -145,13 +159,19 @@ const props = defineProps({
     type: String,
     default: 'off',
   },
+  shadow: {
+    type: Boolean,
+    default: true,
+  },
   minlength: {
-    type: Number,
+    type: [String, Number],
     default: 0,
   },
   maxlength: {
-    type: Number,
+    type: [String, Number],
   },
+  width: [String, Number],
+  height: [String, Number],
 });
 
 const input = ref();
@@ -160,7 +180,7 @@ const inputValue = ref<string>('');
 const eyeIcon = ref(iconsStore.icons.eye);
 const error = ref<string>('');
 
-if (props.value) inputValue.value = props.value;
+if (props.value) inputValue.value = props.value as string;
 
 watch(
   () => inputValue.value,
@@ -172,17 +192,20 @@ watch(
     if (props.type == 'email' && !input.value.validity.valid)
       error.value = 'Wpisz poprawny e-mail';
 
-    if (props.isRequired && !inputValue.value) {
+    if (props.required && !inputValue.value) {
       emit('hasError', true);
       return (error.value = 'To pole jest wymagane');
     }
 
-    if (inputValue.value.length < props.minlength) {
+    if (inputValue.value.length < (props.minlength as number)) {
       emit('hasError', true);
       return (error.value = `Minimalna ilość znaków to ${props.minlength}`);
     }
 
-    if (props.maxlength && inputValue.value.length > props.maxlength) {
+    if (
+      props.maxlength &&
+      inputValue.value.length > (props.maxlength as number)
+    ) {
       emit('hasError', true);
       return (error.value = `Maksymalna ilość znaków to ${props.maxlength}`);
     }

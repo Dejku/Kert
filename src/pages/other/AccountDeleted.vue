@@ -6,12 +6,16 @@
       class="text-success"
     />
 
-    <h6 class="no-margin text-bold text-size-7">Pomyślnie usunięto konto</h6>
+    <base-title
+      title="Pomyślnie usunięto konto"
+      size="7"
+      :letter-spacing="false"
+    />
     <p class="no-margin text-center text-weight-200">
       Jeśli chcesz stworzyć nowe,<br />kliknij poniższy przycisk
     </p>
 
-    <BaseButton
+    <base-button
       label="Stwórz konto"
       :icon-right="iconsStore.icons.login"
       class="absolute-bottom q-mx-auto"

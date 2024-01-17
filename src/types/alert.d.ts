@@ -1,6 +1,6 @@
 type Alert = {
     id: string,
-    state: 'success' | 'info' | 'warning' | 'error' | 'noWifi',
+    status: 'success' | 'info' | 'warning' | 'error' | 'noWifi',
     message: string,
     duration: number
 }

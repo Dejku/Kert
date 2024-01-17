@@ -23,6 +23,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/home', component: () => import('pages/main/HomePage.vue'), meta: { positionOnNavBar: 3, requireAuth: true } },
       { path: '/tasks', component: () => import('pages/tasks/MainTasksPage.vue'), meta: { positionOnNavBar: 4, requireAuth: true } },
       { path: '/settings', component: () => import('pages/settings/MainSettingsPage.vue'), meta: { positionOnNavBar: 5, requireAuth: true } },
+      { path: '/settings/work', component: () => import('pages/settings/WorksPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
     ],
   },
 ];

@@ -4,7 +4,7 @@
   letter-spacing: 2px;
   border: 1px solid transparent;
   border-radius: $border-radius-big;
-  transition: all 0.2s ease-in-out;
+  transition: var(--transition-duration) ease;
   background-color: var(--primary);
   color: var(--onPrimary);
 

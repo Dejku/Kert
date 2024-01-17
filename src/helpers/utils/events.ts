@@ -3,7 +3,7 @@ export function fireEvent(eventName: string, detail?: object | boolean) {
     window.dispatchEvent(event);
 }
 
-export function waitForInteraction(eventName: string, once?: boolean): Promise<AppResponse> {
+export function waitForEvent(eventName: string, once?: boolean): Promise<AppResponse> {
     return new Promise<AppResponse>((resolve) => {
         const listener = (e: object) => {
             window.removeEventListener(eventName, listener);

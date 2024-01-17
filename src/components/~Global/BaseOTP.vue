@@ -2,7 +2,8 @@
   <div
     class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
   >
-    <h6 class="main-title text-size-10">{{ label }}</h6>
+    <base-title :title="label" size="10" />
+
     <div class="row flex-center full-width gap-sm">
       <input
         v-for="i in length"

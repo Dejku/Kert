@@ -9,7 +9,7 @@
       v-for="alert in alertsStore.alerts"
       :key="alert.id"
       :id="alert.id"
-      :state="alert.state"
+      :status="alert.status"
       :message="alert.message"
       :duration="alert.duration"
       @remove="alertsStore.deleteAlert(alert)"

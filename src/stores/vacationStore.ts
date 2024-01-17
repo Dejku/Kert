@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { Normal, ErrorAlert } from 'models';
+import { fireEvent } from 'utils';
 import { useModalStore } from 'stores/modalStore';
 import { useAlertsStore } from 'stores/alertsStore';
 import { useAccountStore } from 'stores/accountStore';
@@ -24,7 +25,7 @@ export const useVacationStore = defineStore('vacation', {
     createAlert(data: Omit<Alert, 'id'>) {
       const { createAlert } = useAlertsStore();
 
-      createAlert({ message: data.message, state: data.state, duration: data.duration });
+      createAlert({ message: data.message, status: data.status, duration: data.duration });
     },
 
     // VACATION DAYS
@@ -32,14 +33,10 @@ export const useVacationStore = defineStore('vacation', {
       const accountStore = useAccountStore();
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) {
-        console.error('No such document!');
-        this.createAlert(ErrorAlert);
-        return
-      }
+      if (!docSnap.exists()) return this.createAlert(ErrorAlert)
+
       const data = docSnap.data();
 
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
@@ -49,7 +46,7 @@ export const useVacationStore = defineStore('vacation', {
         this.currentYear = today.getFullYear();
         this.overdueVacationDays = this.countClaimedNormalVacationDaysInYear(today.getFullYear() - 1);
 
-        await updateDoc(docRef, { 'currentYear': today.getFullYear(), });
+        this.updateDatabase({ 'currentYear': today.getFullYear() });
       } else {
         this.currentYear = data.currentYear;
         this.overdueVacationDays = data.overdueVacationDays;
@@ -59,19 +56,15 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     async addVacationDay(day: ClaimedVacationDays): Promise<void> {
-      const accountStore = useAccountStore();
-      const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
       if (this.isVacationLimitReached(day.type.name, day.date))
         return this.createAlert({
-          message: 'Wykorzystano wszystkie dni urlopu',
-          state: 'warning',
+          message: 'Wykorzystano cały urlop',
+          status: 'warning',
           duration: 5
         });
 
       this.claimedVacationDays.push(day);
-      await updateDoc(docRef, { 'claimedVacationDays': this.claimedVacationDays, });
+      this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays });
     },
 
     async selectVacationDay(date: AppDate): Promise<void> {
@@ -129,21 +122,32 @@ export const useVacationStore = defineStore('vacation', {
       }
     },
 
-    async removeVacationDay(date: AppDate): Promise<void> {
-      const accountStore = useAccountStore();
-      const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
-
+    removeVacationDay(date: AppDate) {
       this.claimedVacationDays = this.claimedVacationDays.filter(claimedDate => {
         return claimedDate.date.day !== date.day || claimedDate.date.month !== date.month || claimedDate.date.year !== date.year
       });
 
-      await updateDoc(docRef, { 'claimedVacationDays': this.claimedVacationDays, });
+      this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays });
+    },
+
+    // UPDATE FUNCTIONS
+
+    async updateDatabase(data: object, waitForEvent?: string) {
+      const accountStore = useAccountStore();
+      const db = getFirestore();
+      const docRef = doc(db, 'vacationStore', accountStore.user.id);
+
+      let status = 'unknown';
+      await updateDoc(docRef, data)
+        .then(() => status = 'success')
+        .catch(() => status = 'error')
+
+      if (waitForEvent) fireEvent(waitForEvent, { status })
     },
 
     // COUNT FUNCTIONS
     countAvailableNormalVacationDaysInYear(year: number): number {
-      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year);
+      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year) + this.overdueVacationDays;
     },
 
     countClaimedNormalVacationDaysInYear(year: number): number {
@@ -155,7 +159,10 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     countAvailableVacationByType(type: VacationNames, year: number, month?: number): number {
-      return this.availableLimitsForUser[type] - this.countClaimedVacationByType(type, year, month);
+      let overdueVacationDays = 0;
+      if (type == 'Urlop wypoczynkowy') overdueVacationDays = this.overdueVacationDays
+
+      return this.availableLimitsForUser[type] - this.countClaimedVacationByType(type, year, month) + overdueVacationDays;
     },
 
     countClaimedVacationByType(type: VacationNames, year: number, month?: number): number {

@@ -6,12 +6,12 @@
       class="text-success"
     />
 
-    <h6 class="no-margin text-bold text-size-7">Pomyślnie wylogowano</h6>
+    <base-title title="Pomyślnie wylogowano" size="7" :letter-spacing="false" />
     <p class="no-margin text-center text-weight-200">
       Aby ponownie się zalogować,<br />kliknij poniższy przycisk
     </p>
 
-    <BaseButton
+    <base-button
       label="Zaloguj się"
       :icon-right="iconsStore.icons.login"
       class="absolute-bottom q-mx-auto"
