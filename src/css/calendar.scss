@@ -18,6 +18,10 @@
 
 // calendar
 
+.q-panel {
+  overflow: visible;
+}
+
 $dateWidth: max(32px, 4vh);
 $dateGap: 1vh;
 

@@ -128,31 +128,41 @@
                       selectedDate.getFullYear()
                     )
                   )
-                }}{{ vacationStore.overdueVacationDays ? '*' : '' }}
+                }}
               </span>
             </p>
           </div>
 
-          <div
-            v-if="vacationStore.overdueVacationDays"
-            class="flex row no-wrap gap-xs"
-          >
-            <p class="no-margin">
-              * W tym zeszłoroczny urlop:
-              <span class="text-bold">
-                {{ formatString('dni', vacationStore.overdueVacationDays) }}
-              </span>
-            </p>
+          <div class="column items-center">
+            <transition-group name="test">
+              <div
+                key="additionalInfo"
+                v-if="
+                  vacationStore.overdueVacationDays &&
+                  selectedDate.getFullYear() == today.getFullYear()
+                "
+                class="flex row no-wrap gap-xs"
+              >
+                <q-icon :name="iconsStore.icons.info" class="text-size-7" />
+                <p class="no-margin">
+                  W tym zeszłoroczny urlop:
+                  <span class="text-bold">
+                    {{ formatString('dni', vacationStore.overdueVacationDays) }}
+                  </span>
+                </p>
+              </div>
+
+              <base-button
+                key="button"
+                v-if="$q.screen.height > 700"
+                class="q-mx-auto q-mt-lg"
+                label="Podsumowanie"
+                transparent
+                @click="showSummaryModal"
+              />
+            </transition-group>
           </div>
         </div>
-
-        <base-button
-          v-if="$q.screen.height > 700"
-          class="q-mx-auto"
-          label="Podsumowanie"
-          transparent
-          @click="showSummaryModal"
-        />
       </q-tab-panel>
 
       <q-tab-panel name="summary" class="column q-pa-md gap-lg">
@@ -267,6 +277,7 @@ const appStore = useAppStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
+const today = ref<Date>(new Date());
 const selectedDate = ref<Date>(new Date());
 const renderedMonth = ref<CalendarMonth[]>([]);
 
@@ -381,3 +392,22 @@ onMounted(() => {
   renderCalendar();
 });
 </script>
+
+<style lang="scss">
+.test-move, /* apply transition to moving elements */
+.test-enter-active,
+.test-leave-active {
+  transition: all 0.5s ease;
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.test-leave-active {
+  position: absolute;
+}
+
+.test-enter-from,
+.test-leave-to {
+  opacity: 0;
+}
+</style>

@@ -38,15 +38,16 @@ export const useVacationStore = defineStore('vacation', {
       if (!docSnap.exists()) return this.createAlert(ErrorAlert)
 
       const data = docSnap.data();
-
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
       this.claimedVacationDays = data.claimedVacationDays;
 
       if (data.currentYear < today.getFullYear()) {
         this.currentYear = today.getFullYear();
-        this.overdueVacationDays = this.countClaimedNormalVacationDaysInYear(today.getFullYear() - 1);
 
-        this.updateDatabase({ 'currentYear': today.getFullYear() });
+        this.updateDatabase({
+          currentYear: today.getFullYear(),
+          overdueVacationDays: this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(today.getFullYear() - 1)
+        });
       } else {
         this.currentYear = data.currentYear;
         this.overdueVacationDays = data.overdueVacationDays;
@@ -147,7 +148,10 @@ export const useVacationStore = defineStore('vacation', {
 
     // COUNT FUNCTIONS
     countAvailableNormalVacationDaysInYear(year: number): number {
-      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year) + this.overdueVacationDays;
+      let overdueVacationDays = 0;
+      if (year == today.getFullYear()) overdueVacationDays = this.overdueVacationDays;
+
+      return this.availableLimitsForUser['Urlop wypoczynkowy'] - this.countClaimedNormalVacationDaysInYear(year) + overdueVacationDays;
     },
 
     countClaimedNormalVacationDaysInYear(year: number): number {
@@ -160,7 +164,7 @@ export const useVacationStore = defineStore('vacation', {
 
     countAvailableVacationByType(type: VacationNames, year: number, month?: number): number {
       let overdueVacationDays = 0;
-      if (type == 'Urlop wypoczynkowy') overdueVacationDays = this.overdueVacationDays
+      if (type == 'Urlop wypoczynkowy') overdueVacationDays = this.overdueVacationDays;
 
       return this.availableLimitsForUser[type] - this.countClaimedVacationByType(type, year, month) + overdueVacationDays;
     },

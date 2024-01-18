@@ -81,9 +81,9 @@
       <base-button
         :label="canModify ? 'Zatwierdź' : 'Modyfikuj'"
         :color="canModify ? 'success' : 'warning'"
+        :loading-state="loading"
         corner-small
         @click="changeModify"
-        :loading-state="loading"
       />
     </section>
   </q-page>
@@ -145,7 +145,7 @@ const alert = async (eventName: string) => {
     createAlert({
       message: 'Dane zaktualizowane',
       status: res.status,
-      duration: 2,
+      duration: 3,
     });
   } else if (res.status == 'error') {
     createAlert({
