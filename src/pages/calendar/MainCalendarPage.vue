@@ -133,7 +133,10 @@
             </p>
           </div>
 
-          <div class="flex row no-wrap gap-xs">
+          <div
+            v-if="vacationStore.overdueVacationDays"
+            class="flex row no-wrap gap-xs"
+          >
             <p class="no-margin">
               * W tym zeszłoroczny urlop:
               <span class="text-bold">

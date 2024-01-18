@@ -224,9 +224,12 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     isVacationLimitReached(type: VacationNames, date: AppDate): boolean {
-      if (type == 'Na żądanie' && this.countAvailableVacationByType('Urlop wypoczynkowy', date.year) <= 0) return true;
+      const checkNormalVacationDays = () =>
+        (type == 'Urlop wypoczynkowy' || type == 'Na żądanie') && this.countClaimedNormalVacationDaysInYear(date.year) >= this.availableLimitsForUser['Urlop wypoczynkowy'];
 
-      return this.countAvailableVacationByType(type, date.year) <= 0
+      if (checkNormalVacationDays()) return true;
+
+      return this.countAvailableVacationByType(type, date.year) <= 0;
     },
   }
 });

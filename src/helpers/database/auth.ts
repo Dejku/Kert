@@ -9,15 +9,16 @@ import {
     connectAuthEmulator,
 } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-
+import { useRouter } from 'vue-router';
 
 export default function authStart() {
     const appStore = useAppStore();
     const accountStore = useAccountStore();
     const resetStore = useResetStore();
+    const router = useRouter()
     const auth = getAuth();
 
-    if (location.hostname === 'localhost') {
+    if (process.env.DEV) {
         const db = getFirestore();
         connectFirestoreEmulator(db, '127.0.0.1', 8080);
         connectAuthEmulator(auth, 'http://127.0.0.1:9099', {
@@ -26,6 +27,7 @@ export default function authStart() {
     }
 
     onAuthStateChanged(auth, (user) => {
+
         if (user) {
             accountStore.isLogged = true;
 
@@ -38,9 +40,11 @@ export default function authStart() {
             appStore.fetchData();
 
             snapshot();
+            router.push('/home')
         } else {
             accountStore.isLogged = false;
 
+            router.push('/loggedOut')
             setTimeout(() => resetStore.all(), 500);
         }
     });
