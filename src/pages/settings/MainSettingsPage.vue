@@ -137,9 +137,7 @@ const logout = async () => {
   if (response.status == 'success') {
     const auth = getAuth();
 
-    signOut(auth)
-      .then(() => router.push('/loggedOut'))
-      .catch(() => createAlert(ErrorAlert));
+    signOut(auth).catch(() => createAlert(ErrorAlert));
   }
 };
 </script>

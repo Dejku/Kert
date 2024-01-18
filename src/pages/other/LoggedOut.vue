@@ -6,13 +6,13 @@
       class="text-success"
     />
 
-    <base-title title="Pomyślnie wylogowano" size="7" :letter-spacing="false" />
+    <base-title title="Wylogowano z konta" size="7" :letter-spacing="false" />
     <p class="no-margin text-center text-weight-200">
       Aby ponownie się zalogować,<br />kliknij poniższy przycisk
     </p>
 
     <base-button
-      label="Zaloguj się"
+      label="Zaloguj"
       :icon-right="iconsStore.icons.login"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
