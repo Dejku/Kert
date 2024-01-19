@@ -12,6 +12,7 @@
       :status="alert.status"
       :message="alert.message"
       :duration="alert.duration"
+      :user-can-hide="alert.userCanHide"
       @remove="alertsStore.deleteAlert(alert)"
     />
   </TransitionGroup>

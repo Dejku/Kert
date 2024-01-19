@@ -110,10 +110,13 @@ const loading = ref<boolean>(false);
 const updateNumberOfVacationDaysPerYear = (
   numberOfVacationDaysPerYear: number
 ) => {
+  if (vacationStore.numberOfVacationDaysPerYear == numberOfVacationDaysPerYear)
+    return;
+
   const eventName = uid();
   vacationStore.updateDatabase({ numberOfVacationDaysPerYear }, eventName);
 
-  alert(eventName);
+  showAlert(eventName);
 };
 
 const changeModify = async () => {
@@ -122,23 +125,33 @@ const changeModify = async () => {
 
   if (canModify.value) return;
 
-  const eventName = uid();
-  vacationStore.updateDatabase(
-    {
-      overdueVacationDays: Number(overdueVacationDays.value),
-      availableLimitsForUser: {
-        'Urlop wypoczynkowy': Number(availableNormalVacationDaysForUser.value),
+  if (checkForErrors()) {
+    createAlert({
+      message: 'Najpierw usuń nadmiarowy urlop',
+      status: 'error',
+      duration: 5,
+    });
+  } else {
+    const eventName = uid();
+    vacationStore.updateDatabase(
+      {
+        overdueVacationDays: Number(overdueVacationDays.value),
+        availableLimitsForUser: {
+          'Urlop wypoczynkowy': Number(
+            availableNormalVacationDaysForUser.value
+          ),
+        },
       },
-    },
-    eventName
-  );
+      eventName
+    );
 
-  alert(eventName);
+    showAlert(eventName);
+  }
 
   fireEvent('base__button--loadingComplete');
 };
 
-const alert = async (eventName: string) => {
+const showAlert = async (eventName: string) => {
   const res = await waitForEvent(eventName);
 
   if (res.status == 'success') {
@@ -154,5 +167,16 @@ const alert = async (eventName: string) => {
       duration: 5,
     });
   }
+};
+
+const checkForErrors = () => {
+  return (
+    availableNormalVacationDaysForUser.value -
+      vacationStore.countClaimedNormalVacationDaysInYear(
+        new Date().getFullYear()
+      ) +
+      overdueVacationDays.value <
+    0
+  );
 };
 </script>

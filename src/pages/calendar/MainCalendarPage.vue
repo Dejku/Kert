@@ -1,5 +1,29 @@
 <template>
   <q-page style="gap: 2vh; padding-left: 0; padding-right: 0">
+    <transition name="scale">
+      <div
+        v-if="activeTab == 'calendar' && vacationStore.hasUnsavedChanges"
+        class="row justify-between q-px-lg text-size-8"
+        :class="
+          $q.screen.height > 700
+            ? 'absolute-bottom q-py-xl z-fab'
+            : 'absolute-top q-py-lg'
+        "
+      >
+        <q-icon
+          :name="iconsStore.icons.success"
+          class="q-pa-sm border-success text-success rounded-borders--circle"
+          v-touch-hold:2000.mouse="vacationStore.saveChanges"
+        />
+
+        <q-icon
+          :name="iconsStore.icons.trash"
+          class="q-pa-sm border-error text-error rounded-borders--circle"
+          v-touch-hold:2000.mouse="vacationStore.discardChanges"
+        />
+      </div>
+    </transition>
+
     <q-tabs
       v-model="activeTab"
       indicator-color="primary"
@@ -7,7 +31,7 @@
       class="q-mx-auto"
     >
       <q-tab name="calendar" label="Kalendarz" :ripple="false" />
-      <q-tab name="summary" label="Pozostałe urlopy" :ripple="false" />
+      <q-tab name="summary" label="Urlopy" :ripple="false" />
     </q-tabs>
 
     <q-tab-panels v-model="activeTab" animated class="bg-background col-grow">
@@ -134,7 +158,7 @@
           </div>
 
           <div class="column items-center">
-            <transition-group name="test">
+            <transition-group name="details">
               <div
                 key="additionalInfo"
                 v-if="
@@ -267,13 +291,16 @@ import { useIconsStore } from 'stores/iconsStore';
 import { useVacationStore } from 'stores/vacationStore';
 import { useModalStore } from 'stores/modalStore';
 import { useAppStore } from 'stores/appStore';
+import { useAlertsStore } from 'stores/alertsStore';
 
 import { onMounted, ref } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const iconsStore = useIconsStore();
 const vacationStore = useVacationStore();
 const { showModal } = useModalStore();
 const appStore = useAppStore();
+const alertsStore = useAlertsStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
@@ -391,23 +418,11 @@ onMounted(() => {
   transition.value = 'fade';
   renderCalendar();
 });
+
+onBeforeRouteLeave(() => {
+  if (vacationStore.hasUnsavedChanges) {
+    alertsStore.scaleAlert('alert__unsavedChanges');
+    return false;
+  } else return true;
+});
 </script>
-
-<style lang="scss">
-.test-move, /* apply transition to moving elements */
-.test-enter-active,
-.test-leave-active {
-  transition: all 0.5s ease;
-}
-
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
-.test-leave-active {
-  position: absolute;
-}
-
-.test-enter-from,
-.test-leave-to {
-  opacity: 0;
-}
-</style>

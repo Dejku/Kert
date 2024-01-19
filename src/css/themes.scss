@@ -65,6 +65,10 @@ $themes: (
         color: $color !important;
       }
 
+      .border-#{$name} {
+        border: 1px solid $color !important;
+      }
+
       --#{$name}: #{$color};
 
       @if $name == 'surface' {

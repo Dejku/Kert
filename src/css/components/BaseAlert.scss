@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .base__alert {
   &.base__alert--color-success {
     color: var(--onSuccess);
@@ -15,5 +17,15 @@
   &.base__alert--color-noWifi {
     color: var(--onError);
     background-color: var(--error);
+  }
+
+  $random: math.random();
+  @if ($random <= 0.5) {
+    $random: -1;
+  }
+
+  &.base__alert--scale {
+    scale: 1.05;
+    rotate: $random + deg;
   }
 }
