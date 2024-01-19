@@ -1,8 +1,9 @@
 type Alert = {
-    id: string,
+    id?: string,
     status: 'success' | 'info' | 'warning' | 'error' | 'noWifi',
     message: string,
     duration: number
+    userCanHide?: boolean
 }
 
 type HeaderAlert = {

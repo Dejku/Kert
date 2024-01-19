@@ -7,14 +7,15 @@ notificationSound.volume = 0.5;
 
 export const useAlertsStore = defineStore('alerts', {
     state: () => ({
+        scaleAlertID: '',
         alerts: [] as Alert[],
         headerAlerts: [] as HeaderAlert[]
     }),
 
     actions: {
-        createAlert(data: Omit<Alert, 'id'>) {
+        createAlert(data: Alert) {
             this.alerts.push({
-                id: uid(),
+                id: data.id || uid(),
                 message: data.message,
                 status: data.status,
                 duration: data.duration,
@@ -28,6 +29,10 @@ export const useAlertsStore = defineStore('alerts', {
             if (index > -1) this.alerts.splice(index, 1);
         },
 
+        deleteAlertByID(id: Alert['id']) {
+            this.alerts = this.alerts.filter((ele) => ele.id !== id);
+        },
+
         createHeaderAlert(data: HeaderAlert) {
             this.headerAlerts.push({
                 id: data.id,
@@ -37,6 +42,15 @@ export const useAlertsStore = defineStore('alerts', {
 
         deleteHeaderAlert(id: HeaderAlert['id']) {
             this.headerAlerts = this.headerAlerts.filter((ele) => ele.id !== id);
+        },
+
+        scaleAlert(id: Alert['id']) {
+            if (!id) return;
+
+            this.scaleAlertID = id;
+            notificationSound.play();
+
+            setTimeout(() => this.scaleAlertID = '', 200)
         },
 
         formatMessage(message: string): string {

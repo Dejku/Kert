@@ -1,16 +1,25 @@
 <template>
   <q-page class="justify-around">
     <section class="row justify-between q-pa-md">
-      <div class="column items-center" style="gap: 1.5vh">
-        <q-avatar size="20vw">
-          <img src="~src/assets/default_avatar.png" />
-        </q-avatar>
+      <Suspense>
+        <div class="column items-center gap-sm">
+          <q-avatar size="20vw">
+            <img src="~src/assets/default_avatar.png" />
+          </q-avatar>
 
-        <base-title
-          :title="(accountStore.user.displayName as string)"
-          size="7"
-        />
-      </div>
+          <base-title
+            :title="(accountStore.user.displayName as string)"
+            size="7"
+          />
+        </div>
+        <template #fallback>
+          <div class="column items-center gap-sm">
+            <q-skeleton type="QAvatar" size="20vw" />
+            <q-skeleton type="rect" class="full-width" />
+          </div>
+        </template>
+      </Suspense>
+
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
           <router-link to="/news">

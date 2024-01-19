@@ -18,6 +18,10 @@
 
 // calendar
 
+.q-panel {
+  overflow: visible;
+}
+
 $dateWidth: max(32px, 4vh);
 $dateGap: 1vh;
 
@@ -65,7 +69,7 @@ $dateGap: 1vh;
   }
 }
 
-// calendar transition
+// transitions
 
 .calendar__transition--left-enter-active,
 .calendar__transition--left-leave-active,
@@ -100,4 +104,19 @@ $dateGap: 1vh;
 .calendar__transition--left-leave-to,
 .calendar__transition--right-enter-from {
   translate: -200% 0;
+}
+
+.details-move,
+.details-enter-active,
+.details-leave-active {
+  transition: all 0.5s ease;
+}
+
+.details-enter-from,
+.details-leave-to {
+  opacity: 0;
+}
+
+.details-leave-active {
+  position: absolute;
 }
