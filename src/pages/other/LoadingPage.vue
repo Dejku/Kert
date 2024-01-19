@@ -10,6 +10,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 setTimeout(() => {
-  router.replace('/landing');
+  router.replace('/');
 }, 1000);
 </script>

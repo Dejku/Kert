@@ -6,7 +6,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/BlankLayout.vue'),
     children: [
       { path: '/', component: () => import('pages/other/LoadingPage.vue') },
-      { path: '/landing', component: () => import('pages/landing/LandingPage.vue'), meta: { transition: 'slide-up' } },
       { path: '/login', component: () => import('pages/landing/LoginPage.vue'), meta: { transition: 'slide-right' } },
       { path: '/signup', component: () => import('pages/landing/SignupPage.vue'), meta: { transition: 'slide-left' } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue') },
@@ -24,6 +23,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/tasks', component: () => import('pages/tasks/MainTasksPage.vue'), meta: { positionOnNavBar: 4, requireAuth: true } },
       { path: '/settings', component: () => import('pages/settings/MainSettingsPage.vue'), meta: { positionOnNavBar: 5, requireAuth: true } },
       { path: '/settings/work', component: () => import('pages/settings/WorksPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
+      { path: '/news', component: () => import('pages/main/NewsPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
     ],
   },
 ];
