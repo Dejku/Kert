@@ -80,39 +80,24 @@ const sections = {
     {
       icon: iconsStore.icons.bell,
       label: 'Powiadomienia',
-      click: function () {
-        router.push('/settings/notifications');
-      },
+      click: () => router.push('/settings/notifications'),
     },
     {
       icon: iconsStore.icons.calendar,
       label: 'Twoja praca',
-      click: function () {
-        router.push('/settings/work');
-      },
-    },
-    {
-      icon: iconsStore.icons.colorPalette,
-      label: 'Kolory aplikacji',
-      click: function () {
-        router.push('/settings/themes');
-      },
+      click: () => router.push('/settings/work'),
     },
   ],
   misc: [
     {
       icon: iconsStore.icons.questionMark,
       label: 'Centrum Pomocy',
-      click: function () {
-        router.push('/help');
-      },
+      click: () => router.push('/help'),
     },
     {
-      icon: iconsStore.icons.logout,
+      icon: iconsStore.icons.power,
       label: 'Wyloguj się',
-      click: function () {
-        logout();
-      },
+      click: () => logout(),
     },
   ],
 };
@@ -137,7 +122,9 @@ const logout = async () => {
   if (response.status == 'success') {
     const auth = getAuth();
 
-    signOut(auth).catch(() => createAlert(ErrorAlert));
+    signOut(auth)
+      .then(() => router.push('/loggedOut'))
+      .catch(() => createAlert(ErrorAlert));
   }
 };
 </script>

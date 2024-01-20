@@ -44,7 +44,6 @@ export default function authStart() {
         } else {
             accountStore.isLogged = false;
 
-            router.push('/loggedOut')
             setTimeout(() => resetStore.all(), 500);
         }
     });

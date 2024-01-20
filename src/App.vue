@@ -54,7 +54,7 @@ const HandleNetworkChange = () => {
   if (navigator.onLine) {
     alertsStore.createAlert({
       message: 'Połączono z internetem',
-      state: 'info',
+      status: 'info',
       duration: 3,
     });
 
@@ -62,7 +62,7 @@ const HandleNetworkChange = () => {
   } else {
     alertsStore.createAlert({
       message: 'Brak połączenia z internetem',
-      state: 'noWifi',
+      status: 'noWifi',
       duration: 5,
     });
 
