@@ -31,7 +31,7 @@
     <q-page-container>
       <router-view
         v-slot="{ Component, route }"
-        class="column q-pa-lg full-width"
+        class="column q-py-lg q-px-md full-width"
       >
         <transition :name="(route.meta.transition as string) || 'fade'">
           <component :is="Component" />

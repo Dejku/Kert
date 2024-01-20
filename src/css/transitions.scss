@@ -1,16 +1,20 @@
 :root {
   --transition-duration: 0.3s;
+  --transition: var(--transition-duration) ease;
   --page-transition-duration: 0.5s;
+  --page-transition: var(--page-transition-duration) ease-in-out;
 }
 
 .transition-03 {
-  transition: var(--transition-duration) ease;
+  transition: var(--transition);
 }
+
+// Page Transitions
 
 // fade
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity var(--transition-duration) ease;
+  transition: all var(--page-transition);
 }
 
 .fade-enter-from,
@@ -22,7 +26,7 @@
 .scale-enter-active,
 .scale-leave-active {
   position: absolute;
-  transition: all var(--transition-duration) ease;
+  transition: all var(--page-transition);
 }
 
 .scale-enter-from,
@@ -47,7 +51,7 @@
 .slide-down-enter-active,
 .slide-down-leave-active {
   position: absolute;
-  transition: all var(--page-transition-duration) ease-in-out;
+  transition: all var(--page-transition);
 }
 
 .slide-left-enter-to,
@@ -76,6 +80,7 @@
   left: 0;
 }
 
+// slide up and down
 .slide-up-enter-to,
 .slide-down-enter-to {
   bottom: 0;

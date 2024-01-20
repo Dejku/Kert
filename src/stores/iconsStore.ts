@@ -33,6 +33,7 @@ export const useIconsStore = defineStore('icons', {
       people: 'eva-people-outline',
       plus: 'eva-plus-outline',
       plusCircle: 'eva-plus-circle-outline',
+      power: 'eva-power-outline',
       questionMark: 'eva-question-mark-outline',
       questionMarkCircle: 'eva-question-mark-circle-outline',
       save: 'eva-save-outline',
