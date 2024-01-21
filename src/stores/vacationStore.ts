@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
-import { Normal, ErrorAlert } from 'models';
+
 import { fireEvent } from 'utils';
+import { Normal, ErrorAlert } from 'models';
+
 import { useModalStore } from 'stores/modalStore';
 import { useAlertsStore } from 'stores/alertsStore';
 import { useAccountStore } from 'stores/accountStore';
@@ -30,13 +32,12 @@ export const useVacationStore = defineStore('vacation', {
     },
 
     // VACATION DAYS
-    async saveCalendarData() {
-      const accountStore = useAccountStore();
+    async fetchCalendarData(userID: Account['id']) {
       const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
+      const docRef = doc(db, 'vacationStore', userID);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return this.createAlert(ErrorAlert);
+      if (!docSnap.exists()) return console.error('Database error: VacationStore');
 
       const data = docSnap.data();
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
