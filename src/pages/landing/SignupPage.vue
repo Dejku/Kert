@@ -165,6 +165,10 @@ const signup = () => {
         claimedVacationDays: [],
       });
 
+      await setDoc(doc(db, 'newsStore', user.uid), {
+        news: [],
+      });
+
       if (auth.currentUser)
         await updateProfile(auth.currentUser, {
           displayName: nick.value,

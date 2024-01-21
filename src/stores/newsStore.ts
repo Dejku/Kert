@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 
 import { useAlertsStore } from 'stores/alertsStore';
 const alertsStore = useAlertsStore();
+
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { uid } from 'quasar';
 
 export const useNewsStore = defineStore('news', {
@@ -26,5 +28,15 @@ export const useNewsStore = defineStore('news', {
     deleteNews(id: News['id']) {
       this.news = this.news.filter((ele) => ele.id !== id);
     },
+
+    async fetchNewsData(userID: Account['id']) {
+      const db = getFirestore();
+      const docRef = doc(db, 'newsStore', userID);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) return console.error('Database error: NewsStore');
+
+      this.news = docSnap.data().news;
+    }
   }
 });
