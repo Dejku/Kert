@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 
 import { useAlertsStore } from 'stores/alertsStore';
-const alertsStore = useAlertsStore();
-
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { uid } from 'quasar';
 
@@ -13,6 +11,8 @@ export const useNewsStore = defineStore('news', {
 
   actions: {
     createNews(data: Omit<News, 'id'>) {
+      const { createAlert } = useAlertsStore();
+
       this.news.push({
         id: uid(),
         icon: data.icon,
@@ -22,7 +22,7 @@ export const useNewsStore = defineStore('news', {
         click: data.click
       });
 
-      alertsStore.createAlert({ message: `Masz nowe powiadomienie (${this.news.length})`, status: 'info', duration: 3 })
+      createAlert({ message: `Masz nowe powiadomienie (${this.news.length})`, status: 'info', duration: 3 })
     },
 
     deleteNews(id: News['id']) {
