@@ -11,13 +11,13 @@
         "
       >
         <q-icon
-          :name="iconsStore.icons.success"
+          :name="iconStore.icon.success"
           class="q-pa-sm border-success text-success rounded-borders--circle"
           v-touch-hold:2000.mouse="vacationStore.saveChanges"
         />
 
         <q-icon
-          :name="iconsStore.icons.trash"
+          :name="iconStore.icon.trash"
           class="q-pa-sm border-error text-error rounded-borders--circle"
           v-touch-hold:2000.mouse="vacationStore.discardChanges"
         />
@@ -40,7 +40,7 @@
           class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big box-shadow"
         >
           <q-icon
-            :name="iconsStore.icons.arrowLeft"
+            :name="iconStore.icon.arrowLeft"
             class="text-size-10"
             @click="changeMonth(-1)"
           />
@@ -51,7 +51,7 @@
           </div>
           <q-space />
           <q-icon
-            :name="iconsStore.icons.arrowRight"
+            :name="iconStore.icon.arrowRight"
             class="text-size-10"
             @click="changeMonth(1)"
           />
@@ -123,7 +123,7 @@
           @click="$q.screen.height < 700 ? showSummaryModal() : null"
         >
           <div class="flex row no-wrap gap-xs">
-            <q-icon :name="iconsStore.icons.info" class="text-size-7" />
+            <q-icon :name="iconStore.icon.info" class="text-size-7" />
             <p class="no-margin">
               Wykorzystany urlop w tym miesiącu:
               <span class="text-bold">
@@ -141,7 +141,7 @@
           </div>
 
           <div class="flex row no-wrap gap-xs">
-            <q-icon :name="iconsStore.icons.info" class="text-size-7" />
+            <q-icon :name="iconStore.icon.info" class="text-size-7" />
             <p class="no-margin">
               Pozostały urlop do wykorzystania:
               <span class="text-bold">
@@ -167,7 +167,7 @@
                 "
                 class="flex row no-wrap gap-xs"
               >
-                <q-icon :name="iconsStore.icons.info" class="text-size-7" />
+                <q-icon :name="iconStore.icon.info" class="text-size-7" />
                 <p class="no-margin">
                   W tym zeszłoroczny urlop:
                   <span class="text-bold">
@@ -287,20 +287,20 @@
 <script setup lang="ts">
 import { Days, Months, formatString } from 'utils';
 
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useVacationStore } from 'stores/vacationStore';
 import { useModalStore } from 'stores/modalStore';
 import { useAppStore } from 'stores/appStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { onMounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const vacationStore = useVacationStore();
 const { showModal } = useModalStore();
 const appStore = useAppStore();
-const alertsStore = useAlertsStore();
+const { scaleAlert } = useAlertStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
@@ -421,7 +421,7 @@ onMounted(() => {
 
 onBeforeRouteLeave(() => {
   if (vacationStore.hasUnsavedChanges) {
-    alertsStore.scaleAlert('alert__unsavedChanges');
+    scaleAlert('alert__unsavedChanges');
     return false;
   } else return true;
 });

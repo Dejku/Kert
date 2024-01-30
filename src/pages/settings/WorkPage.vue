@@ -1,7 +1,7 @@
 <template>
   <q-page class="gap-md">
     <base-title
-      :icon-left="iconsStore.icons.arrowBack"
+      :icon-left="iconStore.icon.arrowBack"
       title="Twoja Praca"
       go="-1"
     />
@@ -91,16 +91,16 @@
 
 <script setup lang="ts">
 import { fireEvent, waitForEvent } from 'utils';
-import { useIconsStore } from 'stores/iconsStore.js';
+import { useIconStore } from 'stores/iconStore';
 import { useVacationStore } from 'stores/vacationStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { ref } from 'vue';
 import { uid } from 'quasar';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const vacationStore = useVacationStore();
-const { createAlert } = useAlertsStore();
+const { createAlert } = useAlertStore();
 
 const overdueVacationDays = ref<number>(0);
 const availableNormalVacationDaysForUser = ref<number>(20);

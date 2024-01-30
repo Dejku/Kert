@@ -2,7 +2,7 @@
   <div class="relative-position column gap-sm text-weight-300 text-size-7">
     <div class="row justify-between">
       <div class="row items-center gap-xs">
-        <q-icon :name="iconsStore.icons.calendar" class="text-size-10" />
+        <q-icon :name="iconStore.icon.calendar" class="text-size-10" />
         Dzień
       </div>
       <span>{{ formattedDate }}</span>
@@ -10,7 +10,7 @@
 
     <div class="row justify-between" style="height: 40px">
       <div class="row items-center gap-xs">
-        <q-icon :name="iconsStore.icons.text" class="text-size-10" />
+        <q-icon :name="iconStore.icon.text" class="text-size-10" />
         Typ
       </div>
       <q-select
@@ -30,7 +30,7 @@
 
     <div class="row justify-between">
       <div class="row items-center gap-xs">
-        <q-icon :name="iconsStore.icons.clock" class="text-size-10" />
+        <q-icon :name="iconStore.icon.clock" class="text-size-10" />
         Czas trwania
       </div>
       <div>
@@ -41,13 +41,13 @@
 
           <div v-else class="row gap-sm">
             <q-icon
-              :name="iconsStore.icons.arrowLeft"
+              :name="iconStore.icon.arrowLeft"
               class="text-size-10"
               v-touch-repeat:0:100.mouse="decrement"
             />
             <span>{{ modalStore.component.vacationDays.time.hours }}</span>
             <q-icon
-              :name="iconsStore.icons.arrowRight"
+              :name="iconStore.icon.arrowRight"
               class="text-size-10"
               v-touch-repeat:0:100.mouse="increment"
             />
@@ -62,12 +62,12 @@
 import { Normal, OnDemand, Force } from 'models';
 import { Months } from 'utils';
 
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useModalStore } from 'stores/modalStore';
 
 import { ref, watch } from 'vue';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const modalStore = useModalStore();
 
 const formattedDate = ref<string>('Brak tytułu');

@@ -6,14 +6,14 @@
     class="column z-max relative-position gap-sm"
   >
     <BaseAlert
-      v-for="alert in alertsStore.alerts"
+      v-for="alert in alertStore.alert"
       :key="alert.id"
       :id="alert.id"
       :status="alert.status"
       :message="alert.message"
       :duration="alert.duration"
       :user-can-hide="alert.userCanHide"
-      @remove="alertsStore.deleteAlert(alert)"
+      @remove="alertStore.deleteAlert(alert)"
     />
   </TransitionGroup>
 </template>
@@ -21,8 +21,8 @@
 <script setup lang="ts">
 import BaseAlert from 'components/Shared/BaseAlert.vue';
 
-import { useAlertsStore } from 'stores/alertsStore';
-const alertsStore = useAlertsStore();
+import { useAlertStore } from 'stores/alertStore';
+const alertStore = useAlertStore();
 </script>
 
 <style lang="scss" scoped>

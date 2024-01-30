@@ -26,7 +26,7 @@
         <q-space />
 
         <q-icon
-          :name="iconsStore.icons.arrowRight"
+          :name="iconStore.icon.arrowRight"
           class="text-size-7 text-tertiary"
         />
       </router-link>
@@ -50,7 +50,7 @@
         <q-space />
 
         <q-icon
-          :name="iconsStore.icons.arrowRight"
+          :name="iconStore.icon.arrowRight"
           class="text-size-7 text-tertiary"
         />
       </div>
@@ -61,41 +61,41 @@
 <script setup lang="ts">
 import { ErrorAlert } from 'models';
 
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useDialogStore } from 'stores/dialogStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const accountStore = useAccountStore();
 const { showDialog } = useDialogStore();
-const { createAlert } = useAlertsStore();
+const { createAlert } = useAlertStore();
 const router = useRouter();
 
 const sections = {
   links: [
     {
-      icon: iconsStore.icons.bell,
+      icon: iconStore.icon.bell,
       label: 'Powiadomienia',
-      click: () => router.push('/settings/notifications'),
+      click: () => router.push('/settings/notification'),
     },
     {
-      icon: iconsStore.icons.calendar,
+      icon: iconStore.icon.calendar,
       label: 'Twoja praca',
       click: () => router.push('/settings/work'),
     },
   ],
   misc: [
     {
-      icon: iconsStore.icons.questionMark,
+      icon: iconStore.icon.questionMark,
       label: 'Centrum Pomocy',
       click: () => router.push('/help'),
     },
     {
-      icon: iconsStore.icons.power,
+      icon: iconStore.icon.power,
       label: 'Wyloguj się',
       click: () => logout(),
     },

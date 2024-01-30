@@ -4,13 +4,13 @@ import { fireEvent } from 'utils';
 import { Normal, ErrorAlert } from 'models';
 
 import { useModalStore } from 'stores/modalStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 import { useAccountStore } from 'stores/accountStore';
 import { doc, getFirestore, updateDoc, getDoc } from 'firebase/firestore';
 
 const today = new Date();
 
-export const useVacationStore = defineStore('vacation', {
+export const useVacationStore = defineStore('vacations', {
   state: () => ({
     currentYear: 0,
     overdueVacationDays: 0,
@@ -26,9 +26,9 @@ export const useVacationStore = defineStore('vacation', {
 
   actions: {
     createAlert(data: Alert) {
-      const { createAlert } = useAlertsStore();
+      const { createAlert } = useAlertStore();
 
-      createAlert({ message: data.message, status: data.status, duration: data.duration });
+      createAlert(data);
     },
 
     // VACATION DAYS
@@ -37,7 +37,7 @@ export const useVacationStore = defineStore('vacation', {
       const docRef = doc(db, 'vacationStore', userID);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return console.error('Database error: VacationStore');
+      if (!docSnap.exists()) return console.error('Database error');
 
       const data = docSnap.data();
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
@@ -60,31 +60,31 @@ export const useVacationStore = defineStore('vacation', {
 
     showUnsavedChanges() {
       if (this.hasUnsavedChanges) return;
-      const { createAlert } = useAlertsStore();
 
       this.hasUnsavedChanges = true;
-      createAlert({
+      this.createAlert({
         id: 'alert__unsavedChanges',
         message: 'Masz niezapisane zmiany',
         status: 'warning',
         duration: 0,
         userCanHide: false,
+        isImportant: true
       });
     },
 
     async saveChanges() {
-      const { deleteAlertByID } = useAlertsStore();
+      const { deleteAlertByID } = useAlertStore();
 
       await this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays })
         .catch(() => { return this.createAlert(ErrorAlert) });
 
       this.hasUnsavedChanges = false;
       deleteAlertByID('alert__unsavedChanges');
-      this.createAlert({ message: 'Zmiany zostały pomyślnie zapisane', status: 'success', duration: 4 })
+      this.createAlert({ message: 'Zmiany zostały pomyślnie zapisane', status: 'success', duration: 4, isImportant: true })
     },
 
     async discardChanges() {
-      const { deleteAlertByID } = useAlertsStore();
+      const { deleteAlertByID } = useAlertStore();
 
       const accountStore = useAccountStore();
       const db = getFirestore();
@@ -98,7 +98,7 @@ export const useVacationStore = defineStore('vacation', {
 
       this.hasUnsavedChanges = false;
       deleteAlertByID('alert__unsavedChanges');
-      this.createAlert({ message: 'Zmiany zostały wycofane', status: 'info', duration: 4 })
+      this.createAlert({ message: 'Zmiany zostały wycofane', status: 'info', duration: 4, isImportant: true })
     },
 
     addVacationDay(day: ClaimedVacationDays) {

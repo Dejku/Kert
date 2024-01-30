@@ -19,7 +19,7 @@
 
     <base-button
       label="Cofnij"
-      :icon-right="iconsStore.icons.arrowUpLeft"
+      :icon-right="iconStore.icon.arrowUpLeft"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
       @click="router.back()"
@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useRouter } from 'vue-router';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const router = useRouter();
 </script>

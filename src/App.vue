@@ -19,8 +19,8 @@ import BaseDialog from 'components/Shared/BaseDialog.vue';
 import Alerts from 'components/alerts/AlertsContainer.vue';
 
 import { useAppStore } from 'stores/appStore';
-import { useAlertsStore } from 'stores/alertsStore';
-import { useIconsStore } from 'stores/iconsStore';
+import { useAlertStore } from 'stores/alertStore';
+import { useIconStore } from 'stores/iconStore';
 
 import { onMounted, onUnmounted } from 'vue';
 
@@ -28,8 +28,8 @@ import 'database/firebase';
 import authStart from 'database/auth';
 
 const appStore = useAppStore();
-const alertsStore = useAlertsStore();
-const iconsStore = useIconsStore();
+const alertStore = useAlertStore();
+const iconStore = useIconStore();
 
 onMounted(() => {
   authStart();
@@ -52,23 +52,23 @@ const closePopUps = (e: CustomEvent) =>
 
 const HandleNetworkChange = () => {
   if (navigator.onLine) {
-    alertsStore.createAlert({
+    alertStore.createAlert({
       message: 'Połączono z internetem',
       status: 'info',
       duration: 3,
     });
 
-    alertsStore.deleteHeaderAlert('noWifi');
+    alertStore.deleteHeaderAlert('noWifi');
   } else {
-    alertsStore.createAlert({
+    alertStore.createAlert({
       message: 'Brak połączenia z internetem',
       status: 'noWifi',
       duration: 5,
     });
 
-    alertsStore.createHeaderAlert({
+    alertStore.createHeaderAlert({
       id: 'noWifi',
-      icon: iconsStore.icons.noWifi,
+      icon: iconStore.icon.noWifi,
     });
   }
 };

@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 
-export const useIconsStore = defineStore('icons', {
+export const useIconStore = defineStore('icons', {
   state: () => ({
-    icons: {
+    icon: {
+
       alertCircle: 'eva-alert-circle-outline',
       arrowBack: 'eva-arrow-back-outline',
       arrowDownRight: 'eva-corner-down-right-outline',
@@ -44,7 +45,7 @@ export const useIconsStore = defineStore('icons', {
       text: 'eva-text-outline',
       trash: 'eva-trash-outline',
       volumeDown: 'eva-volume-down-outline',
-      volumeMute: 'eva-volume-mute-outline',
+      volumeOff: 'eva-volume-off-outline',
       volumeUp: 'eva-volume-up-outline',
       warning: 'eva-alert-triangle-outline',
     }
@@ -52,11 +53,11 @@ export const useIconsStore = defineStore('icons', {
 
   actions: {
     getAlertIcon(state: string) {
-      if (state == 'success') return this.icons.success;
-      else if (state == 'info') return this.icons.info;
-      else if (state == 'warning') return this.icons.warning;
-      else if (state == 'error') return this.icons.slash;
-      else if (state == 'noWifi') return this.icons.noWifi;
+      if (state == 'success') return this.icon.success;
+      else if (state == 'info') return this.icon.info;
+      else if (state == 'warning') return this.icon.warning;
+      else if (state == 'error') return this.icon.slash;
+      else if (state == 'noWifi') return this.icon.noWifi;
     }
   }
 });
