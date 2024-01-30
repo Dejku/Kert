@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex-center">
     <base-button
-      :icon-left="iconsStore.icons.arrowUpRight"
+      :icon-left="iconStore.icon.arrowUpRight"
       label="Utwórz konto"
       color="secondary"
       class="absolute-top-right q-pa-xs"
@@ -19,7 +19,7 @@
       <base-input
         v-model="email"
         type="email"
-        :icon="iconsStore.icons.mail"
+        :icon="iconStore.icon.mail"
         label="E-mail"
         placeholder="Wpisz swój e-mail"
         :is-required="true"
@@ -31,7 +31,7 @@
       <base-input
         v-model="password"
         type="password"
-        :icon="iconsStore.icons.lock"
+        :icon="iconStore.icon.lock"
         :minlength="5"
         label="Hasło"
         placeholder="Wpisz swoje hasło"
@@ -45,7 +45,7 @@
 
       <base-button
         label="Zaloguj się"
-        :icon-right="iconsStore.icons.login"
+        :icon-right="iconStore.icon.login"
         :disabled="emailError || passwordError"
         loading-state
         corner-small
@@ -58,15 +58,15 @@
 <script setup lang="ts">
 import { fireEvent } from 'utils';
 
-import { useIconsStore } from 'stores/iconsStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useIconStore } from 'stores/iconStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
-const iconsStore = useIconsStore();
-const { createAlert, formatMessage } = useAlertsStore();
+const iconStore = useIconStore();
+const { createAlert, formatMessage } = useAlertStore();
 const router = useRouter();
 
 const email = ref<string>('');

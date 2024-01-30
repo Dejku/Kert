@@ -23,7 +23,8 @@ const routes: RouteRecordRaw[] = [
       { path: '/news', component: () => import('pages/main/NewsPage.vue'), meta: { positionOnNavBar: 4, requireAuth: true } },
       { path: '/tasks', component: () => import('pages/tasks/MainTasksPage.vue'), meta: { positionOnNavBar: 5, requireAuth: true } },
       { path: '/settings', component: () => import('pages/settings/MainSettingsPage.vue'), meta: { positionOnNavBar: 6, requireAuth: true } },
-      { path: '/settings/work', component: () => import('pages/settings/WorksPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
+      { path: '/settings/notification', component: () => import('pages/settings/NotificationPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
+      { path: '/settings/work', component: () => import('pages/settings/WorkPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
     ],
   },
 ];

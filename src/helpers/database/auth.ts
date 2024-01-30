@@ -1,4 +1,4 @@
-import snapshot from 'database/snapshot';
+import snapshots from 'database/snapshots';
 import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useResetStore } from 'utils';
@@ -39,7 +39,7 @@ export default function authStart() {
 
             appStore.fetchData();
 
-            snapshot();
+            snapshots();
             router.push('/home')
         } else {
             accountStore.isLogged = false;

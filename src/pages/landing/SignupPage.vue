@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex-center">
     <base-button
-      :iconRight="iconsStore.icons.arrowUpLeft"
+      :iconRight="iconStore.icon.arrowUpLeft"
       label="Zaloguj się"
       color="secondary"
       class="absolute-top-left q-pa-xs"
@@ -27,7 +27,7 @@
         <base-input
           v-model="nick"
           type="text"
-          :icon="iconsStore.icons.person"
+          :icon="iconStore.icon.person"
           label="Nazwa"
           placeholder="Wpisz swoją nazwę"
           :minlength="3"
@@ -40,7 +40,7 @@
         <base-input
           v-model="email"
           type="email"
-          :icon="iconsStore.icons.mail"
+          :icon="iconStore.icon.mail"
           label="E-mail"
           placeholder="Wpisz swój e-mail"
           :is-required="true"
@@ -53,7 +53,7 @@
           v-model="password"
           @update:model-value="checkPassword"
           type="password"
-          :icon="iconsStore.icons.lock"
+          :icon="iconStore.icon.lock"
           :minlength="6"
           label="Hasło"
           placeholder="Wpisz swoje hasło"
@@ -68,7 +68,7 @@
           v-model="confirmPassword"
           @update:model-value="checkPassword"
           type="password"
-          :icon="iconsStore.icons.lock"
+          :icon="iconStore.icon.lock"
           :minlength="6"
           label="Powtórz hasło"
           placeholder="Powtórz hasło"
@@ -81,7 +81,7 @@
 
         <base-button
           label="Stwórz konto"
-          :icon-right="iconsStore.icons.login"
+          :icon-right="iconStore.icon.login"
           :disabled="!checkValidation()"
           loading-state
           corner-small
@@ -95,9 +95,9 @@
 <script setup lang="ts">
 import { fireEvent } from 'utils';
 
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import {
   getAuth,
@@ -108,8 +108,8 @@ import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const iconsStore = useIconsStore();
-const { createAlert, formatMessage } = useAlertsStore();
+const iconStore = useIconStore();
+const { createAlert, formatMessage } = useAlertStore();
 const accountStore = useAccountStore();
 const router = useRouter();
 
@@ -162,11 +162,19 @@ const signup = () => {
           'Na żądanie': 4,
           'Siła wyższa': 16,
         },
-        claimedVacationDays: [],
+        claimedVacationDays: [] as ClaimedVacationDays[],
       });
 
       await setDoc(doc(db, 'newsStore', user.uid), {
-        news: [],
+        news: [] as News[],
+      });
+
+      await setDoc(doc(db, 'preferenceStore', user.uid), {
+        preference: {
+          notification: {
+            volume: 0,
+          },
+        } as Preference,
       });
 
       if (auth.currentUser)

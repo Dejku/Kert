@@ -23,10 +23,10 @@
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
           <router-link to="/news">
-            <q-icon class="text-size-10" :name="iconsStore.icons.mail" />
+            <q-icon class="text-size-10" :name="iconStore.icon.mail" />
           </router-link>
           <router-link to="/settings">
-            <q-icon class="text-size-10" :name="iconsStore.icons.settings" />
+            <q-icon class="text-size-10" :name="iconStore.icon.settings" />
           </router-link>
         </div>
         <div class="column text-right text-bold">
@@ -73,10 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const accountStore = useAccountStore();
 
 const today = new Date();
@@ -90,46 +90,46 @@ const todayDate = {
 const mainLinks = [
   {
     id: 0,
-    icon: iconsStore.icons.calendar,
+    icon: iconStore.icon.calendar,
     to: '/calendar',
   },
   {
     id: 1,
-    icon: iconsStore.icons.people,
+    icon: iconStore.icon.people,
     to: '/groups',
   },
   {
     id: 2,
-    icon: iconsStore.icons.list,
+    icon: iconStore.icon.list,
     to: '/tasks',
   },
   {
     id: 3,
-    icon: iconsStore.icons.plusCircle,
+    icon: iconStore.icon.plusCircle,
     to: '/',
     disabled: true,
   },
   {
     id: 4,
-    icon: iconsStore.icons.plusCircle,
+    icon: iconStore.icon.plusCircle,
     to: '/',
     disabled: true,
   },
   {
     id: 5,
-    icon: iconsStore.icons.plusCircle,
+    icon: iconStore.icon.plusCircle,
     to: '/',
     disabled: true,
   },
   {
     id: 6,
-    icon: iconsStore.icons.plusCircle,
+    icon: iconStore.icon.plusCircle,
     to: '/',
     disabled: true,
   },
   {
     id: 7,
-    icon: iconsStore.icons.plusCircle,
+    icon: iconStore.icon.plusCircle,
     to: '/',
     disabled: true,
   },
@@ -140,7 +140,7 @@ const reminder = {
   desc: 'Przykładowe zadanie do zrobienia',
   taskSetName: 'Przykładowa nazwa zadań',
   taskSetLink: '/tasks/set/task',
-  icon: iconsStore.icons.successCircle,
+  icon: iconStore.icon.successCircle,
 };
 </script>
 

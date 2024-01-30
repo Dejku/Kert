@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-import { useAlertsStore } from 'stores/alertsStore';
+import { useAlertStore } from 'stores/alertStore';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { uid } from 'quasar';
 
@@ -11,7 +11,7 @@ export const useNewsStore = defineStore('news', {
 
   actions: {
     createNews(data: Omit<News, 'id'>) {
-      const { createAlert } = useAlertsStore();
+      const { createAlert } = useAlertStore();
 
       this.news.push({
         id: uid(),
@@ -34,7 +34,7 @@ export const useNewsStore = defineStore('news', {
       const docRef = doc(db, 'newsStore', userID);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return console.error('Database error: NewsStore');
+      if (!docSnap.exists()) return console.error('Database error');
 
       this.news = docSnap.data().news;
     }

@@ -4,6 +4,7 @@ import { useDialogStore } from 'stores/dialogStore';
 import { useVacationStore } from 'stores/vacationStore';
 import { useNewsStore } from 'stores/newsStore';
 import { useAccountStore } from 'stores/accountStore';
+import { usePreferenceStore } from 'stores/preferenceStore';
 
 export const useAppStore = defineStore('app', {
     state: () => ({
@@ -21,13 +22,15 @@ export const useAppStore = defineStore('app', {
             dialogStore.clear();
         },
 
-        fetchData() {
+        async fetchData() {
             const accountStore = useAccountStore();
             const vacationStore = useVacationStore();
             const newsStore = useNewsStore();
+            const preferenceStore = usePreferenceStore()
 
-            vacationStore.fetchCalendarData(accountStore.user.id);
-            newsStore.fetchNewsData(accountStore.user.id);
+            await vacationStore.fetchCalendarData(accountStore.user.id);
+            await newsStore.fetchNewsData(accountStore.user.id);
+            await preferenceStore.fetchPreferenceData(accountStore.user.id);
         }
     }
 });

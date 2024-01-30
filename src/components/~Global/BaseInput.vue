@@ -30,7 +30,7 @@
           >
             <q-icon
               v-if="error || customError"
-              :name="iconsStore.icons.alertCircle"
+              :name="iconStore.icon.alertCircle"
             />
 
             <q-icon
@@ -69,8 +69,8 @@
             :name="eyeIcon"
             @click="
               inputType === 'password'
-                ? ((eyeIcon = iconsStore.icons.eyeOff), (inputType = 'text'))
-                : ((eyeIcon = iconsStore.icons.eye), (inputType = 'password'))
+                ? ((eyeIcon = iconStore.icon.eyeOff), (inputType = 'text'))
+                : ((eyeIcon = iconStore.icon.eye), (inputType = 'password'))
             "
           />
         </div>
@@ -89,10 +89,10 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { ref, watch } from 'vue';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 
 const emit = defineEmits<{
   hasError: [value: boolean];
@@ -177,7 +177,7 @@ const props = defineProps({
 const input = ref();
 const inputType = ref<string>(props.type);
 const inputValue = ref<string>('');
-const eyeIcon = ref(iconsStore.icons.eye);
+const eyeIcon = ref(iconStore.icon.eye);
 const error = ref<string>('');
 
 if (props.value) inputValue.value = props.value as string;

@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex-center">
     <q-icon
-      :name="iconsStore.icons.successCircle"
+      :name="iconStore.icon.successCircle"
       size="25vw"
       class="text-success"
     />
@@ -13,7 +13,7 @@
 
     <base-button
       label="Zaloguj"
-      :icon-right="iconsStore.icons.login"
+      :icon-right="iconStore.icon.login"
       class="absolute-bottom q-mx-auto"
       style="margin-bottom: 10vh"
       @click="router.replace('/login')"
@@ -22,9 +22,9 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'stores/iconsStore';
+import { useIconStore } from 'stores/iconStore';
 import { useRouter } from 'vue-router';
 
-const iconsStore = useIconsStore();
+const iconStore = useIconStore();
 const router = useRouter();
 </script>

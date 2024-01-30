@@ -10,13 +10,13 @@
 
         <div class="row items-center q-px-md text-size-6 text-onSurface gap-sm">
           <q-icon
-            v-for="alert in alertsStore.headerAlerts.slice(0, 5)"
+            v-for="alert in alertStore.headerAlert.slice(0, 5)"
             :key="alert.id"
             :name="alert.icon"
           />
 
-          <div v-if="alertsStore.headerAlerts.length > 5">
-            +{{ alertsStore.headerAlerts.length - 5 }}
+          <div v-if="alertStore.headerAlert.length > 5">
+            +{{ alertStore.headerAlert.length - 5 }}
           </div>
         </div>
 
@@ -57,7 +57,7 @@
           to="/home"
           exact
         >
-          <q-icon :name="iconsStore.icons.home" />
+          <q-icon :name="iconStore.icon.home" />
         </router-link>
       </div>
       <router-link
@@ -73,31 +73,31 @@
 </template>
 
 <script setup lang="ts">
-import { useIconsStore } from 'stores/iconsStore';
-import { useAlertsStore } from 'stores/alertsStore';
+import { useIconStore } from 'stores/iconStore';
+import { useAlertStore } from 'stores/alertStore';
 
-const iconsStore = useIconsStore();
-const alertsStore = useAlertsStore();
+const iconStore = useIconStore();
+const alertStore = useAlertStore();
 
 const navigation = [
   {
     name: 'calendar',
-    icon: iconsStore.icons.calendar,
+    icon: iconStore.icon.calendar,
     to: '/calendar',
   },
   {
     name: 'groups',
-    icon: iconsStore.icons.people,
+    icon: iconStore.icon.people,
     to: '/groups',
   },
   {
     name: 'tasks',
-    icon: iconsStore.icons.list,
+    icon: iconStore.icon.list,
     to: '/tasks',
   },
   {
     name: 'settings',
-    icon: iconsStore.icons.settings,
+    icon: iconStore.icon.settings,
     to: '/settings',
   },
 ];

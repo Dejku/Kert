@@ -1,54 +1,64 @@
 import { defineStore } from 'pinia';
+
 import alertSound from 'assets/audio/alert.mp3';
+import { usePreferenceStore } from 'stores/preferenceStore';
 import { uid } from 'quasar';
 
 const notificationSound = new Audio(alertSound);
 notificationSound.volume = 0.5;
 
-export const useAlertsStore = defineStore('alerts', {
+export const useAlertStore = defineStore('alerts', {
     state: () => ({
         scaleAlertID: '',
-        alerts: [] as Alert[],
-        headerAlerts: [] as HeaderAlert[]
+        alert: [] as Alert[],
+        headerAlert: [] as HeaderAlert[]
     }),
 
     actions: {
-        createAlert(data: Alert) {
-            this.alerts.push({
+        async createAlert(data: Alert) {
+            const preferenceStore = usePreferenceStore();
+            const notificationVolume = preferenceStore.preference.notification.volume || 0;
+
+            if (data.status == 'error') data.isImportant = true
+            if (notificationVolume == 2 && !data.isImportant) return;
+
+            this.alert.push({
                 id: data.id || uid(),
                 message: data.message,
                 status: data.status,
                 duration: data.duration,
             });
 
-            notificationSound.play();
+            if (notificationVolume == 0) await notificationSound.play();
         },
 
         deleteAlert(alert: Alert) {
-            const index = this.alerts.indexOf(alert);
-            if (index > -1) this.alerts.splice(index, 1);
+            const index = this.alert.indexOf(alert);
+            if (index > -1) this.alert.splice(index, 1);
         },
 
         deleteAlertByID(id: Alert['id']) {
-            this.alerts = this.alerts.filter((ele) => ele.id !== id);
+            this.alert = this.alert.filter((ele) => ele.id !== id);
         },
 
         createHeaderAlert(data: HeaderAlert) {
-            this.headerAlerts.push({
+            this.headerAlert.push({
                 id: data.id,
                 icon: data.icon,
             });
         },
 
         deleteHeaderAlert(id: HeaderAlert['id']) {
-            this.headerAlerts = this.headerAlerts.filter((ele) => ele.id !== id);
+            this.headerAlert = this.headerAlert.filter((ele) => ele.id !== id);
         },
 
-        scaleAlert(id: Alert['id']) {
+        async scaleAlert(id: Alert['id']) {
             if (!id) return;
+            const preferenceStore = usePreferenceStore();
+            const notificationVolume = preferenceStore.preference.notification.volume || 0;
 
             this.scaleAlertID = id;
-            notificationSound.play();
+            if (notificationVolume == 0) await notificationSound.play();
 
             setTimeout(() => this.scaleAlertID = '', 200)
         },
@@ -63,7 +73,7 @@ export const useAlertsStore = defineStore('alerts', {
                 { name: 'auth/wrong-password', value: 'Niepoprawne hasło' },
             ]
 
-            return messages.find(ele => JSON.stringify(message).includes(ele.name))?.value as string
+            return messages.find(ele => JSON.stringify(message).includes(ele.name))?.value as string || 'Coś poszło nie tak'
         }
     }
 });
