@@ -1,13 +1,14 @@
 {
   "name": "kert",
   "version": "0.0.1",
-  "description": "A Akang Project",
+  "description": "An Akang Project",
   "productName": "Kert",
   "author": "Dejku",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "emulators": "cd emulators && firebase emulators:start",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build"
