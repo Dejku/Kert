@@ -10,17 +10,25 @@
             : 'absolute-top q-py-lg'
         "
       >
-        <q-icon
-          :name="iconStore.icon.success"
-          class="q-pa-sm border-success text-success rounded-borders--circle"
-          v-touch-hold:2000.mouse="vacationStore.saveChanges"
-        />
+        <div class="column flex-center text-success">
+          <q-icon
+            :name="iconStore.icon.success"
+            class="q-pa-sm border-success rounded-borders--circle"
+            style="border-width: 2px !important"
+            v-touch-hold:2000.mouse="vacationStore.saveChanges"
+          />
+          <span v-if="$q.screen.height > 700" class="text-size-5">Zapisz</span>
+        </div>
 
-        <q-icon
-          :name="iconStore.icon.trash"
-          class="q-pa-sm border-error text-error rounded-borders--circle"
-          v-touch-hold:2000.mouse="vacationStore.discardChanges"
-        />
+        <div class="column flex-center text-error">
+          <q-icon
+            :name="iconStore.icon.trash"
+            class="q-pa-sm border-error rounded-borders--circle"
+            style="border-width: 2px !important"
+            v-touch-hold:2000.mouse="vacationStore.discardChanges"
+          />
+          <span v-if="$q.screen.height > 700" class="text-size-5">Anuluj</span>
+        </div>
       </div>
     </transition>
 
@@ -34,7 +42,12 @@
       <q-tab name="summary" label="Urlopy" :ripple="false" />
     </q-tabs>
 
-    <q-tab-panels v-model="activeTab" animated class="bg-background col-grow">
+    <q-tab-panels
+      v-model="activeTab"
+      animated
+      class="bg-background"
+      style="flex: 1 0 auto !important"
+    >
       <q-tab-panel name="calendar" class="column" style="gap: 3.5vh">
         <div
           class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big box-shadow"
@@ -45,7 +58,7 @@
             @click="changeMonth(-1)"
           />
           <q-space />
-          <div>
+          <div class="first-upper-case">
             {{ renderedMonth[0]?.name }}
             {{ renderedMonth[0]?.year }}
           </div>
@@ -88,18 +101,14 @@
                   :class="{
                     'date--state-active': day.active,
                     'date--state-today': day.today,
-                    'date--state-claimed-normal':
-                      day.active &&
-                      vacationStore.checkType(
-                        { day: day.day, month: day.month, year: day.year },
-                        false
-                      ),
-                    'date--state-claimed-special':
-                      day.active &&
-                      vacationStore.checkType(
-                        { day: day.day, month: day.month, year: day.year },
-                        true
-                      ),
+                    'date--state-claimed-normal': vacationStore.checkType(
+                      { day: day.day, month: day.month, year: day.year },
+                      false
+                    ),
+                    'date--state-claimed-special': vacationStore.checkType(
+                      { day: day.day, month: day.month, year: day.year },
+                      true
+                    ),
                   }"
                   @click="
                     !day.active && day.prev
@@ -163,7 +172,7 @@
                 key="additionalInfo"
                 v-if="
                   vacationStore.overdueVacationDays &&
-                  selectedDate.getFullYear() == today.getFullYear()
+                  selectedDate.getFullYear() == appStore.todayDate.getFullYear()
                 "
                 class="flex row no-wrap gap-xs"
               >
@@ -179,7 +188,7 @@
               <base-button
                 key="button"
                 v-if="$q.screen.height > 700"
-                class="q-mx-auto q-mt-lg"
+                class="q-mx-auto q-mt-lg z-fab"
                 label="Podsumowanie"
                 transparent
                 @click="showSummaryModal"
@@ -285,7 +294,7 @@
 </template>
 
 <script setup lang="ts">
-import { Days, Months, formatString } from 'utils';
+import { Days, formatString } from 'utils';
 
 import { useIconStore } from 'stores/iconStore';
 import { useVacationStore } from 'stores/vacationStore';
@@ -304,9 +313,10 @@ const { scaleAlert } = useAlertStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
-const today = ref<Date>(new Date());
-const selectedDate = ref<Date>(new Date());
-const renderedMonth = ref<CalendarMonth[]>([]);
+const selectedDate = ref<Date>(appStore.todayDate);
+const renderedMonth = ref<Omit<CalendarMonth, 'claimedVacationDaysInMonth'>[]>(
+  []
+);
 
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
@@ -342,9 +352,8 @@ function holdSelectDay(details: any) {
 }
 
 function changeMonth(value: number) {
-  selectedDate.value.setMonth(selectedDate.value.getMonth() + value);
-
-  value > 0 ? (transition.value = 'left') : (transition.value = 'right');
+  selectedDate.value.setMonth(selectedDate.value.getMonth() + value, 1);
+  transition.value = value > 0 ? 'left' : 'right';
 
   renderCalendar();
 }
@@ -361,20 +370,33 @@ function renderCalendar() {
   const lastDateOfCurrMonth = new Date(currYear, currMonth + 1, 0).getDate();
 
   for (let day = lastDayOfPrevMonth; day > 0; day--) {
-    dates.push({
-      day: lastDateOfPrevMonth - day + 1,
-      month: currMonth,
-      year: currYear,
-      prev: true,
-    });
+    if (
+      lastDateOfPrevMonth - day + 1 == appStore.todayDate.getDate() &&
+      currMonth - 1 == appStore.todayDate.getMonth() &&
+      currYear == appStore.todayDate.getFullYear()
+    )
+      dates.push({
+        day: lastDateOfPrevMonth - day + 1,
+        month: currMonth,
+        year: currYear,
+        prev: true,
+        today: true,
+      });
+    else
+      dates.push({
+        day: lastDateOfPrevMonth - day + 1,
+        month: currMonth,
+        year: currYear,
+        prev: true,
+      });
   }
 
   for (let day = 1; day <= lastDateOfCurrMonth; day++) {
     if (
-      day === new Date().getDate() &&
-      selectedDate.value.getMonth() === new Date().getMonth() &&
-      selectedDate.value.getFullYear() === new Date().getFullYear()
-    ) {
+      day == appStore.todayDate.getDate() &&
+      selectedDate.value.getMonth() == appStore.todayDate.getMonth() &&
+      selectedDate.value.getFullYear() == appStore.todayDate.getFullYear()
+    )
       dates.push({
         day,
         month: currMonth + 1,
@@ -382,14 +404,13 @@ function renderCalendar() {
         active: true,
         today: true,
       });
-    } else {
+    else
       dates.push({
         day,
         month: currMonth + 1,
         year: currYear,
         active: true,
       });
-    }
   }
 
   const allDatesInCalendar = 42;
@@ -397,19 +418,31 @@ function renderCalendar() {
     allDatesInCalendar - (lastDayOfPrevMonth + lastDateOfCurrMonth);
 
   for (let day = 1; day <= datesOfNextMonth; day++) {
-    dates.push({
-      day,
-      month: currMonth + 2,
-      year: currYear,
-      next: true,
-    });
+    if (
+      day == appStore.todayDate.getDate() &&
+      currMonth + 1 == appStore.todayDate.getMonth() &&
+      currYear == appStore.todayDate.getFullYear()
+    )
+      dates.push({
+        day,
+        month: currMonth + 2,
+        year: currYear,
+        next: true,
+        today: true,
+      });
+    else
+      dates.push({
+        day,
+        month: currMonth + 2,
+        year: currYear,
+        next: true,
+      });
   }
 
   renderedMonth.value.push({
     index: currMonth,
-    name: Months[currMonth].name,
+    name: selectedDate.value.toLocaleDateString('pl-PL', { month: 'long' }),
     year: selectedDate.value.getFullYear(),
-    claimedVacationDaysInMonth: 0,
     dates,
   });
 }

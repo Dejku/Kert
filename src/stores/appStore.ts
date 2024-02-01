@@ -13,6 +13,10 @@ export const useAppStore = defineStore('app', {
     }),
 
     actions: {
+        startClock() {
+            setInterval(() => this.todayDate = new Date(), 1000);
+        },
+
         closeAllPopUps() {
             const modalStore = useModalStore();
             const dialogStore = useDialogStore();

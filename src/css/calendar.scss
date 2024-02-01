@@ -33,7 +33,8 @@ $dateGap: 1vh;
 }
 
 .date {
-  $border: 1px solid;
+  $border-width: 2px;
+  $border: $border-width solid;
 
   border: $border transparent;
   background-color: var(--surface);
@@ -50,10 +51,28 @@ $dateGap: 1vh;
 
   &.date--state-claimed-normal {
     border: $border var(--primary);
+
+    &::before {
+      content: '';
+      position: absolute;
+      aspect-ratio: 1 / 1;
+      height: calc($dateWidth - ($border-width * 2));
+      border: $border var(--surface);
+      border-radius: 50%;
+    }
   }
 
   &.date--state-claimed-special {
     border: $border var(--tertiary);
+
+    &::before {
+      content: '';
+      position: absolute;
+      aspect-ratio: 1 / 1;
+      height: calc($dateWidth - ($border-width * 2));
+      border: $border var(--surface);
+      border-radius: 50%;
+    }
   }
 }
 

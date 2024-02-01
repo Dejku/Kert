@@ -1,24 +1,26 @@
 <template>
   <q-page class="justify-around">
     <section class="row justify-between q-pa-md">
-      <Suspense>
-        <div class="column items-center gap-sm">
+      <div class="column items-center gap-sm">
+        <suspense>
           <q-avatar size="20vw">
             <img src="~src/assets/default_avatar.png" />
           </q-avatar>
+          <template #fallback>
+            <q-skeleton type="QAvatar" size="20vw" />
+          </template>
+        </suspense>
 
+        <suspense>
           <base-title
-            :title="(accountStore.user.displayName as string)"
+            :title="accountStore.user.displayName || undefined"
             size="7"
           />
-        </div>
-        <template #fallback>
-          <div class="column items-center gap-sm">
-            <q-skeleton type="QAvatar" size="20vw" />
+          <template #fallback>
             <q-skeleton type="rect" class="full-width" />
-          </div>
-        </template>
-      </Suspense>
+          </template>
+        </suspense>
+      </div>
 
       <div class="column justify-between">
         <div class="row justify-end q-gutter-x-xs">
@@ -30,11 +32,15 @@
           </router-link>
         </div>
         <div class="column text-right text-bold">
-          <span class="text-secondary text-size-4">
-            {{ todayDate.day }}
+          <span class="first-upper-case text-secondary text-size-4">
+            {{
+              appStore.todayDate.toLocaleDateString('pl-PL', {
+                weekday: 'long',
+              })
+            }}
           </span>
           <span class="text-size-7">
-            {{ todayDate.date }}
+            {{ appStore.todayDate.toLocaleDateString() }}
           </span>
         </div>
       </div>
@@ -75,17 +81,11 @@
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
+import { useAppStore } from 'stores/appStore';
 
 const iconStore = useIconStore();
 const accountStore = useAccountStore();
-
-const today = new Date();
-const todayLocaleDay = today.toLocaleDateString('pl-PL', { weekday: 'long' });
-
-const todayDate = {
-  day: todayLocaleDay.charAt(0).toUpperCase() + todayLocaleDay.slice(1),
-  date: today.toLocaleDateString(),
-};
+const appStore = useAppStore();
 
 const mainLinks = [
   {

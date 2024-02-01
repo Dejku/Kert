@@ -1,8 +1,5 @@
 <template>
-  <transition
-    enter-active-class="animated fadeIn"
-    leave-active-class="animated fadeOut"
-  >
+  <transition name="fade">
     <div
       v-if="appStore.isOverlayShowed"
       class="fullscreen"

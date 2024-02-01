@@ -37,7 +37,7 @@ export const useVacationStore = defineStore('vacations', {
       const docRef = doc(db, 'vacationStore', userID);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return console.error('Database error');
+      if (!docSnap.exists()) return;
 
       const data = docSnap.data();
       this.numberOfVacationDaysPerYear = data.numberOfVacationDaysPerYear;
