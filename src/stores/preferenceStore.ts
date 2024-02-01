@@ -19,7 +19,7 @@ export const usePreferenceStore = defineStore('preferences', {
       const docRef = doc(db, 'preferenceStore', userID);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return console.error('Database error');
+      if (!docSnap.exists()) return;
 
       this.preference = docSnap.data().preference;
     },

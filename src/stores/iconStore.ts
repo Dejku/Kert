@@ -3,7 +3,6 @@ import { defineStore } from 'pinia';
 export const useIconStore = defineStore('icons', {
   state: () => ({
     icon: {
-
       alertCircle: 'eva-alert-circle-outline',
       arrowBack: 'eva-arrow-back-outline',
       arrowDownRight: 'eva-corner-down-right-outline',
@@ -17,6 +16,7 @@ export const useIconStore = defineStore('icons', {
       colorPalette: 'eva-color-palette-outline',
       clock: 'eva-clock-outline',
       close: 'eva-close-outline',
+      closeCircle: 'eva-close-circle-outline',
       email: 'eva-email-outline',
       edit: 'eva-edit-outline',
       eye: 'eva-eye-outline',

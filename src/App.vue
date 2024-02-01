@@ -2,7 +2,7 @@
   <Alerts />
 
   <router-view v-slot="{ Component }">
-    <transition name="fade">
+    <transition name="fade" mode="out-in">
       <component :is="Component" />
     </transition>
   </router-view>
@@ -32,6 +32,7 @@ const alertStore = useAlertStore();
 const iconStore = useIconStore();
 
 onMounted(() => {
+  appStore.startClock();
   authStart();
 
   window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent));

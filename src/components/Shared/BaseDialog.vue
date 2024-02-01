@@ -1,8 +1,5 @@
 <template>
-  <transition
-    enter-active-class="animated fadeIn"
-    leave-active-class="animated fadeOut"
-  >
+  <transition name="dialog-fade">
     <div
       v-if="dialogStore.isShowed"
       class="column items-center q-mx-auto q-px-sm q-py-md absolute-center bg-surface rounded-borders gap-sm box-shadow"
@@ -17,14 +14,14 @@
       </section>
 
       <footer class="row gap-xl">
-        <BaseButton
+        <base-button
           :label="dialogStore.dialog.buttons.baseButton?.label"
           :color="dialogStore.dialog.buttons.baseButton?.color"
           :transparent="dialogStore.dialog.buttons.baseButton?.transparent"
           @click="dialogStore.optionChoosen('failed')"
         />
 
-        <BaseButton
+        <base-button
           v-if="dialogStore.dialog.buttons.extendedButton?.label"
           :label="dialogStore.dialog.buttons.extendedButton.label"
           :color="dialogStore.dialog.buttons.extendedButton.color"

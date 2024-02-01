@@ -4,7 +4,7 @@
 
     <section class="relative-position">
       <transition-group name="news-list">
-        <NewsListElement
+        <news-list-element
           v-for="message in newsStore.news"
           :key="message.id"
           :id="message.id"

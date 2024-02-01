@@ -1,21 +1,24 @@
 <template>
-  <Transition name="modal-slide">
+  <transition name="modal-slide">
     <div
       v-if="modalStore.isShowed"
-      class="base__modal column items-center q-pa-md absolute-bottom gap-sm"
+      class="base__modal column justify-between items-center q-pa-md absolute-bottom"
     >
       <div class="column flex-center full-width gap-lg">
         <hr
           class="rounded-borders--big bg-outline no-border no-margin box-shadow"
         />
 
-        <h5 id="base__modal__title" class="no-margin text-bold">
+        <h5
+          id="base__modal__title"
+          class="first-upper-case no-margin text-bold"
+        >
           {{ modalStore.modal.title }}
         </h5>
 
         <section id="base__modal__desc" class="full-width q-px-sm">
-          <Suspense>
-            <ModalError v-if="hasError" />
+          <suspense>
+            <modal-error v-if="hasError" />
 
             <component
               v-else
@@ -27,21 +30,21 @@
             />
 
             <template #fallback>
-              <ModalLoading />
+              <modal-loading />
             </template>
-          </Suspense>
+          </suspense>
         </section>
       </div>
 
       <div id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
-        <BaseButton
+        <base-button
           :label="modalStore.modal.buttons.baseButton?.label"
           :color="modalStore.modal.buttons.baseButton?.color"
           :transparent="modalStore.modal.buttons.baseButton?.transparent"
           @click="modalStore.optionChoosen('failed')"
         />
 
-        <BaseButton
+        <base-button
           v-if="modalStore.modal.buttons.extendedButton?.label"
           :label="modalStore.modal.buttons.extendedButton.label"
           :color="modalStore.modal.buttons.extendedButton.color"
@@ -50,7 +53,7 @@
         />
       </div>
     </div>
-  </Transition>
+  </transition>
 </template>
 
 <script setup lang="ts">

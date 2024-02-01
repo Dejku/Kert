@@ -1,0 +1,9 @@
+.dialog-fade-enter-active,
+.dialog-fade-leave-active {
+  transition: all 0.4s ease-in-out;
+}
+
+.dialog-fade-enter-from,
+.dialog-fade-leave-to {
+  opacity: 0;
+}

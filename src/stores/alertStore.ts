@@ -27,6 +27,7 @@ export const useAlertStore = defineStore('alerts', {
                 message: data.message,
                 status: data.status,
                 duration: data.duration,
+                userCanHide: data.userCanHide,
             });
 
             if (notificationVolume == 0) await notificationSound.play();
