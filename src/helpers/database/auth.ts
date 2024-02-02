@@ -1,7 +1,6 @@
 import snapshots from 'database/snapshots';
 import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
-import { useResetStore } from 'utils';
 
 import {
     getAuth,
@@ -9,13 +8,10 @@ import {
     connectAuthEmulator,
 } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { useRouter } from 'vue-router';
 
 export default function authStart() {
     const appStore = useAppStore();
     const accountStore = useAccountStore();
-    const resetStore = useResetStore();
-    const router = useRouter()
     const auth = getAuth();
 
     if (process.env.DEV) {
@@ -27,7 +23,6 @@ export default function authStart() {
     }
 
     onAuthStateChanged(auth, (user) => {
-
         if (user) {
             accountStore.isLogged = true;
 
@@ -40,11 +35,6 @@ export default function authStart() {
             appStore.fetchData();
 
             snapshots();
-            router.push('/home')
-        } else {
-            accountStore.isLogged = false;
-
-            setTimeout(() => resetStore.all(), 500);
         }
     });
 }
