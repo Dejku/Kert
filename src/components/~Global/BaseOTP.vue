@@ -14,6 +14,8 @@
         class="codeInput text-weight-600 text-center rounded-borders--small bg-surfaceVariant q-py-xs q-px-sm overflow-hidden box-shadow"
         placeholder="0"
         maxlength="1"
+        min="0"
+        max="9"
         @keyup="onKeyUp($event, i)"
         @click="fieldValues[i - 1] = null"
       />
@@ -57,7 +59,10 @@ const onKeyUp = (event: KeyboardEvent, index: number) => {
 
   if (key === 'Backspace' || key === 'Delete' || key === 'ArrowLeft') {
     const prev = input.previousElementSibling as HTMLInputElement;
-    if (prev) prev.focus();
+    if (prev) {
+      prev.value = '';
+      prev.focus();
+    }
 
     return;
   }
@@ -65,7 +70,10 @@ const onKeyUp = (event: KeyboardEvent, index: number) => {
   const regExp = /\d/;
   if (regExp.test(key)) {
     const next = input.nextElementSibling as HTMLInputElement;
-    if (next) next.focus();
+    if (next) {
+      next.value = '';
+      next.focus();
+    }
   }
 };
 

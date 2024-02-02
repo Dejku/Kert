@@ -6,10 +6,17 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useAccountStore } from 'stores/accountStore';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
+
+const accountStore = useAccountStore();
 const router = useRouter();
 
-setTimeout(() => {
-  router.replace('/login');
-}, 1000);
+const interval = setInterval(
+  () =>
+    accountStore.isLogged ? router.replace('/home') : router.replace('/login'),
+  1000
+);
+
+onBeforeRouteLeave(() => clearInterval(interval));
 </script>
