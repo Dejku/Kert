@@ -95,17 +95,21 @@ $dateGap: 1vh;
 .calendar__transition--right-enter-active,
 .calendar__transition--right-leave-active {
   position: absolute;
-  transition: all 0.5s ease;
+  transition: all var(--page-transition);
 }
 
 .calendar__transition--fade-enter-active,
 .calendar__transition--fade-leave-active {
-  transition: opacity 0.5s ease;
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  transition: opacity var(--page-transition);
 }
 
 .calendar__transition--fade-enter-from,
 .calendar__transition--fade-leave-to {
   opacity: 0;
+  scale: 0;
 }
 
 .calendar__transition--left-enter-to,

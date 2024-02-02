@@ -21,7 +21,7 @@
     }"
     @click="loadingState ? (loading = true) : null"
   >
-    <TransitionGroup name="fade">
+    <transition-group name="fade">
       <q-spinner
         v-if="loading"
         key="spinner"
@@ -36,7 +36,7 @@
         <slot>{{ label }}</slot>
         <q-icon v-if="iconRight" :name="iconRight" />
       </div>
-    </TransitionGroup>
+    </transition-group>
   </div>
 </template>
 

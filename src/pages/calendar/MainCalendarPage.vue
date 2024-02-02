@@ -3,12 +3,7 @@
     <transition name="scale">
       <div
         v-if="activeTab == 'calendar' && vacationStore.hasUnsavedChanges"
-        class="row justify-between q-px-lg text-size-8"
-        :class="
-          $q.screen.height > 700
-            ? 'absolute-bottom q-py-xl z-fab'
-            : 'absolute-top q-py-lg'
-        "
+        class="row justify-between q-px-lg text-size-8 absolute-top q-py-lg"
       >
         <div class="column flex-center text-success">
           <q-icon
@@ -58,7 +53,7 @@
             @click="changeMonth(-1)"
           />
           <q-space />
-          <div class="first-upper-case">
+          <div class="first-upper-case" @click="jumpToToday">
             {{ renderedMonth[0]?.name }}
             {{ renderedMonth[0]?.year }}
           </div>
@@ -188,7 +183,7 @@
               <base-button
                 key="button"
                 v-if="$q.screen.height > 700"
-                class="q-mx-auto q-mt-lg z-fab"
+                class="q-mt-lg z-fab"
                 label="Podsumowanie"
                 transparent
                 @click="showSummaryModal"
@@ -317,6 +312,7 @@ const selectedDate = ref<Date>(appStore.todayDate);
 const renderedMonth = ref<Omit<CalendarMonth, 'claimedVacationDaysInMonth'>[]>(
   []
 );
+const blockMonthSwipe = ref<boolean>(false);
 
 const swipeLeft = () => changeMonth(1);
 const swipeRight = () => changeMonth(-1);
@@ -341,7 +337,7 @@ const selectDay = (day: number, month: number, year: number) =>
   vacationStore.selectVacationDay({ day, month, year });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function holdSelectDay(details: any) {
+const holdSelectDay = (details: any) => {
   const data = details.evt.target.getAttribute('data-date').split('/');
 
   vacationStore.holdSelectVacationDay({
@@ -349,22 +345,39 @@ function holdSelectDay(details: any) {
     month: Number(data[1]),
     year: Number(data[2]),
   });
-}
+};
 
-function changeMonth(value: number) {
+const jumpToToday = () => {
+  if (blockMonthSwipe.value) return;
+  if (
+    selectedDate.value.getMonth() == appStore.todayDate.getMonth() &&
+    selectedDate.value.getFullYear() == appStore.todayDate.getFullYear()
+  )
+    return;
+
+  blockMonthSwipe.value = true;
+  transition.value = 'fade';
+  selectedDate.value = appStore.todayDate;
+
+  renderCalendar();
+};
+
+const changeMonth = (value: number) => {
+  if (blockMonthSwipe.value) return;
+
+  blockMonthSwipe.value = true;
   selectedDate.value.setMonth(selectedDate.value.getMonth() + value, 1);
   transition.value = value > 0 ? 'left' : 'right';
 
   renderCalendar();
-}
+};
 
-function renderCalendar() {
+const renderCalendar = () => {
   renderedMonth.value.shift();
   let currMonth: number = selectedDate.value.getMonth();
   let currYear: number = selectedDate.value.getFullYear();
 
   let dates: CalendarDates[] = [];
-
   const lastDayOfPrevMonth = new Date(currYear, currMonth, 0).getDay();
   const lastDateOfPrevMonth = new Date(currYear, currMonth, 0).getDate();
   const lastDateOfCurrMonth = new Date(currYear, currMonth + 1, 0).getDate();
@@ -445,9 +458,12 @@ function renderCalendar() {
     year: selectedDate.value.getFullYear(),
     dates,
   });
-}
+
+  setTimeout(() => (blockMonthSwipe.value = false), 500);
+};
 
 onMounted(() => {
+  blockMonthSwipe.value = true;
   transition.value = 'fade';
   renderCalendar();
 });
