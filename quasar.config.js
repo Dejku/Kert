@@ -32,6 +32,7 @@ module.exports = configure(function (/* ctx */) {
     boot: [
       'checkAuth.ts',
       'globalComponents.ts',
+      'pageSwitching.ts',
       'routesTransitions.ts',
     ],
 
