@@ -1,7 +1,8 @@
 :root {
   --transition-duration: 0.3s;
-  --base-transition: var(--transition-duration) ease;
   --page-transition-duration: 0.5s;
+
+  --base-transition: var(--transition-duration) ease;
   --page-transition: var(--page-transition-duration) ease-in-out;
 }
 
