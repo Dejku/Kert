@@ -3,7 +3,12 @@
     <transition name="scale">
       <div
         v-if="activeTab == 'calendar' && vacationStore.hasUnsavedChanges"
-        class="row justify-between q-px-lg text-size-8 absolute-top q-py-lg"
+        class="row justify-between q-px-lg text-size-8"
+        :class="
+          $q.screen.height > 700
+            ? 'absolute-bottom q-py-xl z-fab'
+            : 'absolute-top q-py-lg'
+        "
       >
         <div class="column flex-center text-success">
           <q-icon
