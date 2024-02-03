@@ -7,16 +7,14 @@
 
 <script setup lang="ts">
 import { useAccountStore } from 'stores/accountStore';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const accountStore = useAccountStore();
 const router = useRouter();
 
-const interval = setInterval(
+setTimeout(
   () =>
     accountStore.isLogged ? router.replace('/home') : router.replace('/login'),
-  1000
+  2000
 );
-
-onBeforeRouteLeave(() => clearInterval(interval));
 </script>

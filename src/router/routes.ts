@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/BlankLayout.vue'),
     children: [
-      { path: '/', component: () => import('pages/other/LoadingPage.vue') },
+      { path: '/', component: () => import('pages/landing/LandingPage.vue') },
       { path: '/login', component: () => import('pages/landing/LoginPage.vue'), meta: { transition: 'slide-right' } },
       { path: '/signup', component: () => import('pages/landing/SignupPage.vue'), meta: { transition: 'slide-left' } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue') },
