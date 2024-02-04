@@ -11,8 +11,8 @@ type ModalOption = {
 }
 
 type Component = {
-    type: 'monthSummary' | 'addVacation' | 'showVacation' | undefined,
-    options: {
+    type: string | undefined,
+    options?: {
         date?: AppDate,
     }
 }
