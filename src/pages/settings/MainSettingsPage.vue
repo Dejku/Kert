@@ -15,7 +15,7 @@
 
           <div>
             <base-title
-              :title="accountStore.user.displayName || 'Ładowanie...'"
+              :title="accountStore.user.displayName"
               size="7"
               style="margin-bottom: -5px !important"
             />
@@ -105,7 +105,7 @@ const logout = async () => {
         label: 'Nie',
         transparent: true,
       },
-      extendedButton: {
+      secondaryButton: {
         label: 'Tak',
         color: 'error',
       },

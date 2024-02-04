@@ -1,6 +1,7 @@
 type ButtonsOptions = {
     baseButton?: ButtonOptions,
-    extendedButton?: ButtonOptions
+    secondaryButton?: ButtonOptions
+    isDisabled?: boolean,
 }
 
 type ButtonOptions = {

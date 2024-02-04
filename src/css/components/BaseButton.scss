@@ -13,7 +13,7 @@
   }
 
   &.base__button--circle {
-    padding: 5px;
+    padding: 5px !important;
   }
 
   &.base__button--disabled {
@@ -26,6 +26,16 @@
 
   &.base__button--corner-small {
     border-radius: $border-radius;
+  }
+
+  &.base__button--medium {
+    padding: 3.75px 15px;
+    font-size: $body-font-size-4;
+    letter-spacing: 1.5px;
+
+    i {
+      font-size: $body-font-size-8;
+    }
   }
 
   &.base__button--small {

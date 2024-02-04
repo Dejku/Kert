@@ -48,6 +48,9 @@ export const useIconStore = defineStore('icons', {
       volumeOff: 'eva-volume-off-outline',
       volumeUp: 'eva-volume-up-outline',
       warning: 'eva-alert-triangle-outline',
+    },
+    icon_fill: {
+      copy: 'eva-copy',
     }
   }),
 

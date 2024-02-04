@@ -5,6 +5,7 @@
   >
     <q-icon v-if="iconLeft" :name="iconLeft" class="text-size-10" />
     <h6
+      class="first-upper-case"
       :class="`text-size-${size} text-weight-${weight}`"
       :style="{ 'letter-spacing': letterSpacing ? '1px' : '0px' }"
     >

@@ -22,10 +22,10 @@
         />
 
         <base-button
-          v-if="dialogStore.dialog.buttons.extendedButton?.label"
-          :label="dialogStore.dialog.buttons.extendedButton.label"
-          :color="dialogStore.dialog.buttons.extendedButton.color"
-          :transparent="dialogStore.dialog.buttons.extendedButton.transparent"
+          v-if="dialogStore.dialog.buttons.secondaryButton?.label"
+          :label="dialogStore.dialog.buttons.secondaryButton.label"
+          :color="dialogStore.dialog.buttons.secondaryButton.color"
+          :transparent="dialogStore.dialog.buttons.secondaryButton.transparent"
           @click="dialogStore.optionChoosen('success')"
         />
       </footer>
