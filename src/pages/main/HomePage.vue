@@ -13,7 +13,7 @@
 
         <suspense>
           <base-title
-            :title="accountStore.user.displayName || undefined"
+            :title="accountStore.user.displayName || 'Ładowanie...'"
             size="7"
           />
           <template #fallback>

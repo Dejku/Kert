@@ -15,7 +15,7 @@
 
           <div>
             <base-title
-              :title="(accountStore.user.displayName as string)"
+              :title="accountStore.user.displayName || 'Ładowanie...'"
               size="7"
               style="margin-bottom: -5px !important"
             />
