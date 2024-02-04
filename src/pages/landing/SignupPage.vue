@@ -98,6 +98,7 @@ import { fireEvent } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertStore } from 'stores/alertStore';
+import { useAppStore } from 'src/stores/appStore';
 
 import {
   getAuth,
@@ -111,6 +112,7 @@ import { useRouter } from 'vue-router';
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
 const accountStore = useAccountStore();
+const appStore = useAppStore();
 const router = useRouter();
 
 const codeStage = ref<boolean>(true);
@@ -154,7 +156,7 @@ const signup = () => {
       const db = getFirestore();
 
       await setDoc(doc(db, 'vacationStore', user.uid), {
-        currentYear: new Date().getFullYear(),
+        currentYear: appStore.todayDate.getFullYear(),
         overdueVacationDays: 0,
         numberOfVacationDaysPerYear: 20,
         availableLimitsForUser: {
