@@ -1,3 +1,6 @@
+import { ErrorAlert } from 'models';
+import { useAlertStore } from 'stores/alertStore';
+
 export function formatString(type: 'dni' | 'miesiące' | 'godziny', number: number): string {
     let string;
 
@@ -10,3 +13,11 @@ export function formatString(type: 'dni' | 'miesiące' | 'godziny', number: numb
 
     return `${number} ${string}`
 }
+
+export function copyTextToClipboard(text: string) {
+    const { createAlert } = useAlertStore()
+
+    navigator.clipboard.writeText(text)
+        .then(() => createAlert({ status: 'info', message: 'Skopiowano tekst do schowka', duration: 3 }))
+        .catch(() => createAlert(ErrorAlert));
+};

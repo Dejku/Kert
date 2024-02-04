@@ -62,8 +62,8 @@ import { useModalStore } from 'stores/modalStore';
 const vacationStore = useVacationStore();
 const modalStore = useModalStore();
 
-const month = (modalStore.modal.component.options.date?.month || 0) + 1;
-const year = modalStore.modal.component.options.date?.year || 0;
+const month = (modalStore.modal.component.options?.date?.month || 0) + 1;
+const year = modalStore.modal.component.options?.date?.year || 0;
 
 const allDays = vacationStore.countClaimedNormalVacationDaysInMonth(
   year,

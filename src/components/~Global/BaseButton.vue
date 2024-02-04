@@ -1,11 +1,13 @@
 <template>
   <div
-    class="base__button row flex-center hug text-bold gap-xs"
+    v-ripple="ripple"
+    class="base__button relative-position hug text-bold"
     :class="{
       'box-shadow': shadow,
       'no-pointer-events': disabled || loading,
       'base__button--disabled': disabled || loading,
-      'base__button--small': small,
+      'base__button--small': size === 'small' || size == 0,
+      'base__button--medium': size === 'medium' || size == 1,
       'base__button--transparent': transparent,
       'base__button--no-border': noBorder,
       'base__button--corner-small': cornerSmall,
@@ -14,10 +16,10 @@
       'base__button--color-primary': color === 'primary',
       'base__button--color-secondary': color === 'secondary',
       'base__button--color-tertiary': color === 'tertiary',
-      'base__button--color-success': color === 'success',
-      'base__button--color-info': color === 'info',
-      'base__button--color-warning': color === 'warning',
-      'base__button--color-error': color === 'error',
+      'base__button--color-success': color === 'success' || color === 'green',
+      'base__button--color-info': color === 'info' || color === 'blue',
+      'base__button--color-warning': color === 'warning' || color === 'yellow',
+      'base__button--color-error': color === 'error' || color === 'red',
     }"
     @click="loadingState ? (loading = true) : null"
   >
@@ -31,7 +33,11 @@
         :thickness="3"
       />
 
-      <div key="content" :style="{ opacity: loading ? 0 : 1 }">
+      <div
+        key="content"
+        class="row flex-center gap-xs"
+        :style="{ opacity: loading ? 0 : 1 }"
+      >
         <q-icon v-if="iconLeft" :name="iconLeft" />
         <slot>{{ label }}</slot>
         <q-icon v-if="iconRight" :name="iconRight" />
@@ -72,6 +78,10 @@ const props = defineProps({
         'info',
         'warning',
         'error',
+        'green',
+        'blue',
+        'yellow',
+        'red',
       ].includes(value);
     },
   },
@@ -95,13 +105,20 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  small: {
-    type: Boolean,
-    default: false,
+  size: {
+    type: [String, Number],
+    default: 'big',
+    validator: (value: string) => {
+      return ['big', '2', 2, 'medium', '1', 1, 'small', '0', 0].includes(value);
+    },
   },
   loadingState: {
     type: Boolean,
     default: false,
+  },
+  ripple: {
+    type: Boolean,
+    default: true,
   },
 });
 

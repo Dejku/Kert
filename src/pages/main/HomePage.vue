@@ -6,16 +6,15 @@
           <q-avatar size="20vw">
             <img src="~src/assets/default_avatar.png" />
           </q-avatar>
+
           <template #fallback>
             <q-skeleton type="QAvatar" size="20vw" />
           </template>
         </suspense>
 
         <suspense>
-          <base-title
-            :title="accountStore.user.displayName || undefined"
-            size="7"
-          />
+          <base-title :title="accountStore.user.displayName" size="7" />
+
           <template #fallback>
             <q-skeleton type="rect" class="full-width" />
           </template>
@@ -27,10 +26,12 @@
           <router-link to="/news">
             <q-icon class="text-size-10" :name="iconStore.icon.mail" />
           </router-link>
+
           <router-link to="/settings">
             <q-icon class="text-size-10" :name="iconStore.icon.settings" />
           </router-link>
         </div>
+
         <div class="column text-right text-bold">
           <span class="first-upper-case text-secondary text-size-4">
             {{
@@ -39,6 +40,7 @@
               })
             }}
           </span>
+
           <span class="text-size-7">
             {{ appStore.todayDate.toLocaleDateString() }}
           </span>
@@ -62,8 +64,11 @@
       class="reminder column flex relative-position z-zero overflow-hidden q-py-xs q-px-sm bg-surface-gradient rounded-borders box-shadow"
     >
       <base-title :title="reminder.title" size="7" />
+
       <span>{{ reminder.desc }}</span>
+
       <q-space />
+
       <span class="text-right text-size-3">
         Z listy
         <router-link
@@ -73,6 +78,7 @@
           {{ reminder.taskSetName }}
         </router-link>
       </span>
+
       <q-icon :name="reminder.icon" class="reminder__icon absolute z-minus" />
     </section>
   </q-page>

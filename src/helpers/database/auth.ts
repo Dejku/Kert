@@ -28,7 +28,7 @@ export default function authStart() {
 
             accountStore.saveUser({
                 id: user.uid,
-                displayName: user.displayName,
+                displayName: user.displayName as string,
                 photoURL: user.photoURL,
             });
 

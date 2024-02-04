@@ -43,7 +43,7 @@ const modalStore = useModalStore();
 
 const formattedDate = ref<string>('Brak tytułu');
 
-if (modalStore.modal.component.options.date) {
+if (modalStore.modal.component.options?.date) {
   formattedDate.value = `${modalStore.modal.component.options.date.day} ${
     Months[modalStore.modal.component.options.date.month - 1].formattedName
   } ${modalStore.modal.component.options.date.year}`;

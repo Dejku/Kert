@@ -21,13 +21,14 @@ export const useModalStore = defineStore('modal', {
         baseButton: {
           label: 'Okej',
           color: undefined,
-          transparent: true
+          transparent: true,
         },
-        extendedButton: {
+        secondaryButton: {
           label: undefined,
           color: undefined,
-          transparent: undefined
-        }
+          transparent: undefined,
+        },
+        isDisabled: true,
       }
     } as ModalStructure,
 
@@ -39,7 +40,12 @@ export const useModalStore = defineStore('modal', {
           type: 'day',
           hours: 0
         }
-      } as VacationTypes
+      } as VacationTypes,
+
+      user: {
+        displayName: '',
+        password: '',
+      }
     }
   }),
 
@@ -57,7 +63,7 @@ export const useModalStore = defineStore('modal', {
 
       if (options.buttonsOptions) {
         if (options.buttonsOptions.baseButton) this.modal.buttons.baseButton = options.buttonsOptions.baseButton;
-        if (options.buttonsOptions.extendedButton) this.modal.buttons.extendedButton = options.buttonsOptions.extendedButton;
+        if (options.buttonsOptions.secondaryButton) this.modal.buttons.secondaryButton = options.buttonsOptions.secondaryButton;
       }
 
       return await waitForEvent('modal_userInteraction');

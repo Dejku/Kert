@@ -1,5 +1,5 @@
 type Account = {
     id: string,
-    displayName: string | null,
+    displayName: string,
     photoURL: string | null
 }

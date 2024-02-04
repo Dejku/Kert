@@ -31,7 +31,7 @@
           label="Nazwa"
           placeholder="Wpisz swoją nazwę"
           :minlength="3"
-          :is-required="true"
+          :required="true"
           bg-color="surfaceVariant"
           autocomplete="nickname"
           @has-error="(value: boolean) => (nameError = value)"
@@ -43,7 +43,7 @@
           :icon="iconStore.icon.mail"
           label="E-mail"
           placeholder="Wpisz swój e-mail"
-          :is-required="true"
+          :required="true"
           bg-color="surfaceVariant"
           autocomplete="email"
           @has-error="(value: boolean) => (emailError = value)"
@@ -57,7 +57,7 @@
           :minlength="6"
           label="Hasło"
           placeholder="Wpisz swoje hasło"
-          :is-required="true"
+          :required="true"
           bg-color="surfaceVariant"
           autocomplete="new-password"
           :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
@@ -72,7 +72,7 @@
           :minlength="6"
           label="Powtórz hasło"
           placeholder="Powtórz hasło"
-          :is-required="true"
+          :required="true"
           bg-color="surfaceVariant"
           autocomplete="new-password"
           :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
@@ -98,6 +98,7 @@ import { fireEvent } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertStore } from 'stores/alertStore';
+import { useAppStore } from 'src/stores/appStore';
 
 import {
   getAuth,
@@ -111,6 +112,7 @@ import { useRouter } from 'vue-router';
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
 const accountStore = useAccountStore();
+const appStore = useAppStore();
 const router = useRouter();
 
 const codeStage = ref<boolean>(true);
@@ -154,7 +156,7 @@ const signup = () => {
       const db = getFirestore();
 
       await setDoc(doc(db, 'vacationStore', user.uid), {
-        currentYear: new Date().getFullYear(),
+        currentYear: appStore.todayDate.getFullYear(),
         overdueVacationDays: 0,
         numberOfVacationDaysPerYear: 20,
         availableLimitsForUser: {

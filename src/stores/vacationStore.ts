@@ -149,7 +149,7 @@ export const useVacationStore = defineStore('vacations', {
             },
           },
           buttonsOptions: {
-            extendedButton: {
+            secondaryButton: {
               label: 'Dodaj urlop',
             },
           },
@@ -266,7 +266,7 @@ export const useVacationStore = defineStore('vacations', {
           },
         },
         buttonsOptions: {
-          extendedButton: {
+          secondaryButton: {
             label: 'Usuń urlop',
             color: 'error',
           },

@@ -14,7 +14,7 @@ export const useDialogStore = defineStore('dialog', {
                     color: undefined,
                     transparent: true
                 },
-                extendedButton: {
+                secondaryButton: {
                     label: undefined,
                     color: undefined,
                     transparent: undefined
@@ -32,7 +32,7 @@ export const useDialogStore = defineStore('dialog', {
 
             if (options.buttonsOptions) {
                 if (options.buttonsOptions.baseButton) this.dialog.buttons.baseButton = options.buttonsOptions.baseButton;
-                if (options.buttonsOptions.extendedButton) this.dialog.buttons.extendedButton = options.buttonsOptions.extendedButton;
+                if (options.buttonsOptions.secondaryButton) this.dialog.buttons.secondaryButton = options.buttonsOptions.secondaryButton;
             }
 
             return await waitForEvent('dialog_userInteraction');

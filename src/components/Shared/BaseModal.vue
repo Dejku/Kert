@@ -2,82 +2,69 @@
   <transition name="modal-slide">
     <div
       v-if="modalStore.isShowed"
-      class="base__modal column justify-between items-center q-pa-md absolute-bottom"
+      class="base__modal column justify-between items-center q-pa-md absolute-bottom gap-md"
     >
-      <div class="column flex-center full-width gap-lg">
+      <section
+        id="base__modal__header"
+        class="column flex-center full-width gap-md"
+      >
         <hr
           class="rounded-borders--big bg-outline no-border no-margin box-shadow"
         />
 
-        <h5
-          id="base__modal__title"
-          class="first-upper-case no-margin text-bold"
-        >
-          {{ modalStore.modal.title }}
-        </h5>
+        <base-title :title="modalStore.modal.title" />
+      </section>
 
-        <section id="base__modal__desc" class="full-width q-px-sm">
-          <suspense>
-            <modal-error v-if="hasError" />
+      <section id="base__modal__component" class="full-width q-px-sm">
+        <suspense>
+          <component :is="component || ModalError" />
 
-            <component
-              v-else
-              :is="
-                modalComponents.find(
-                  (comp) => comp.name === modalStore.modal.component.type
-                )?.comp
-              "
-            />
+          <template #fallback>
+            <modal-loading />
+          </template>
+        </suspense>
+      </section>
 
-            <template #fallback>
-              <modal-loading />
-            </template>
-          </suspense>
-        </section>
-      </div>
-
-      <div id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
+      <section id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
         <base-button
           :label="modalStore.modal.buttons.baseButton?.label"
           :color="modalStore.modal.buttons.baseButton?.color"
           :transparent="modalStore.modal.buttons.baseButton?.transparent"
+          :disabled="isButtonDisabled"
           @click="modalStore.optionChoosen('failed')"
         />
 
         <base-button
-          v-if="modalStore.modal.buttons.extendedButton?.label"
-          :label="modalStore.modal.buttons.extendedButton.label"
-          :color="modalStore.modal.buttons.extendedButton.color"
-          :transparent="modalStore.modal.buttons.extendedButton.transparent"
+          v-if="modalStore.modal.buttons.secondaryButton?.label"
+          :label="modalStore.modal.buttons.secondaryButton.label"
+          :color="modalStore.modal.buttons.secondaryButton.color"
+          :transparent="modalStore.modal.buttons.secondaryButton.transparent"
+          :disabled="isButtonDisabled || modalStore.modal.buttons.isDisabled"
           @click="modalStore.optionChoosen('success')"
         />
-      </div>
+      </section>
     </div>
   </transition>
 </template>
 
 <script setup lang="ts">
-import ModalLoading from 'components/modal/ModalLoading.vue';
-import ModalError from 'components/modal/ModalError.vue';
+const ModalLoading = defineAsyncComponent(
+  () => import('components/modal/ModalLoading.vue')
+);
+
+const ModalError = defineAsyncComponent(
+  () => import('components/modal/ModalError.vue')
+);
 
 import { useModalStore } from 'stores/modalStore';
+import { defineAsyncComponent, ref, shallowRef, watch } from 'vue';
+
 const modalStore = useModalStore();
 
-import { defineAsyncComponent, onErrorCaptured, ref } from 'vue';
-
-onErrorCaptured(() => {
-  setTimeout(() => (hasError.value = true), 2000);
-});
-
-const hasError = ref<boolean>(false);
+const component = shallowRef();
+const isButtonDisabled = ref<boolean>(false);
 
 const modalComponents = [
-  {
-    name: 'monthSummary',
-    comp: defineAsyncComponent(
-      () => import('components/modal/ModalMonthSummary.vue')
-    ),
-  },
   {
     name: 'addVacation',
     comp: defineAsyncComponent(
@@ -85,10 +72,42 @@ const modalComponents = [
     ),
   },
   {
+    name: 'changeName',
+    comp: defineAsyncComponent(
+      () => import('components/modal/ModalChangeName.vue')
+    ),
+  },
+  {
+    name: 'changePassword',
+    comp: defineAsyncComponent(
+      () => import('components/modal/ModalChangePassword.vue')
+    ),
+  },
+  {
+    name: 'monthSummary',
+    comp: defineAsyncComponent(
+      () => import('components/modal/ModalMonthSummary.vue')
+    ),
+  },
+
+  {
     name: 'showVacation',
     comp: defineAsyncComponent(
       () => import('components/modal/ModalShowVacation.vue')
     ),
   },
 ];
+
+watch(
+  () => modalStore.isShowed,
+  () => {
+    if (!modalStore.isShowed) return;
+
+    component.value = modalComponents.find(
+      (comp) => comp.name === modalStore.modal.component.type
+    )?.comp;
+
+    if (!component.value) isButtonDisabled.value = true;
+  }
+);
 </script>
