@@ -145,7 +145,7 @@ const reminder = {
   title: 'Do zrobienia',
   desc: 'Przykładowe zadanie do zrobienia',
   taskSetName: 'Przykładowa nazwa zadań',
-  taskSetLink: '/tasks/set/task',
+  taskSetLink: '/home',
   icon: iconStore.icon.successCircle,
 };
 </script>
