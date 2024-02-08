@@ -32,12 +32,8 @@
       class="column q-py-sm q-px-md bg-surface rounded-borders box-shadow gap-sm"
     >
       <div>
-        <base-title title="Twój identyfikator konta:" size="5" />
-
         <div class="row items-center">
-          <span class="flex flex-center">
-            {{ accountStore.user.id }}
-          </span>
+          <base-title title="Twój identyfikator konta:" size="5" />
 
           <q-space />
 
@@ -51,6 +47,10 @@
             @click="copyTextToClipboard(accountStore.user.id)"
           />
         </div>
+
+        <span class="flex flex-center">
+          {{ accountStore.user.id }}
+        </span>
       </div>
     </section>
 
