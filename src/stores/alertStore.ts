@@ -9,7 +9,6 @@ notificationSound.volume = 0.5;
 
 export const useAlertStore = defineStore('alerts', {
     state: () => ({
-        scaleAlertID: '',
         alert: [] as Alert[],
         headerAlert: [] as HeaderAlert[]
     }),
@@ -51,17 +50,6 @@ export const useAlertStore = defineStore('alerts', {
 
         deleteHeaderAlert(id: HeaderAlert['id']) {
             this.headerAlert = this.headerAlert.filter((ele) => ele.id !== id);
-        },
-
-        async scaleAlert(id: Alert['id']) {
-            if (!id) return;
-            const preferenceStore = usePreferenceStore();
-            const notificationVolume = preferenceStore.preference.notification.volume || 0;
-
-            this.scaleAlertID = id;
-            if (notificationVolume == 0) await notificationSound.play();
-
-            setTimeout(() => this.scaleAlertID = '', 200)
         },
 
         formatMessage(message: string): string {
