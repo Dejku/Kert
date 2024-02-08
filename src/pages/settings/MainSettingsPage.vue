@@ -59,15 +59,22 @@
 </template>
 
 <script setup lang="ts">
+import { ErrorAlert } from 'models';
+import { useResetStore } from 'utils';
+
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useDialogStore } from 'stores/dialogStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { useRouter } from 'vue-router';
+import { getAuth, signOut } from 'firebase/auth';
 
 const iconStore = useIconStore();
 const accountStore = useAccountStore();
 const { showDialog } = useDialogStore();
+const { createAlert } = useAlertStore();
+const resetStore = useResetStore();
 const router = useRouter();
 
 const sections = {
@@ -114,6 +121,16 @@ const logout = async () => {
 
   const response = await showDialog(dialogOption);
 
-  if (response.status == 'success') accountStore.logout();
+  if (response.status == 'success') {
+    const auth = getAuth();
+
+    signOut(auth)
+      .then(() => {
+        router.push('/loggedOut');
+
+        setTimeout(() => resetStore.all(), 500);
+      })
+      .catch(() => createAlert(ErrorAlert));
+  }
 };
 </script>
