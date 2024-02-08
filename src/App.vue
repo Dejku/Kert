@@ -23,6 +23,7 @@ import { useAlertStore } from 'stores/alertStore';
 import { useIconStore } from 'stores/iconStore';
 
 import { onMounted, onUnmounted } from 'vue';
+import { QSpinnerRadio, useQuasar } from 'quasar';
 
 import 'database/firebase';
 import authStart from 'database/auth';
@@ -30,6 +31,8 @@ import authStart from 'database/auth';
 const appStore = useAppStore();
 const alertStore = useAlertStore();
 const iconStore = useIconStore();
+
+const $q = useQuasar();
 
 onMounted(() => {
   appStore.startClock();
@@ -54,22 +57,24 @@ const closePopUps = (e: CustomEvent) =>
 const HandleNetworkChange = () => {
   if (navigator.onLine) {
     alertStore.createAlert({
-      message: 'Połączono z internetem',
+      message: 'Ponownie połączono z internetem',
       status: 'info',
       duration: 3,
     });
 
     alertStore.deleteHeaderAlert('noWifi');
-  } else {
-    alertStore.createAlert({
-      message: 'Brak połączenia z internetem',
-      status: 'noWifi',
-      duration: 5,
-    });
 
+    $q.loading.hide();
+  } else {
     alertStore.createHeaderAlert({
       id: 'noWifi',
       icon: iconStore.icon.noWifi,
+    });
+
+    $q.loading.show({
+      spinner: QSpinnerRadio,
+      spinnerSize: 75,
+      message: 'Brak połączenia z internetem...',
     });
   }
 };
