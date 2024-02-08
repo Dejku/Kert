@@ -3,9 +3,7 @@
     v-if="isVisible"
     :id="props.id"
     class="base__alert q-py-xs q-px-sm full-width rounded-borders--small transition-03 box-shadow"
-    :class="`base__alert--color-${props.status} ${
-      alertStore.scaleAlertID == props.id ? 'base__alert--scale' : ''
-    }`"
+    :class="`base__alert--color-${props.status}`"
     @click="userCanHide ? hide() : null"
   >
     <q-icon :name="iconStore.getAlertIcon(props.status)" class="text-size-7" />
@@ -15,12 +13,9 @@
 
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
-import { useAlertStore } from 'stores/alertStore';
 import { onMounted, ref } from 'vue';
 
 const iconStore = useIconStore();
-const alertStore = useAlertStore();
-
 const emit = defineEmits(['remove']);
 
 const props = defineProps({

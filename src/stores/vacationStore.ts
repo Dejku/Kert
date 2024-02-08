@@ -62,30 +62,17 @@ export const useVacationStore = defineStore('vacations', {
       if (this.hasUnsavedChanges) return;
 
       this.hasUnsavedChanges = true;
-      this.createAlert({
-        id: 'alert__unsavedChanges',
-        message: 'Masz niezapisane zmiany',
-        status: 'warning',
-        duration: 0,
-        userCanHide: false,
-        isImportant: true
-      });
     },
 
     async saveChanges() {
-      const { deleteAlertByID } = useAlertStore();
-
       await this.updateDatabase({ 'claimedVacationDays': this.claimedVacationDays })
         .catch(() => { return this.createAlert(ErrorAlert) });
 
       this.hasUnsavedChanges = false;
-      deleteAlertByID('alert__unsavedChanges');
       this.createAlert({ message: 'Zmiany zostały pomyślnie zapisane', status: 'success', duration: 4, isImportant: true })
     },
 
     async discardChanges() {
-      const { deleteAlertByID } = useAlertStore();
-
       const accountStore = useAccountStore();
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', accountStore.user.id);
@@ -97,7 +84,6 @@ export const useVacationStore = defineStore('vacations', {
       this.claimedVacationDays = data.claimedVacationDays;
 
       this.hasUnsavedChanges = false;
-      deleteAlertByID('alert__unsavedChanges');
       this.createAlert({ message: 'Zmiany zostały wycofane', status: 'info', duration: 4, isImportant: true })
     },
 

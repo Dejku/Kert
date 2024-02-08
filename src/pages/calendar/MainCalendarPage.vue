@@ -140,8 +140,8 @@
                   formatString(
                     'dni',
                     vacationStore.countClaimedNormalVacationDaysInMonth(
-                      selectedDate.getMonth() + 1,
-                      selectedDate.getFullYear()
+                      selectedDate.getFullYear(),
+                      selectedDate.getMonth() + 1
                     )
                   )
                 }}
@@ -309,7 +309,7 @@ const iconStore = useIconStore();
 const vacationStore = useVacationStore();
 const { showModal } = useModalStore();
 const appStore = useAppStore();
-const { scaleAlert } = useAlertStore();
+const { createAlert } = useAlertStore();
 
 const activeTab = ref<string>('calendar');
 const transition = ref<'left' | 'fade' | 'right'>('fade');
@@ -475,7 +475,13 @@ onMounted(() => {
 
 onBeforeRouteLeave(() => {
   if (vacationStore.hasUnsavedChanges) {
-    scaleAlert('alert__unsavedChanges');
+    createAlert({
+      message: 'Masz niezapisane zmiany',
+      status: 'warning',
+      duration: 4,
+      isImportant: true,
+    });
+
     return false;
   } else return true;
 });
