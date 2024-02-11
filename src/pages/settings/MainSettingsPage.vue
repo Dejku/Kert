@@ -87,7 +87,7 @@ const sections = {
     {
       icon: iconStore.icon.questionMark,
       label: 'Centrum Pomocy',
-      click: () => router.push('/help'),
+      click: () => router.push('/support'),
     },
     {
       icon: iconStore.icon.power,

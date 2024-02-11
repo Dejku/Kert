@@ -38,6 +38,7 @@ export const useIconStore = defineStore('icons', {
       questionMark: 'eva-question-mark-outline',
       questionMarkCircle: 'eva-question-mark-circle-outline',
       save: 'eva-save-outline',
+      search: 'eva-search-outline',
       settings: 'eva-settings-2-outline',
       slash: 'eva-slash-outline',
       success: 'eva-checkmark-outline',

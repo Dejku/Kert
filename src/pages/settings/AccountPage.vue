@@ -3,7 +3,7 @@
     <base-title
       :icon-left="iconStore.icon.arrowBack"
       title="Twoje Konto"
-      go="-1"
+      to="/settings"
     />
 
     <section

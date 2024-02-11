@@ -12,7 +12,7 @@
     </label>
 
     <div
-      class="base__input text-weight-600 text-center rounded-borders--small q-py-xs q-px-sm overflow-hidden text-error"
+      class="base__input text-weight-600 text-center rounded-borders--small q-pa-xs overflow-hidden text-error"
       :class="`base__input--color-${bgColor} ${
         transparent ? 'base__input--transparent' : ''
       } ${shadow ? 'box-shadow' : ''} ${
@@ -21,25 +21,28 @@
     >
       <div>
         <div class="row no-wrap items-center gap-xs">
-          <transition
-            v-if="icon"
-            enter-active-class="animated fadeIn"
-            leave-active-class="animated fadeOut"
-            mode="out-in"
-            class="text-size-9"
-          >
-            <q-icon
-              v-if="error || customError"
-              :name="iconStore.icon.alertCircle"
-            />
+          <template v-if="icon">
+            <transition
+              enter-active-class="animated fadeIn"
+              leave-active-class="animated fadeOut"
+              mode="out-in"
+              class="text-size-9"
+            >
+              <q-icon
+                v-if="error || customError"
+                :name="iconStore.icon.alertCircle"
+              />
 
-            <q-icon
-              v-else
-              class="text-onSurfaceVariant"
-              :class="{ hidden: icon == undefined }"
-              :name="icon"
-            />
-          </transition>
+              <q-icon
+                v-else
+                class="text-onSurfaceVariant"
+                :class="{ hidden: icon == undefined }"
+                :name="icon"
+              />
+            </transition>
+
+            <q-separator v-if="separator" vertical color="onSurface" />
+          </template>
 
           <input
             :id="label ? `base__input-${label?.toLowerCase()}` : 'base__input'"
@@ -130,6 +133,10 @@ const props = defineProps({
     default: false,
   },
   transparent: {
+    type: Boolean,
+    default: false,
+  },
+  separator: {
     type: Boolean,
     default: false,
   },

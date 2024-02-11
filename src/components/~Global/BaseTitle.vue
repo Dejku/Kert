@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="row items-center gap-sm"
-    @click="go ? $router.go(go as number) : null"
-  >
+  <div class="row items-center gap-sm" @click="changePage">
     <q-icon v-if="iconLeft" :name="iconLeft" class="text-size-10" />
     <h6
       class="first-upper-case"
@@ -15,7 +12,10 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const props = defineProps({
   iconLeft: {
     type: String,
     default: undefined,
@@ -44,8 +44,15 @@ defineProps({
     type: Boolean,
     default: true,
   },
-  go: {
-    type: [String, Number],
+  to: String,
+  back: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const changePage = () => {
+  if (props.back) return router.back();
+  if (props.to) return router.push(props.to);
+};
 </script>
