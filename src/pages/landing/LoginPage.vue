@@ -47,7 +47,7 @@
         label="Zaloguj się"
         :icon-right="iconStore.icon.login"
         :disabled="emailError || passwordError"
-        loading-state
+        loading
         corner-small
         @click="login"
       />

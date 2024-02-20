@@ -1,7 +1,7 @@
 <template>
   <div
     v-ripple="ripple"
-    class="base__button relative-position hug text-bold"
+    class="base__button relative-position row flex-center hug text-bold"
     :class="{
       'box-shadow': shadow,
       'no-pointer-events': disabled || loading,
@@ -21,7 +21,7 @@
       'base__button--color-warning': color === 'warning' || color === 'yellow',
       'base__button--color-error': color === 'error' || color === 'red',
     }"
-    @click="loadingState ? (loading = true) : null"
+    @click="loading ? (isLoading = true) : null"
   >
     <transition-group name="fade">
       <q-spinner
@@ -112,7 +112,7 @@ const props = defineProps({
       return ['big', '2', 2, 'medium', '1', 1, 'small', '0', 0].includes(value);
     },
   },
-  loadingState: {
+  loading: {
     type: Boolean,
     default: false,
   },
@@ -122,30 +122,30 @@ const props = defineProps({
   },
 });
 
-const loading = ref<boolean>(false);
+const isLoading = ref<boolean>(false);
 
 watch(
-  () => props.loadingState,
+  () => props.loading,
   () =>
     window.addEventListener(
       'base__button--loadingComplete',
-      () => (loading.value = false)
+      () => (isLoading.value = false)
     )
 );
 
 onMounted(() => {
-  if (props.loadingState) {
+  if (props.loading)
     window.addEventListener(
       'base__button--loadingComplete',
-      () => (loading.value = false)
+      () => (isLoading.value = false)
     );
-  }
 });
 
 onUnmounted(() => {
-  window.removeEventListener(
-    'base__button--loadingComplete',
-    () => (loading.value = false)
-  );
+  if (props.loading)
+    window.removeEventListener(
+      'base__button--loadingComplete',
+      () => (isLoading.value = false)
+    );
 });
 </script>
