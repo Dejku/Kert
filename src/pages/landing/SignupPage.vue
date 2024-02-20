@@ -83,7 +83,7 @@
           label="Stwórz konto"
           :icon-right="iconStore.icon.login"
           :disabled="!checkValidation()"
-          loading-state
+          loading
           corner-small
           @click="signup"
         />
