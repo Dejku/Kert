@@ -3,7 +3,7 @@
     <base-title
       :icon-left="iconStore.icon.arrowBack"
       title="Powiadomienia"
-      go="-1"
+      back
     />
 
     <section
