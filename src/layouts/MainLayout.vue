@@ -33,9 +33,15 @@
         v-slot="{ Component, route }"
         class="column q-py-lg q-px-md full-width"
       >
-        <transition :name="(route.meta.transition as string) || 'fade'">
-          <component :is="Component" />
-        </transition>
+        <q-scroll-area
+          style="height: calc(100vh - 102px); width: 100vw"
+          :bar-style="{ opacity: '0' }"
+          :thumb-style="{ opacity: '0' }"
+        >
+          <transition :name="(route.meta.transition as string) || 'fade'">
+            <component :is="Component" />
+          </transition>
+        </q-scroll-area>
       </router-view>
     </q-page-container>
 

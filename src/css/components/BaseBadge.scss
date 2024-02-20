@@ -1,0 +1,12 @@
+.base__badge {
+  display: grid;
+  grid-template-columns: repeat(auto, 2);
+
+  .base__badge__icon {
+    grid-column: 1 / 2;
+  }
+
+  .base__badge__content {
+    grid-column: 2 / 3;
+  }
+}
