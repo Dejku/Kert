@@ -81,7 +81,7 @@
       <base-button
         :label="canModify ? 'Zatwierdź' : 'Modyfikuj'"
         :color="canModify ? 'success' : 'warning'"
-        :loading-state="loading"
+        :loading="loading"
         corner-small
         @click="changeModify"
       />

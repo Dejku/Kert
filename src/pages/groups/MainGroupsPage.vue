@@ -1,3 +1,3 @@
 <template>
-  <q-page>Groups <base-button loading /></q-page>
+  <q-page>Groups</q-page>
 </template>
