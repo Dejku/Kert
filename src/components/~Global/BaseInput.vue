@@ -41,7 +41,7 @@
               />
             </transition>
 
-            <q-separator v-if="separator" vertical color="onSurface" />
+            <q-separator v-if="separator" vertical color="outline" />
           </template>
 
           <input

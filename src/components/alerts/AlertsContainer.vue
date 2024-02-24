@@ -48,5 +48,6 @@ const alertStore = useAlertStore();
 
 .alerts__element-leave-active {
   position: absolute;
+  z-index: 1;
 }
 </style>

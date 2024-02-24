@@ -5,6 +5,7 @@
     <q-icon :name="icon" class="base__badge__icon text-size-8" />
 
     <div class="base__badge__content">
+      <span class="text-bold"><slot name="bold" /></span>
       <slot />
     </div>
   </div>
