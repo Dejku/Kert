@@ -35,8 +35,8 @@
       >
         <q-scroll-area
           style="height: calc(100vh - 102px); width: 100vw"
-          :bar-style="{ opacity: '0' }"
-          :thumb-style="{ opacity: '0' }"
+          :bar-style="{ display: 'none' }"
+          :thumb-style="{ display: 'none' }"
         >
           <transition :name="(route.meta.transition as string) || 'fade'">
             <component :is="Component" />
