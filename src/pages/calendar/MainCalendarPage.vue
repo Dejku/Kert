@@ -166,7 +166,7 @@
             </p>
           </div>
 
-          <div class="column items-center">
+          <div v-if="activeTab === 'calendar'" class="column items-center">
             <transition-group name="details">
               <div
                 key="additionalInfo"
