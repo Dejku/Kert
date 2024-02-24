@@ -4,8 +4,8 @@
     class="base__button relative-position row flex-center hug text-bold"
     :class="{
       'box-shadow': shadow,
-      'no-pointer-events': disabled || loading,
-      'base__button--disabled': disabled || loading,
+      'no-pointer-events': disabled || isLoading,
+      'base__button--disabled': disabled || isLoading,
       'base__button--small': size === 'small' || size == 0,
       'base__button--medium': size === 'medium' || size == 1,
       'base__button--transparent': transparent,
@@ -25,7 +25,7 @@
   >
     <transition-group name="fade">
       <q-spinner
-        v-if="loading"
+        v-if="isLoading"
         key="spinner"
         class="absolute"
         color="onPrimary"
@@ -36,7 +36,7 @@
       <div
         key="content"
         class="row flex-center gap-xs"
-        :style="{ opacity: loading ? 0 : 1 }"
+        :style="{ opacity: isLoading ? 0 : 1 }"
       >
         <q-icon v-if="iconLeft" :name="iconLeft" />
         <slot>{{ label }}</slot>
