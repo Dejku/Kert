@@ -20,7 +20,7 @@
           v-for="element in computedResult"
           :key="element.label"
           class="search__container__element row q-px-sm q-py-xs bg-surface rounded-borders gap-sm box-shadow z-fab"
-          @click="fetchSupportPage(element.link)"
+          @click="supportStore.fetchSupportPage(element.link)"
         >
           <q-icon :name="element.icon" class="text-size-10" />
 
@@ -43,12 +43,10 @@ import { useSupportStore } from 'stores/supportStore';
 
 import { computed, ref, onBeforeMount } from 'vue';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { useRouter } from 'vue-router';
 
 const iconStore = useIconStore();
 const supportStore = useSupportStore();
 
-const router = useRouter();
 const input = ref<HTMLElement | null>(null);
 const searchQuery = ref<string>('');
 const links = ref<SupportLinks[]>([]);
@@ -61,19 +59,6 @@ const fetchLinks = async () => {
   if (!docSnap.exists()) return;
 
   links.value = docSnap.data().links;
-};
-
-const fetchSupportPage = async (link: string) => {
-  const db = getFirestore();
-  const docRef = doc(db, 'supportStore', link);
-  const docSnap = await getDoc(docRef);
-
-  if (!docSnap.exists()) return;
-
-  supportStore.title = docSnap.data().title;
-  supportStore.tableOfContents = docSnap.data().tableOfContents;
-  supportStore.content = docSnap.data().content;
-  router.push(`/support/${link}`);
 };
 
 const computedResult = computed(() => {
