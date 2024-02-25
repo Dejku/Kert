@@ -21,9 +21,6 @@ import BaseOverlay from 'components/Shared/BaseOverlay.vue';
 import BaseReauthenticate from 'components/Shared/BaseReauthenticate.vue';
 
 import { useAppStore } from 'stores/appStore';
-import { useAlertStore } from 'stores/alertStore';
-import { useIconStore } from 'stores/iconStore';
-
 import { onMounted, onUnmounted } from 'vue';
 import { QSpinnerRadio, useQuasar } from 'quasar';
 
@@ -31,9 +28,6 @@ import 'database/firebase';
 import authStart from 'database/auth';
 
 const appStore = useAppStore();
-const alertStore = useAlertStore();
-const iconStore = useIconStore();
-
 const $q = useQuasar();
 
 onMounted(() => {
@@ -41,43 +35,30 @@ onMounted(() => {
   authStart();
 
   window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent));
-  window.addEventListener('online', HandleNetworkChange);
-  window.addEventListener('offline', HandleNetworkChange);
+  window.addEventListener('online', HandleNetworkChange, false);
+  window.addEventListener('offline', HandleNetworkChange, false);
+
+  if (process.env.PROD) window.screen.orientation.lock('portrait');
 });
 
 onUnmounted(() => {
   window.removeEventListener('showOverlay', (e) =>
     closePopUps(e as CustomEvent)
   );
-  window.removeEventListener('online', HandleNetworkChange);
-  window.removeEventListener('offline', HandleNetworkChange);
+  window.removeEventListener('online', HandleNetworkChange, false);
+  window.removeEventListener('offline', HandleNetworkChange, false);
 });
 
 const closePopUps = (e: CustomEvent) =>
   e.detail == false || 'failed' ? appStore.closeAllPopUps() : null;
 
 const HandleNetworkChange = () => {
-  if (navigator.onLine) {
-    alertStore.createAlert({
-      message: 'Ponownie połączono z internetem',
-      status: 'info',
-      duration: 3,
-    });
-
-    alertStore.deleteHeaderAlert('noWifi');
-
-    $q.loading.hide();
-  } else {
-    alertStore.createHeaderAlert({
-      id: 'noWifi',
-      icon: iconStore.icon.noWifi,
-    });
-
+  if (navigator.onLine) $q.loading.hide();
+  else
     $q.loading.show({
       spinner: QSpinnerRadio,
       spinnerSize: 75,
       message: 'Brak połączenia z internetem...',
     });
-  }
 };
 </script>
