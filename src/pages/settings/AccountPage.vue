@@ -95,13 +95,15 @@ import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useModalStore } from 'stores/modalStore';
 import { useAlertStore } from 'stores/alertStore';
+import { useReauthenticateStore } from 'stores/reauthenticateStore';
 
-import { getAuth, updateProfile } from 'firebase/auth';
+import { getAuth, updatePassword, updateProfile } from 'firebase/auth';
 
 const iconStore = useIconStore();
 const accountStore = useAccountStore();
 const modalStore = useModalStore();
 const alertStore = useAlertStore();
+const { askForReauthenticate } = useReauthenticateStore();
 
 const changeName = async () => {
   const response = await modalStore.showModal({
@@ -145,7 +147,7 @@ const changeName = async () => {
   }
 };
 const changePassword = async () => {
-  const response = await modalStore.showModal({
+  const modalOptions: ModalOption = {
     title: 'Zmień hasło',
     component: { type: 'changePassword' },
     buttonsOptions: {
@@ -159,10 +161,42 @@ const changePassword = async () => {
         transparent: false,
       },
     },
-  });
+  };
 
-  if (response.status == 'success') {
-    console.log(response); // TODO
-  }
+  const modalResponse = await modalStore.showModal(modalOptions);
+  if (modalResponse.status != 'success') return;
+
+  const auth = getAuth();
+  if (!auth.currentUser) return;
+  const password = modalStore.component.user.password;
+
+  await updatePassword(auth.currentUser, password)
+    .then(() => {
+      alertStore.createAlert({
+        status: 'success',
+        message: 'Hasło pomyślnie zaktualizowane',
+        duration: 3,
+      });
+    })
+    .catch(async (error) => {
+      console.log(error);
+
+      if (error != 'auth/requires-recent-login')
+        return alertStore.createAlert(ErrorAlert);
+
+      const reauthenticateResponse = await askForReauthenticate();
+      if (reauthenticateResponse.status == 'success')
+        return alertStore.createAlert({
+          status: 'success',
+          message: 'Pomyślnie zweryfikowano konto',
+          duration: 3,
+        });
+      else
+        return alertStore.createAlert({
+          status: 'error',
+          message: 'Nie udało się zweryfikować konta',
+          duration: 5,
+        });
+    });
 };
 </script>
