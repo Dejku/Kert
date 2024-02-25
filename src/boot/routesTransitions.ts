@@ -21,7 +21,7 @@ export default boot(({ router }) => {
     };
 
     // from support pages
-    if (from.path.startsWith('/support/') && to.meta.transition == 'slide-left') {
+    if (from.name == 'Support' && to.name == 'Support Center') {
       to.meta.transition = 'slide-right'
     };
 
