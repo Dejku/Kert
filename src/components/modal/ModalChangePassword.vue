@@ -1,7 +1,7 @@
 <template>
   <div class="column gap-sm">
     <div class="text-center">
-      <p>Zmień hasło do swojego konta</p>
+      <p>Zmień hasło do swojego konta.</p>
       <p>Powinno ono zawierać minimum 6 znaków</p>
     </div>
 
