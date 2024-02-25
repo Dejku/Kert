@@ -7,16 +7,18 @@
     </transition>
   </router-view>
 
-  <BaseOverlay />
-  <BaseModal />
   <BaseDialog />
+  <BaseModal />
+  <BaseOverlay />
+  <BaseReauthenticate />
 </template>
 
 <script setup lang="ts">
+import Alerts from 'components/alerts/AlertsContainer.vue';
+import BaseDialog from 'components/Shared/BaseDialog.vue';
 import BaseModal from 'components/Shared/BaseModal.vue';
 import BaseOverlay from 'components/Shared/BaseOverlay.vue';
-import BaseDialog from 'components/Shared/BaseDialog.vue';
-import Alerts from 'components/alerts/AlertsContainer.vue';
+import BaseReauthenticate from 'components/Shared/BaseReauthenticate.vue';
 
 import { useAppStore } from 'stores/appStore';
 import { useAlertStore } from 'stores/alertStore';

@@ -1,0 +1,9 @@
+.reauthenticate-fade-enter-active,
+.reauthenticate-fade-leave-active {
+  transition: all 0.4s ease-in-out;
+}
+
+.reauthenticate-fade-enter-from,
+.reauthenticate-fade-leave-to {
+  opacity: 0;
+}
