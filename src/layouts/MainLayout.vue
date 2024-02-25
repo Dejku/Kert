@@ -112,38 +112,45 @@ const navigation = [
 </script>
 
 <style lang="scss" scoped>
+$box-shadow-color: #151718;
+
 .q-toolbar__title {
   letter-spacing: 3px;
   font-weight: 700;
 }
 
-#home {
-  translate: 0 calc(-1.625 * $body-font-size);
-  padding: 12px;
-  border: 5px solid var(--background);
+.q-footer {
+  box-shadow: 0px 0px 20px $box-shadow-color;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: calc(1.5 * $body-font-size);
-    left: calc(-1.0625 * $body-font-size);
-    width: 15px;
-    height: 15px;
-    border-top-right-radius: 20px;
-    background: var(--surface);
-    box-shadow: 4px -4px 0 0 var(--background);
-  }
+  #home {
+    translate: 0 calc(-1.625 * $body-font-size);
+    padding: 12px;
+    border: 5px solid #151718;
+    box-shadow: 0px -5px 20px -10px $box-shadow-color;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: calc(1.5 * $body-font-size);
-    right: calc(-1.0625 * $body-font-size);
-    width: 15px;
-    height: 15px;
-    border-top-left-radius: 20px;
-    background: var(--surface);
-    box-shadow: -4px -4px 0 0 var(--background);
+    &::before {
+      content: '';
+      position: absolute;
+      top: calc(1.5 * $body-font-size);
+      left: calc(-1.0625 * $body-font-size);
+      width: 15px;
+      height: 15px;
+      border-top-right-radius: 20px;
+      background: var(--surface);
+      box-shadow: 4px -4px 0 0 #151718;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: calc(1.5 * $body-font-size);
+      right: calc(-1.0625 * $body-font-size);
+      width: 15px;
+      height: 15px;
+      border-top-left-radius: 20px;
+      background: var(--surface);
+      box-shadow: -4px -4px 0 0 #151718;
+    }
   }
 }
 </style>
