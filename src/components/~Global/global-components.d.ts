@@ -9,7 +9,7 @@ declare module '@vue/runtime-core' {
         BaseBadge: typeof BaseBadge,
         BaseButton: typeof BaseButton,
         BaseInput: typeof BaseInput,
-        BaseOTP: typeof BaseOTP,
+        BaseOtp: typeof BaseOTP,
         BaseTitle: typeof BaseTitle,
     }
 }
