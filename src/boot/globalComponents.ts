@@ -9,6 +9,6 @@ export default boot(({ app }) => {
   app.component('BaseBadge', BaseBadge)
   app.component('BaseButton', BaseButton)
   app.component('BaseInput', BaseInput)
-  app.component('BaseOtp', BaseOTP)
+  app.component('BaseOTP', BaseOTP)
   app.component('BaseTitle', BaseTitle)
 })
