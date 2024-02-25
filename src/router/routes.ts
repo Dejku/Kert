@@ -26,8 +26,8 @@ const routes: RouteRecordRaw[] = [
       { path: '/settings/account', component: () => import('pages/settings/AccountPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
       { path: '/settings/notification', component: () => import('pages/settings/NotificationPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
       { path: '/settings/work', component: () => import('pages/settings/WorkPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
-      { path: '/support', component: () => import('pages/support/MainSupportPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
-      { path: '/support/:documentID', component: () => import('pages/support/SupportPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
+      { name: 'Support Center', path: '/support', component: () => import('pages/support/MainSupportPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
+      { name: 'Support', path: '/support/:documentID', component: () => import('pages/support/SupportPage.vue'), meta: { transition: 'slide-left', requireAuth: true } },
     ],
   },
 ];
