@@ -1,7 +1,7 @@
 <template>
   <div class="column gap-sm">
     <div class="text-center">
-      <p>Ustaw nazwę, która będzie wyświetlana innym użytkownikom aplikacji.</p>
+      <p>Ustaw swoją nazwę, która będzie wyświetlana innym użytkownikom.</p>
       <p>Możesz póżniej ponownie ją zmienić</p>
     </div>
 

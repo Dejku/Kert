@@ -33,7 +33,7 @@
           :minlength="3"
           :required="true"
           bg-color="surfaceVariant"
-          autocomplete="nickname"
+          autocomplete="username"
           @has-error="(value: boolean) => (nameError = value)"
         />
 
@@ -51,7 +51,6 @@
 
         <base-input
           v-model="password"
-          @update:model-value="checkPassword"
           type="password"
           :icon="iconStore.icon.lock"
           :minlength="6"
@@ -60,23 +59,7 @@
           :required="true"
           bg-color="surfaceVariant"
           autocomplete="new-password"
-          :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
           @has-error="(value: boolean) => (passwordError = value)"
-        />
-
-        <base-input
-          v-model="confirmPassword"
-          @update:model-value="checkPassword"
-          type="password"
-          :icon="iconStore.icon.lock"
-          :minlength="6"
-          label="Powtórz hasło"
-          placeholder="Powtórz hasło"
-          :required="true"
-          bg-color="surfaceVariant"
-          autocomplete="new-password"
-          :custom-error="isSamePassword ? '' : 'Hasła się nie zgadzają'"
-          @has-error="(value: boolean) => (confirmPasswordError = value)"
         />
 
         <base-button
@@ -115,17 +98,14 @@ const accountStore = useAccountStore();
 const appStore = useAppStore();
 const router = useRouter();
 
-const codeStage = ref<boolean>(true);
+const codeStage = ref<boolean>(false);
 const nick = ref<string>('');
 const email = ref<string>('');
 const password = ref<string>('');
-const confirmPassword = ref<string>('');
 
 const nameError = ref<boolean>(true);
 const emailError = ref<boolean>(true);
 const passwordError = ref<boolean>(true);
-const confirmPasswordError = ref<boolean>(true);
-const isSamePassword = ref<boolean>(true);
 
 const checkCode = (value: string) => {
   console.log(value);
@@ -133,21 +113,11 @@ const checkCode = (value: string) => {
   codeStage.value = false;
 };
 
-const checkValidation = () => {
-  return (
-    !nameError.value ||
-    !emailError.value ||
-    !passwordError.value ||
-    !confirmPasswordError.value ||
-    !isSamePassword.value
-  );
-};
-
-const checkPassword = () =>
-  (isSamePassword.value = password.value === confirmPassword.value);
+const checkValidation = () =>
+  !nameError.value && !emailError.value && !passwordError.value;
 
 const signup = () => {
-  if (!checkValidation() || !checkPassword()) return;
+  if (!checkValidation()) return;
   const auth = getAuth();
 
   createUserWithEmailAndPassword(auth, email.value, password.value)

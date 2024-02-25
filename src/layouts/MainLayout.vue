@@ -56,16 +56,18 @@
       >
         <q-icon :name="nav.icon" />
       </router-link>
+
       <div>
         <router-link
           id="home"
-          class="absolute-center flex flex-center bg-background rounded-borders--circle"
+          class="absolute-center flex flex-center bg-surface rounded-borders--circle"
           to="/home"
           exact
         >
           <q-icon :name="iconStore.icon.home" />
         </router-link>
       </div>
+
       <router-link
         v-for="nav in navigation.slice(2, 4)"
         :key="nav.name"
@@ -110,29 +112,38 @@ const navigation = [
 </script>
 
 <style lang="scss" scoped>
-$box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
-
 .q-toolbar__title {
   letter-spacing: 3px;
   font-weight: 700;
 }
 
-.q-footer {
-  box-shadow: $box-shadow;
+#home {
+  translate: 0 calc(-1.625 * $body-font-size);
+  padding: 12px;
+  border: 5px solid var(--background);
 
-  #home {
-    translate: 0 calc(-1.25 * $body-font-size);
-    padding: min($body-font-size, 32px);
-    box-shadow: $box-shadow;
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(1.5 * $body-font-size);
+    left: calc(-1.0625 * $body-font-size);
+    width: 15px;
+    height: 15px;
+    border-top-right-radius: 20px;
+    background: var(--surface);
+    box-shadow: 4px -4px 0 0 var(--background);
+  }
 
-    &::before {
-      content: '';
-      position: absolute;
-      width: calc(100% - $body-font-size-2);
-      height: calc(100% - $body-font-size-2);
-      border-radius: inherit;
-      background-color: var(--surface);
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(1.5 * $body-font-size);
+    right: calc(-1.0625 * $body-font-size);
+    width: 15px;
+    height: 15px;
+    border-top-left-radius: 20px;
+    background: var(--surface);
+    box-shadow: -4px -4px 0 0 var(--background);
   }
 }
 </style>
