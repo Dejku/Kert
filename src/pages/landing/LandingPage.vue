@@ -7,14 +7,26 @@
 
 <script setup lang="ts">
 import { useAccountStore } from 'stores/accountStore';
+import { onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const accountStore = useAccountStore();
 const router = useRouter();
 
-setTimeout(
-  () =>
-    accountStore.isLogged ? router.replace('/home') : router.replace('/login'),
-  2000
+onMounted(() =>
+  window.addEventListener('firebase--auth-ready', () => loadApp())
 );
+
+onUnmounted(() =>
+  window.removeEventListener('firebase--auth-ready', () => loadApp())
+);
+
+const loadApp = () =>
+  setTimeout(
+    () =>
+      accountStore.isLogged
+        ? router.replace('/home')
+        : router.replace('/login'),
+    2000
+  );
 </script>

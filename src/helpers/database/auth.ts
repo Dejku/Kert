@@ -8,6 +8,7 @@ import {
     connectAuthEmulator,
 } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { fireEvent } from '../utils';
 
 export default function authStart() {
     const appStore = useAppStore();
@@ -22,19 +23,19 @@ export default function authStart() {
         });
     }
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
-            accountStore.isLogged = true;
-
             accountStore.saveUser({
                 id: user.uid,
-                displayName: user.displayName as string,
+                displayName: user.displayName || 'Gość',
                 photoURL: user.photoURL,
             });
 
-            appStore.fetchData();
+            await appStore.fetchData();
 
             snapshots();
         }
+
+        fireEvent('firebase--auth-ready');
     });
 }
