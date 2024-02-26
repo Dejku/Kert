@@ -41,7 +41,17 @@
         @has-error="(value: boolean) => (passwordError = value)"
       />
 
-      <q-space />
+      <base-button
+        label="Zapomniałeś hasła?"
+        color="secondary"
+        size="small"
+        class="self-end"
+        style="margin-top: -16px"
+        transparent
+        no-border
+        corner-small
+        @click="router.push('/password-recovery')"
+      />
 
       <base-button
         label="Zaloguj się"
@@ -61,15 +71,13 @@ import { fireEvent } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAlertStore } from 'stores/alertStore';
 
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { patterns } from 'quasar';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
 const router = useRouter();
-const { testPattern } = patterns;
 
 const email = ref<string>('');
 const password = ref<string>('');
@@ -92,9 +100,4 @@ const login = () => {
       fireEvent('base__button--loadingComplete');
     });
 };
-
-watch(
-  () => email.value,
-  () => (emailError.value = !testPattern.email(email.value))
-);
 </script>

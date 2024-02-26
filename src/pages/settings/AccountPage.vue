@@ -22,7 +22,7 @@
           transparent
           no-border
           circle
-          size="1"
+          size="small"
           @click="changeName"
         />
       </div>
@@ -43,7 +43,7 @@
             transparent
             no-border
             circle
-            size="0"
+            size="small"
             @click="copyToClipboard(accountStore.user.id)"
           />
         </div>
@@ -68,7 +68,7 @@
             transparent
             no-border
             circle
-            size="0"
+            size="small"
             @click="changePassword"
           />
         </div>
@@ -77,13 +77,13 @@
 
     <q-space />
 
-    <section
+    <!-- <section
       class="column flex-center q-py-sm bg-surface rounded-borders box-shadow gap-sm"
     >
       <base-title title="Strefa zagrożenia" size="5" />
 
       <base-button color="red" label="Usuń konto" size="1" disabled />
-    </section>
+    </section> -->
   </q-page>
 </template>
 
