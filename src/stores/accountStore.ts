@@ -14,7 +14,10 @@ export const useAccountStore = defineStore('account', {
 
   actions: {
     saveUser(user: Account) {
-      this.user = user
+      this.isLogged = true;
+      this.user = user;
+
+      console.log('saveUser');
     },
   }
 });

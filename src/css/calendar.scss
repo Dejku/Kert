@@ -22,8 +22,8 @@
   overflow: visible;
 }
 
-$dateWidth: max(32px, 4vh);
-$dateGap: 1vh;
+$dateWidth: max(32px, 4.5vh);
+$dateGap: 1.5vh;
 
 #calendar__day__names {
   display: grid;
@@ -77,7 +77,7 @@ $dateGap: 1vh;
 }
 
 #calendar__container {
-  height: calc($dateWidth * 7);
+  height: calc($dateWidth * 7.75);
 
   .calendar__container__dates {
     display: grid;

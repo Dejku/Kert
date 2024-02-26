@@ -61,13 +61,15 @@ import { fireEvent } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAlertStore } from 'stores/alertStore';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { patterns } from 'quasar';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
 const router = useRouter();
+const { testPattern } = patterns;
 
 const email = ref<string>('');
 const password = ref<string>('');
@@ -90,4 +92,9 @@ const login = () => {
       fireEvent('base__button--loadingComplete');
     });
 };
+
+watch(
+  () => email.value,
+  () => (emailError.value = !testPattern.email(email.value))
+);
 </script>

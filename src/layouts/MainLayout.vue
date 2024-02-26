@@ -10,13 +10,13 @@
 
         <div class="row items-center q-px-md text-size-6 text-onSurface gap-sm">
           <q-icon
-            v-for="alert in alertStore.headerAlert.slice(0, 5)"
+            v-for="alert in alertStore.headerAlerts.slice(0, 5)"
             :key="alert.id"
             :name="alert.icon"
           />
 
-          <div v-if="alertStore.headerAlert.length > 5">
-            +{{ alertStore.headerAlert.length - 5 }}
+          <div v-if="alertStore.headerAlerts.length > 5">
+            +{{ alertStore.headerAlerts.length - 5 }}
           </div>
         </div>
 
@@ -46,6 +46,7 @@
     </q-page-container>
 
     <q-footer
+      elevated
       class="row justify-around items-center no-wrap q-pa-sm bg-surface text-size-9"
     >
       <router-link
@@ -119,38 +120,35 @@ $box-shadow-color: #151718;
   font-weight: 700;
 }
 
-.q-footer {
-  box-shadow: 0px 0px 20px $box-shadow-color;
+#home {
+  translate: 0 calc(-1.625 * $body-font-size);
+  padding: 12px;
+  border: 5px solid #151718;
+  box-shadow: 0px -5px 20px -10px $box-shadow-color;
+  z-index: 1;
 
-  #home {
-    translate: 0 calc(-1.625 * $body-font-size);
-    padding: 12px;
-    border: 5px solid #151718;
-    box-shadow: 0px -5px 20px -10px $box-shadow-color;
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(1.5 * $body-font-size);
+    left: calc(-1.0625 * $body-font-size);
+    width: 15px;
+    height: 15px;
+    border-top-right-radius: 20px;
+    background: var(--surface);
+    box-shadow: 4px -4px 0 0 #151718;
+  }
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: calc(1.5 * $body-font-size);
-      left: calc(-1.0625 * $body-font-size);
-      width: 15px;
-      height: 15px;
-      border-top-right-radius: 20px;
-      background: var(--surface);
-      box-shadow: 4px -4px 0 0 #151718;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: calc(1.5 * $body-font-size);
-      right: calc(-1.0625 * $body-font-size);
-      width: 15px;
-      height: 15px;
-      border-top-left-radius: 20px;
-      background: var(--surface);
-      box-shadow: -4px -4px 0 0 #151718;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    top: calc(1.5 * $body-font-size);
+    right: calc(-1.0625 * $body-font-size);
+    width: 15px;
+    height: 15px;
+    border-top-left-radius: 20px;
+    background: var(--surface);
+    box-shadow: -4px -4px 0 0 #151718;
   }
 }
 </style>

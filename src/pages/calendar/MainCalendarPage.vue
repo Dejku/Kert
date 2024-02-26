@@ -48,7 +48,7 @@
       class="bg-background"
       style="flex: 1 0 auto !important"
     >
-      <q-tab-panel name="calendar" class="column" style="gap: 3.5vh">
+      <q-tab-panel name="calendar" class="column" style="gap: 3vh">
         <div
           class="row flex-center q-py-xs q-px-sm q-mx-lg bg-surface rounded-borders--big box-shadow"
         >
@@ -58,10 +58,16 @@
             @click="changeMonth(-1)"
           />
           <q-space />
-          <div class="first-upper-case" @click="jumpToToday">
+
+          <div
+            class="first-upper-case"
+            v-touch-hold.mouse="jumpToToday"
+            @click="showSummaryModal()"
+          >
             {{ renderedMonth[0]?.name }}
             {{ renderedMonth[0]?.year }}
           </div>
+
           <q-space />
           <q-icon
             :name="iconStore.icon.arrowRight"
@@ -127,10 +133,7 @@
 
         <q-separator color="surface" />
 
-        <div
-          class="column flex items-center text-size-4 gap-sm"
-          @click="$q.screen.height < 700 ? showSummaryModal() : null"
-        >
+        <div class="column flex items-center text-size-4 gap-sm">
           <div class="flex row no-wrap gap-xs">
             <q-icon :name="iconStore.icon.info" class="text-size-7" />
             <p class="no-margin">
@@ -166,34 +169,20 @@
             </p>
           </div>
 
-          <div v-if="activeTab === 'calendar'" class="column items-center">
-            <transition-group name="details">
-              <div
-                key="additionalInfo"
-                v-if="
-                  vacationStore.overdueVacationDays &&
-                  selectedDate.getFullYear() == appStore.todayDate.getFullYear()
-                "
-                class="flex row no-wrap gap-xs"
-              >
-                <q-icon :name="iconStore.icon.info" class="text-size-7" />
-                <p class="no-margin">
-                  W tym zeszłoroczny urlop:
-                  <span class="text-bold">
-                    {{ formatString('dni', vacationStore.overdueVacationDays) }}
-                  </span>
-                </p>
-              </div>
-
-              <base-button
-                key="button"
-                v-if="$q.screen.height > 700"
-                class="q-mt-lg z-fab"
-                label="Podsumowanie"
-                transparent
-                @click="showSummaryModal"
-              />
-            </transition-group>
+          <div
+            v-if="
+              vacationStore.overdueVacationDays &&
+              selectedDate.getFullYear() == appStore.todayDate.getFullYear()
+            "
+            class="flex row no-wrap gap-xs"
+          >
+            <q-icon :name="iconStore.icon.info" class="text-size-7" />
+            <p class="no-margin">
+              W tym zeszłoroczny urlop:
+              <span class="text-bold">
+                {{ formatString('dni', vacationStore.overdueVacationDays) }}
+              </span>
+            </p>
           </div>
         </div>
       </q-tab-panel>
