@@ -74,9 +74,8 @@ import { useAccountStore } from 'stores/accountStore';
 import { useAlertStore } from 'stores/alertStore';
 import { useAppStore } from 'stores/appStore';
 
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { patterns } from 'quasar';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import {
   getAuth,
@@ -89,7 +88,6 @@ const { createAlert, formatMessage } = useAlertStore();
 const accountStore = useAccountStore();
 const appStore = useAppStore();
 const router = useRouter();
-const { testPattern } = patterns;
 
 const nick = ref<string>('');
 const email = ref<string>('');
@@ -154,9 +152,4 @@ const signup = () => {
       fireEvent('base__button--loadingComplete');
     });
 };
-
-watch(
-  () => email.value,
-  () => (emailError.value = !testPattern.email(email.value))
-);
 </script>

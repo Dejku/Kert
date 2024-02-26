@@ -68,7 +68,7 @@
 
           <q-icon
             v-if="type === 'password'"
-            class="text-onSurfaceVariant"
+            class="text-onSurfaceVariant q-mr-xs"
             :name="eyeIcon"
             @click="
               inputType === 'password'
@@ -94,6 +94,7 @@
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
 import { ref, watch } from 'vue';
+import { patterns } from 'quasar';
 
 const iconStore = useIconStore();
 
@@ -186,6 +187,7 @@ const inputType = ref<string>(props.type);
 const inputValue = ref<string>('');
 const eyeIcon = ref(iconStore.icon.eye);
 const error = ref<string>('');
+const { testPattern } = patterns;
 
 if (props.value) inputValue.value = props.value as string;
 
@@ -196,8 +198,11 @@ watch(
       throw new Error('Minimalna wartość jest większa niż maksymalna!');
     error.value = '';
 
-    if (props.type == 'email' && !input.value.validity.valid)
-      error.value = 'Wpisz poprawny e-mail';
+    if (
+      props.type == 'email' &&
+      (!input.value.validity.valid || !testPattern.email(inputValue.value))
+    )
+      return (error.value = 'Wpisz poprawny e-mail');
 
     if (props.required && !inputValue.value) {
       emit('hasError', true);
