@@ -11,67 +11,58 @@
       @click="router.push('/login')"
     />
 
-    <transition
-      enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
-      mode="out-in"
+    <div
+      class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
     >
-      <base-otp v-if="codeStage" :length="6" @update:modelValue="checkCode" />
+      <base-title title="Stwórz konto" size="10" />
 
-      <div
-        v-else
-        class="column items-center q-pa-lg full-width bg-surface rounded-borders gap-lg box-shadow"
-      >
-        <base-title title="Stwórz konto" size="10" />
+      <base-input
+        v-model="nick"
+        type="text"
+        :icon="iconStore.icon.person"
+        label="Nazwa"
+        placeholder="Wpisz swoją nazwę"
+        :minlength="3"
+        :required="true"
+        bg-color="surfaceVariant"
+        autocomplete="username"
+        @has-error="(value: boolean) => (nameError = value)"
+      />
 
-        <base-input
-          v-model="nick"
-          type="text"
-          :icon="iconStore.icon.person"
-          label="Nazwa"
-          placeholder="Wpisz swoją nazwę"
-          :minlength="3"
-          :required="true"
-          bg-color="surfaceVariant"
-          autocomplete="username"
-          @has-error="(value: boolean) => (nameError = value)"
-        />
+      <base-input
+        v-model="email"
+        type="email"
+        :icon="iconStore.icon.mail"
+        label="E-mail"
+        placeholder="Wpisz swój e-mail"
+        :required="true"
+        bg-color="surfaceVariant"
+        autocomplete="email"
+        @has-error="(value: boolean) => (emailError = value)"
+      />
 
-        <base-input
-          v-model="email"
-          type="email"
-          :icon="iconStore.icon.mail"
-          label="E-mail"
-          placeholder="Wpisz swój e-mail"
-          :required="true"
-          bg-color="surfaceVariant"
-          autocomplete="email"
-          @has-error="(value: boolean) => (emailError = value)"
-        />
+      <base-input
+        v-model="password"
+        type="password"
+        :icon="iconStore.icon.lock"
+        :minlength="6"
+        label="Hasło"
+        placeholder="Wpisz swoje hasło"
+        :required="true"
+        bg-color="surfaceVariant"
+        autocomplete="new-password"
+        @has-error="(value: boolean) => (passwordError = value)"
+      />
 
-        <base-input
-          v-model="password"
-          type="password"
-          :icon="iconStore.icon.lock"
-          :minlength="6"
-          label="Hasło"
-          placeholder="Wpisz swoje hasło"
-          :required="true"
-          bg-color="surfaceVariant"
-          autocomplete="new-password"
-          @has-error="(value: boolean) => (passwordError = value)"
-        />
-
-        <base-button
-          label="Stwórz konto"
-          :icon-right="iconStore.icon.login"
-          :disabled="!checkValidation()"
-          loading
-          corner-small
-          @click="signup"
-        />
-      </div>
-    </transition>
+      <base-button
+        label="Stwórz konto"
+        :icon-right="iconStore.icon.login"
+        :disabled="!checkValidation()"
+        loading
+        corner-small
+        @click="signup"
+      />
+    </div>
   </q-page>
 </template>
 
@@ -81,24 +72,25 @@ import { fireEvent } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAlertStore } from 'stores/alertStore';
-import { useAppStore } from 'src/stores/appStore';
+import { useAppStore } from 'stores/appStore';
 
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { patterns } from 'quasar';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
 import {
   getAuth,
   updateProfile,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { doc, getFirestore, setDoc } from 'firebase/firestore';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
 const accountStore = useAccountStore();
 const appStore = useAppStore();
 const router = useRouter();
+const { testPattern } = patterns;
 
-const codeStage = ref<boolean>(false);
 const nick = ref<string>('');
 const email = ref<string>('');
 const password = ref<string>('');
@@ -106,12 +98,6 @@ const password = ref<string>('');
 const nameError = ref<boolean>(true);
 const emailError = ref<boolean>(true);
 const passwordError = ref<boolean>(true);
-
-const checkCode = (value: string) => {
-  console.log(value);
-
-  codeStage.value = false;
-};
 
 const checkValidation = () =>
   !nameError.value && !emailError.value && !passwordError.value;
@@ -154,11 +140,7 @@ const signup = () => {
           displayName: nick.value,
         });
 
-      accountStore.saveUser({
-        id: user.uid,
-        displayName: nick.value,
-        photoURL: null,
-      });
+      accountStore.user.displayName = nick.value;
 
       router.push('/home');
     })
@@ -172,4 +154,9 @@ const signup = () => {
       fireEvent('base__button--loadingComplete');
     });
 };
+
+watch(
+  () => email.value,
+  () => (emailError.value = !testPattern.email(email.value))
+);
 </script>
