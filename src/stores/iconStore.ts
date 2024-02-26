@@ -41,6 +41,7 @@ export const useIconStore = defineStore('icons', {
       search: 'eva-search-outline',
       settings: 'eva-settings-2-outline',
       slash: 'eva-slash-outline',
+      sync: 'eva-sync-outline',
       success: 'eva-checkmark-outline',
       successCircle: 'eva-checkmark-circle-2-outline',
       text: 'eva-text-outline',

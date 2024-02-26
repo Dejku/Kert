@@ -8,6 +8,7 @@ const routes: RouteRecordRaw[] = [
       { path: '/', component: () => import('pages/landing/LandingPage.vue') },
       { path: '/login', component: () => import('pages/landing/LoginPage.vue'), meta: { transition: 'slide-right' } },
       { path: '/signup', component: () => import('pages/landing/SignupPage.vue'), meta: { transition: 'slide-left' } },
+      { path: '/password-recovery', component: () => import('pages/landing/RecoveryPassPage.vue'), meta: { transition: 'slide-left' } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue') },
       { path: '/loggedOut', component: () => import('pages/other/LoggedOut.vue') },
       { name: 'ErrorNotFound', path: '/:catchAll(.*)*', component: () => import('pages/other/ErrorNotFound.vue') }
