@@ -9,8 +9,8 @@ notificationSound.volume = 0.5;
 
 export const useAlertStore = defineStore('alerts', {
     state: () => ({
-        alert: [] as Alert[],
-        headerAlert: [] as HeaderAlert[]
+        alerts: [] as Alert[],
+        headerAlerts: [] as HeaderAlert[]
     }),
 
     actions: {
@@ -21,7 +21,7 @@ export const useAlertStore = defineStore('alerts', {
             if (data.status == 'error') data.isImportant = true
             if (notificationVolume == 2 && !data.isImportant) return;
 
-            this.alert.push({
+            this.alerts.push({
                 id: data.id || uid(),
                 message: data.message,
                 status: data.status,
@@ -33,23 +33,23 @@ export const useAlertStore = defineStore('alerts', {
         },
 
         deleteAlert(alert: Alert) {
-            const index = this.alert.indexOf(alert);
-            if (index > -1) this.alert.splice(index, 1);
+            const index = this.alerts.indexOf(alert);
+            if (index > -1) this.alerts.splice(index, 1);
         },
 
         deleteAlertByID(id: Alert['id']) {
-            this.alert = this.alert.filter((ele) => ele.id !== id);
+            this.alerts = this.alerts.filter((ele) => ele.id !== id);
         },
 
         createHeaderAlert(data: HeaderAlert) {
-            this.headerAlert.push({
+            this.headerAlerts.push({
                 id: data.id,
                 icon: data.icon,
             });
         },
 
         deleteHeaderAlert(id: HeaderAlert['id']) {
-            this.headerAlert = this.headerAlert.filter((ele) => ele.id !== id);
+            this.headerAlerts = this.headerAlerts.filter((ele) => ele.id !== id);
         },
 
         formatMessage(message: string): string {
