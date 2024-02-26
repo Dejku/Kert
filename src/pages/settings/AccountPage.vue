@@ -44,7 +44,7 @@
             no-border
             circle
             size="0"
-            @click="copyTextToClipboard(accountStore.user.id)"
+            @click="copyToClipboard(accountStore.user.id)"
           />
         </div>
 
@@ -88,7 +88,6 @@
 </template>
 
 <script setup lang="ts">
-import { copyTextToClipboard } from 'utils';
 import { ErrorAlert } from 'models';
 
 import { useIconStore } from 'stores/iconStore';
@@ -97,6 +96,7 @@ import { useModalStore } from 'stores/modalStore';
 import { useAlertStore } from 'stores/alertStore';
 import { useReauthenticateStore } from 'stores/reauthenticateStore';
 
+import { copyToClipboard } from 'quasar';
 import { getAuth, updatePassword, updateProfile } from 'firebase/auth';
 
 const iconStore = useIconStore();
