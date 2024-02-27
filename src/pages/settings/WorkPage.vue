@@ -1,10 +1,6 @@
 <template>
   <q-page class="gap-md">
-    <base-title
-      :icon-left="iconStore.icon.arrowBack"
-      title="Twoja Praca"
-      back
-    />
+    <base-title :icon="iconStore.icon.arrowBack" title="Twoja Praca" back />
 
     <section
       class="column flex-center q-py-md bg-surface rounded-borders gap-sm box-shadow"

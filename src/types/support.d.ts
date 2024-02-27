@@ -1,7 +1,14 @@
-type SupportLinks = {
+type SupportLink = {
     label: string,
     link: string,
     icon: string
+}
+
+type SupportPage = {
+    link: string,
+    title: string,
+    tableOfContents: TableOfContent[],
+    content: MainContent[],
 }
 
 type TableOfContent = {

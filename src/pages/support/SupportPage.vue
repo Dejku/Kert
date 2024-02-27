@@ -2,12 +2,13 @@
   <q-page>
     <main class="column gap-md">
       <base-title
-        :icon-left="iconStore.icon.arrowBack"
+        :icon="iconStore.icon.arrowBack"
         :title="title"
         to="/support"
       />
 
       <q-expansion-item
+        v-if="tableOfContents.length"
         id="table-of-contents"
         class="bg-surface rounded-borders box-shadow"
         label="Spis treści"
@@ -20,22 +21,34 @@
         </ol>
       </q-expansion-item>
 
+      <q-skeleton v-else type="rect" />
+
       <section class="column q-px-sm gap-md">
-        <template v-for="ele in content" :key="ele.id">
-          <p v-if="ele.type === 'paragraph'" :id="ele.anchor">
-            {{ ele.content }}
-          </p>
+        <template v-if="content.length">
+          <template v-for="ele in content" :key="ele.id">
+            <p v-if="ele.type === 'paragraph'" :id="ele.anchor">
+              {{ ele.content }}
+            </p>
 
-          <base-badge
-            v-if="ele.type === 'badge'"
-            :icon="iconStore.icon.info"
-            class="text-size-4"
-          >
-            <template v-if="ele.bold" #bold>{{ ele.bold }}</template>
+            <base-badge
+              v-if="ele.type === 'badge'"
+              :icon="iconStore.icon.info"
+              class="text-size-4"
+            >
+              <template v-if="ele.bold" #bold>{{ ele.bold }}</template>
 
-            {{ ele.content }}
-          </base-badge>
+              {{ ele.content }}
+            </base-badge>
+          </template>
         </template>
+
+        <div v-else class="column gap-lg">
+          <div v-for="i in 3" :key="i" class="column gap-sm">
+            <q-skeleton type="text" />
+            <q-skeleton type="text" />
+            <q-skeleton type="text" />
+          </div>
+        </div>
       </section>
     </main>
   </q-page>
@@ -43,32 +56,31 @@
 
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
+import { useSupportStore } from 'stores/supportStore';
 
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useRoute, useRouter } from 'vue-router';
 import { onBeforeMount, ref } from 'vue';
 
 const iconStore = useIconStore();
-const router = useRouter();
+const supportStore = useSupportStore();
 const route = useRoute();
+const router = useRouter();
 
 const title = ref<string>();
 const tableOfContents = ref<TableOfContent[]>([]);
 const content = ref<MainContent[]>([]);
 
-const fetchSupportPage = async () => {
-  const db = getFirestore();
-  const docRef = doc(db, 'supportStore', route.params.documentID as string);
-  const docSnap = await getDoc(docRef);
+const getPage = () => {
+  const page = supportStore.getPage(route.params.documentID as string);
 
-  if (!docSnap.exists()) return router.replace('/ErrorNotFound');
+  if (!page) return router.push('/ErrorNotFound');
 
-  title.value = docSnap.data().title;
-  tableOfContents.value = docSnap.data().tableOfContents;
-  content.value = docSnap.data().content;
+  title.value = page.title;
+  tableOfContents.value = page.tableOfContents;
+  content.value = page.content;
 };
 
-onBeforeMount(() => fetchSupportPage());
+onBeforeMount(() => getPage());
 </script>
 
 <style lang="scss" scoped>
