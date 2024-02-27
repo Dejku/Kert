@@ -2,22 +2,38 @@ import { defineStore } from 'pinia';
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
-    isLogged: false,
-    user: {} as Account
+    user: {} as User
   }),
 
   getters: {
-    getAvatar(): string {
-      return this.user.photoURL || 'src/assets/default_avatar.png'
+    isLogged(): boolean {
+      return Object.keys(this.user).length !== 0;
+    },
+
+    getID(): string {
+      return this.user.id;
+    },
+
+    getDisplayName(): string | undefined {
+      return this.user.displayName || undefined;
+    },
+
+    getAvatar(): string | undefined {
+      return this.user.photoURL || undefined;
     }
   },
 
   actions: {
-    saveUser(user: Account) {
-      this.isLogged = true;
+    saveUser(user: User) {
       this.user = user;
-
-      console.log('saveUser');
     },
+
+    setDisplayName(displayName: string) {
+      this.user.displayName = displayName;
+    },
+
+    setAvatar(photoURL: string) {
+      this.user.photoURL = photoURL;
+    }
   }
 });

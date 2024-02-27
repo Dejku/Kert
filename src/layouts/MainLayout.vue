@@ -22,7 +22,7 @@
 
         <router-link to="/settings/account">
           <q-avatar class="text-size-12">
-            <img src="~src/assets/default_avatar.png" />
+            <base-image :image="accountStore.getAvatar" />
           </q-avatar>
         </router-link>
       </q-toolbar>
@@ -84,9 +84,11 @@
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
 import { useAlertStore } from 'stores/alertStore';
+import { useAccountStore } from 'stores/accountStore';
 
 const iconStore = useIconStore();
 const alertStore = useAlertStore();
+const accountStore = useAccountStore();
 
 const navigation = [
   {

@@ -2,23 +2,11 @@
   <q-page class="justify-around">
     <section class="row justify-between q-pa-md">
       <div class="column items-center gap-sm">
-        <suspense>
-          <q-avatar size="20vw">
-            <img src="~src/assets/default_avatar.png" />
-          </q-avatar>
+        <q-avatar size="20vw">
+          <base-image :image="accountStore.getAvatar" />
+        </q-avatar>
 
-          <template #fallback>
-            <q-skeleton type="QAvatar" size="20vw" />
-          </template>
-        </suspense>
-
-        <suspense>
-          <base-title :title="accountStore.user.displayName" size="7" />
-
-          <template #fallback>
-            <q-skeleton type="rect" class="full-width" />
-          </template>
-        </suspense>
+        <base-title :title="accountStore.getDisplayName" size="7" />
       </div>
 
       <div class="column justify-between">

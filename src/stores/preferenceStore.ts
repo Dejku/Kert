@@ -27,7 +27,7 @@ export const usePreferenceStore = defineStore('preferences', {
     async updateDatabase(data: object, waitForEvent: string) {
       const accountStore = useAccountStore();
       const db = getFirestore();
-      const docRef = doc(db, 'preferenceStore', accountStore.user.id);
+      const docRef = doc(db, 'preferenceStore', accountStore.getID);
 
       let status = 'unknown';
       await updateDoc(docRef, data)

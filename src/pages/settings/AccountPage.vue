@@ -1,7 +1,7 @@
 <template>
   <q-page class="gap-md">
     <base-title
-      :icon-left="iconStore.icon.arrowBack"
+      :icon="iconStore.icon.arrowBack"
       title="Twoje Konto"
       to="/settings"
     />
@@ -9,12 +9,20 @@
     <section
       class="row items-center q-py-sm q-px-lg bg-surface rounded-borders box-shadow"
     >
-      <q-avatar size="14vw">
-        <img src="~src/assets/default_avatar.png" />
+      <q-avatar size="14vw" @click="uploadAvatar">
+        <base-image :image="accountStore.getAvatar" />
       </q-avatar>
 
+      <input
+        ref="avatarInput"
+        class="hidden"
+        type="file"
+        accept="image/png, image/jpeg"
+        @change="avatarSelected"
+      />
+
       <div class="row items-center q-mx-auto">
-        <base-title :title="accountStore.user.displayName" size="5" />
+        <base-title :title="accountStore.getDisplayName" size="5" />
 
         <base-button
           :icon-left="iconStore.icon.edit"
@@ -44,12 +52,12 @@
             no-border
             circle
             size="small"
-            @click="copyToClipboard(accountStore.user.id)"
+            @click="copyToClipboard(accountStore.getID)"
           />
         </div>
 
         <span class="flex flex-center">
-          {{ accountStore.user.id }}
+          {{ accountStore.getID }}
         </span>
       </div>
     </section>
@@ -89,6 +97,7 @@
 
 <script setup lang="ts">
 import { ErrorAlert } from 'models';
+import { setAvatar, getAvatar } from 'database/storage';
 
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
@@ -96,6 +105,7 @@ import { useModalStore } from 'stores/modalStore';
 import { useAlertStore } from 'stores/alertStore';
 import { useReauthenticateStore } from 'stores/reauthenticateStore';
 
+import { ref } from 'vue';
 import { copyToClipboard } from 'quasar';
 import { getAuth, updatePassword, updateProfile } from 'firebase/auth';
 
@@ -104,6 +114,28 @@ const accountStore = useAccountStore();
 const modalStore = useModalStore();
 const alertStore = useAlertStore();
 const { askForReauthenticate } = useReauthenticateStore();
+
+const avatarInput = ref<HTMLInputElement>();
+
+const uploadAvatar = () =>
+  avatarInput.value ? avatarInput.value.click() : null;
+
+const avatarSelected = async () => {
+  if (!avatarInput.value?.files) return;
+  const res = await setAvatar(accountStore.getID, avatarInput.value.files[0]);
+
+  if (res.status == 'success') {
+    const avatarURL = await getAvatar(accountStore.getID);
+
+    accountStore.setAvatar(avatarURL);
+  }
+
+  alertStore.createAlert({
+    status: res.status,
+    message: res.message,
+    duration: 4,
+  });
+};
 
 const changeName = async () => {
   const response = await modalStore.showModal({
@@ -131,7 +163,7 @@ const changeName = async () => {
         displayName: displayName,
       })
         .then(() => {
-          accountStore.user.displayName = displayName;
+          accountStore.setDisplayName(displayName);
 
           alertStore.createAlert({
             status: 'success',
@@ -139,11 +171,7 @@ const changeName = async () => {
             duration: 3,
           });
         })
-        .catch((error) => {
-          console.error(error);
-
-          alertStore.createAlert(ErrorAlert);
-        });
+        .catch(() => alertStore.createAlert(ErrorAlert));
   }
 };
 const changePassword = async () => {
@@ -179,8 +207,6 @@ const changePassword = async () => {
       });
     })
     .catch(async (error) => {
-      console.log(error);
-
       if (error != 'auth/requires-recent-login')
         return alertStore.createAlert(ErrorAlert);
 
