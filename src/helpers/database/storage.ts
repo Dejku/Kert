@@ -6,15 +6,15 @@ export async function getFile(file: string): Promise<string> {
     return await getDownloadURL(ref(storage, file));
 }
 
-export async function getAvatar(avatar: string): Promise<string> { // TODO: przerobić typ pliku na jpeg/jpg/png
+export async function getAvatar(avatarURL: string): Promise<string> {
     try {
-        return await getFile(`avatars/${avatar}.png`);
+        return await getFile(`avatars/${avatarURL}`);
     } catch (error) {
-        return 'src/assets/default_avatar.png';
+        return await getFile('avatars/default_avatar.png');
     }
 }
 
-export async function setAvatar(id: string, avatar: Blob): Promise<Omit<Alert, 'duration'>> {
+export async function setAvatar(userID: string, avatar: Blob): Promise<Omit<Alert, 'duration'>> {
     const imageRegExp = new RegExp('\.(jpe?g|png)$');
     const storage = getStorage();
 
@@ -25,7 +25,13 @@ export async function setAvatar(id: string, avatar: Blob): Promise<Omit<Alert, '
                 message: 'Niedozwolony format pliku'
             };
 
-        await uploadBytes(ref(storage, `avatars/${id}.${avatar.type.slice(6)}`), avatar);
+        if (avatar.size > 2 * 1024 * 1024)
+            return {
+                status: 'error',
+                message: 'Rozmiar pliku jest za duży'
+            };
+
+        await uploadBytes(ref(storage, `avatars/${userID}`), avatar);
 
         return {
             status: 'success',
@@ -35,7 +41,7 @@ export async function setAvatar(id: string, avatar: Blob): Promise<Omit<Alert, '
         const error = err as StorageError;
 
         return {
-            status: 'success',
+            status: 'error',
             message: error.code
         }
     }
