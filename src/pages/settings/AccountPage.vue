@@ -112,7 +112,7 @@ import { getAuth, updatePassword, updateProfile } from 'firebase/auth';
 const iconStore = useIconStore();
 const accountStore = useAccountStore();
 const modalStore = useModalStore();
-const alertStore = useAlertStore();
+const { createAlert, formatMessage } = useAlertStore();
 const { askForReauthenticate } = useReauthenticateStore();
 
 const avatarInput = ref<HTMLInputElement>();
@@ -130,9 +130,9 @@ const avatarSelected = async () => {
     accountStore.setAvatar(avatarURL);
   }
 
-  alertStore.createAlert({
+  createAlert({
     status: res.status,
-    message: res.message,
+    message: formatMessage(res.message),
     duration: 4,
   });
 };
@@ -165,13 +165,13 @@ const changeName = async () => {
         .then(() => {
           accountStore.setDisplayName(displayName);
 
-          alertStore.createAlert({
+          createAlert({
             status: 'success',
             message: 'Nazwa pomyślnie zaktualizowana',
             duration: 3,
           });
         })
-        .catch(() => alertStore.createAlert(ErrorAlert));
+        .catch(() => createAlert(ErrorAlert));
   }
 };
 const changePassword = async () => {
@@ -200,25 +200,24 @@ const changePassword = async () => {
 
   await updatePassword(auth.currentUser, password)
     .then(() => {
-      alertStore.createAlert({
+      createAlert({
         status: 'success',
         message: 'Hasło pomyślnie zaktualizowane',
         duration: 3,
       });
     })
     .catch(async (error) => {
-      if (error != 'auth/requires-recent-login')
-        return alertStore.createAlert(ErrorAlert);
+      if (error != 'auth/requires-recent-login') return createAlert(ErrorAlert);
 
       const reauthenticateResponse = await askForReauthenticate();
       if (reauthenticateResponse.status == 'success')
-        return alertStore.createAlert({
+        return createAlert({
           status: 'success',
           message: 'Pomyślnie zweryfikowano konto',
           duration: 3,
         });
       else
-        return alertStore.createAlert({
+        return createAlert({
           status: 'error',
           message: 'Nie udało się zweryfikować konta',
           duration: 5,
