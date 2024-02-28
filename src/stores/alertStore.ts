@@ -53,16 +53,31 @@ export const useAlertStore = defineStore('alerts', {
         },
 
         formatMessage(message: string): string {
-            const messages = [
+            const authErrors = [
                 { name: 'auth/invalid-credential', value: 'Email lub hasło się nie zgadza' },
                 { name: 'auth/invalid-email', value: 'Niepoprawny email' },
                 { name: 'auth/weak-password', value: 'Zbyt krótkie hasło (min. 6 znaków)' },
                 { name: 'auth/email-already-in-use', value: 'Email jest już w użyciu' },
                 { name: 'auth/user-not-found', value: 'Konto nie zostało znalezione' },
                 { name: 'auth/wrong-password', value: 'Niepoprawne hasło' },
+            ];
+
+            const storageErrors = [
+                { name: 'storage/unknown', value: 'Napotkano nieznany błąd' },
+                { name: 'storage/object-not-found', value: 'Plik nie został odnaleziony' },
+                { name: 'storage/unauthenticated', value: 'Zaloguj się i spróbuj ponownie' },
+                { name: 'storage/unauthorized', value: 'Nie masz wystarczających uprawnień' },
+                { name: 'storage/canceled', value: 'Anulowano przez użytkownika' },
+                { name: 'storage/server-file-wrong-size', value: 'Problem z wielkością pliku' },
             ]
 
-            return messages.find(ele => JSON.stringify(message).includes(ele.name))?.value as string || 'Coś poszło nie tak'
+            const errors = authErrors.concat(storageErrors);
+            const error = errors.find(ele => JSON.stringify(message).includes(ele.name));
+
+            if (error)
+                return error.value
+            else
+                return 'Coś poszło nie tak'
         }
     }
 });
