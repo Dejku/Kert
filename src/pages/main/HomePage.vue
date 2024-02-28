@@ -1,7 +1,9 @@
 <template>
   <q-page class="justify-around">
-    <section class="row justify-between q-pa-md">
-      <div class="column items-center gap-sm">
+    <section class="row justify-between q-px-md">
+      <div
+        class="column items-center q-px-lg q-py-md bg-surface rounded-borders box-shadow gap-sm"
+      >
         <q-avatar size="20vw">
           <base-image :image="accountStore.getAvatar" />
         </q-avatar>
@@ -9,8 +11,8 @@
         <base-title :title="accountStore.getDisplayName" size="7" />
       </div>
 
-      <div class="column justify-between">
-        <div class="row justify-end q-gutter-x-xs">
+      <div class="column justify-between q-pt-md">
+        <div class="row justify-end gap-xs">
           <router-link to="/news">
             <q-icon class="text-size-10" :name="iconStore.icon.mail" />
           </router-link>
