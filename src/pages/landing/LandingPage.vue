@@ -27,6 +27,6 @@ const loadApp = () =>
       accountStore.isLogged
         ? router.replace('/home')
         : router.replace('/login'),
-    2000
+    1000
   );
 </script>

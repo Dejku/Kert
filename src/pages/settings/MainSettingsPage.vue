@@ -9,13 +9,13 @@
         <div class="row gap-sm">
           <div>
             <q-avatar size="15vw">
-              <img src="~src/assets/default_avatar.png" />
+              <base-image :image="accountStore.getAvatar" />
             </q-avatar>
           </div>
 
           <div>
             <base-title
-              :title="accountStore.user.displayName"
+              :title="accountStore.getDisplayName"
               size="7"
               style="margin-bottom: -5px !important"
             />

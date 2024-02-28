@@ -12,14 +12,14 @@ export default function snapshots() {
     const preferenceStore = usePreferenceStore()
     const db = getFirestore();
 
-    onSnapshot(doc(db, 'vacationStore', accountStore.user.id), (doc) => {
+    onSnapshot(doc(db, 'vacationStore', accountStore.getID), (doc) => {
         vacationStore.overdueVacationDays = doc.data()?.overdueVacationDays;
         vacationStore.numberOfVacationDaysPerYear = doc.data()?.numberOfVacationDaysPerYear;
         vacationStore.availableLimitsForUser['Urlop wypoczynkowy'] = doc.data()?.availableLimitsForUser['Urlop wypoczynkowy'];
         vacationStore.claimedVacationDays = doc.data()?.claimedVacationDays;
     });
 
-    onSnapshot(doc(db, 'newsStore', accountStore.user.id), (doc) => newsStore.news = doc.data()?.news);
+    onSnapshot(doc(db, 'newsStore', accountStore.getID), (doc) => newsStore.news = doc.data()?.news);
 
-    onSnapshot(doc(db, 'preferenceStore', accountStore.user.id), (doc) => preferenceStore.preference = doc.data()?.preference);
+    onSnapshot(doc(db, 'preferenceStore', accountStore.getID), (doc) => preferenceStore.preference = doc.data()?.preference);
 }

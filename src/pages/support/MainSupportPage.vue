@@ -16,16 +16,16 @@
 
     <section v-if="computedResult.length" class="column q-px-sm q-py-sm gap-md">
       <transition-group name="list">
-        <router-link
+        <div
           v-for="element in computedResult"
           :key="element.label"
-          :to="`/support/${element.link}`"
           class="search__container__element row q-px-sm q-py-xs bg-surface rounded-borders gap-sm box-shadow z-fab"
+          @click="changePage(element.link)"
         >
           <q-icon :name="element.icon" class="text-size-10" />
 
           <span>{{ element.label }}</span>
-        </router-link>
+        </div>
       </transition-group>
     </section>
 
@@ -39,37 +39,44 @@
 
 <script setup lang="ts">
 import { useIconStore } from 'stores/iconStore';
+import { useSupportStore } from 'stores/supportStore';
+import { useAlertStore } from 'stores/alertStore';
 
 import { computed, ref, onBeforeMount } from 'vue';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useRouter } from 'vue-router';
 
 const iconStore = useIconStore();
+const supportStore = useSupportStore();
+const alertStore = useAlertStore();
+
 const input = ref<HTMLElement | null>(null);
 const searchQuery = ref<string>('');
-const links = ref<SupportLinks[]>([]);
-
-const fetchLinks = async () => {
-  const db = getFirestore();
-  const docRef = doc(db, 'supportStore', 'supportLinks');
-  const docSnap = await getDoc(docRef);
-
-  if (!docSnap.exists()) return;
-
-  links.value = docSnap.data().links;
-};
+const router = useRouter();
 
 const computedResult = computed(() => {
   if (searchQuery.value) {
-    return links.value.filter((item) => {
+    return supportStore.links.filter((item) => {
       return searchQuery.value
         .toLowerCase()
         .split(' ')
         .every((v) => item.label.toLowerCase().includes(v));
     });
-  } else return links.value;
+  } else return supportStore.links;
 });
 
-onBeforeMount(() => fetchLinks());
+const changePage = async (link: string) => {
+  const isExist = await supportStore.changePage(link);
+
+  if (isExist) return router.push(`/support/${link}`);
+
+  alertStore.createAlert({
+    status: 'error',
+    message: 'Strona nie została odnaleziona',
+    duration: 3,
+  });
+};
+
+onBeforeMount(() => supportStore.fetchLinks());
 </script>
 
 <style lang="scss" scoped>

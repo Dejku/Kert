@@ -32,7 +32,7 @@ export const useVacationStore = defineStore('vacations', {
     },
 
     // VACATION DAYS
-    async fetchCalendarData(userID: Account['id']) {
+    async fetchCalendarData(userID: User['id']) {
       const db = getFirestore();
       const docRef = doc(db, 'vacationStore', userID);
       const docSnap = await getDoc(docRef);
@@ -75,20 +75,18 @@ export const useVacationStore = defineStore('vacations', {
     async discardChanges() {
       const accountStore = useAccountStore();
       const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
+      const docRef = doc(db, 'vacationStore', accountStore.getID);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) return this.createAlert(ErrorAlert)
 
-      const data = docSnap.data();
-      this.claimedVacationDays = data.claimedVacationDays;
+      this.claimedVacationDays = docSnap.data().claimedVacationDays;
 
       this.hasUnsavedChanges = false;
       this.createAlert({ message: 'Zmiany zostały wycofane', status: 'info', duration: 4, isImportant: true })
     },
 
     addVacationDay(day: ClaimedVacationDays) {
-
       if (this.isVacationLimitReached(day.type.name, day.date, day.type.time.hours))
         return this.createAlert({
           message: 'Wykorzystano cały urlop',
@@ -169,7 +167,7 @@ export const useVacationStore = defineStore('vacations', {
     async updateDatabase(data: object, waitForEvent?: string) {
       const accountStore = useAccountStore();
       const db = getFirestore();
-      const docRef = doc(db, 'vacationStore', accountStore.user.id);
+      const docRef = doc(db, 'vacationStore', accountStore.getID);
 
       let status = 'unknown';
       await updateDoc(docRef, data)

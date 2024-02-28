@@ -1,0 +1,3 @@
+type StorageError = {
+    code: string
+}

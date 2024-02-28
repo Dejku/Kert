@@ -10,25 +10,43 @@
             : 'absolute-top q-py-lg'
         "
       >
-        <div class="column flex-center text-success">
-          <q-icon
-            :name="iconStore.icon.success"
-            class="q-pa-sm border-success rounded-borders--circle"
-            style="border-width: 2px !important"
+        <template v-if="$q.screen.height > 700">
+          <base-button
+            :icon-left="iconStore.icon.success"
+            label="Zapisz"
+            color="success"
+            transparent
             v-touch-hold:2000.mouse="vacationStore.saveChanges"
           />
-          <span v-if="$q.screen.height > 700" class="text-size-5">Zapisz</span>
-        </div>
 
-        <div class="column flex-center text-error">
-          <q-icon
-            :name="iconStore.icon.trash"
-            class="q-pa-sm border-error rounded-borders--circle"
-            style="border-width: 2px !important"
+          <base-button
+            :icon-right="iconStore.icon.trash"
+            label="Anuluj"
+            color="error"
+            transparent
             v-touch-hold:2000.mouse="vacationStore.discardChanges"
           />
-          <span v-if="$q.screen.height > 700" class="text-size-5">Anuluj</span>
-        </div>
+        </template>
+
+        <template v-else>
+          <div class="column flex-center text-success">
+            <q-icon
+              :name="iconStore.icon.success"
+              class="q-pa-sm border-success rounded-borders--circle"
+              style="border-width: 2px !important"
+              v-touch-hold:2000.mouse="vacationStore.saveChanges"
+            />
+          </div>
+
+          <div class="column flex-center text-error">
+            <q-icon
+              :name="iconStore.icon.trash"
+              class="q-pa-sm border-error rounded-borders--circle"
+              style="border-width: 2px !important"
+              v-touch-hold:2000.mouse="vacationStore.discardChanges"
+            />
+          </div>
+        </template>
       </div>
     </transition>
 

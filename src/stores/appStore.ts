@@ -32,9 +32,9 @@ export const useAppStore = defineStore('app', {
             const newsStore = useNewsStore();
             const preferenceStore = usePreferenceStore()
 
-            await vacationStore.fetchCalendarData(accountStore.user.id);
-            await newsStore.fetchNewsData(accountStore.user.id);
-            await preferenceStore.fetchPreferenceData(accountStore.user.id);
+            await vacationStore.fetchCalendarData(accountStore.getID);
+            await newsStore.fetchNewsData(accountStore.getID);
+            await preferenceStore.fetchPreferenceData(accountStore.getID);
         }
     }
 });

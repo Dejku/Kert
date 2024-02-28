@@ -9,7 +9,9 @@
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "emulators": "cd emulators && firebase emulators:start",
-    "rules:deploy": "cd emulators && firebase deploy --only firestore",
+    "deploy": "cd emulators && firebase deploy --only firestore && firebase deploy --only storage",
+    "deploy --only firestore": "cd emulators && firebase deploy --only firestore",
+    "deploy --only storage": "cd emulators && firebase deploy --only storage",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build"

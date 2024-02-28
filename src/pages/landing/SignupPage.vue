@@ -138,7 +138,7 @@ const signup = () => {
           displayName: nick.value,
         });
 
-      accountStore.user.displayName = nick.value;
+      accountStore.setDisplayName(nick.value);
 
       router.push('/home');
     })

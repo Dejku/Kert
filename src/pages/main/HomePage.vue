@@ -1,28 +1,18 @@
 <template>
   <q-page class="justify-around">
-    <section class="row justify-between q-pa-md">
-      <div class="column items-center gap-sm">
-        <suspense>
-          <q-avatar size="20vw">
-            <img src="~src/assets/default_avatar.png" />
-          </q-avatar>
+    <section class="row justify-between q-px-md">
+      <div
+        class="column items-center q-px-lg q-py-md bg-surface rounded-borders box-shadow gap-sm"
+      >
+        <q-avatar size="20vw">
+          <base-image :image="accountStore.getAvatar" />
+        </q-avatar>
 
-          <template #fallback>
-            <q-skeleton type="QAvatar" size="20vw" />
-          </template>
-        </suspense>
-
-        <suspense>
-          <base-title :title="accountStore.user.displayName" size="7" />
-
-          <template #fallback>
-            <q-skeleton type="rect" class="full-width" />
-          </template>
-        </suspense>
+        <base-title :title="accountStore.getDisplayName" size="7" />
       </div>
 
-      <div class="column justify-between">
-        <div class="row justify-end q-gutter-x-xs">
+      <div class="column justify-between q-pt-md">
+        <div class="row justify-end gap-xs">
           <router-link to="/news">
             <q-icon class="text-size-10" :name="iconStore.icon.mail" />
           </router-link>
