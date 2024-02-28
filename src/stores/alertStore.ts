@@ -66,7 +66,7 @@ export const useAlertStore = defineStore('alerts', {
                 { name: 'storage/unknown', value: 'Napotkano nieznany błąd' },
                 { name: 'storage/object-not-found', value: 'Plik nie został odnaleziony' },
                 { name: 'storage/unauthenticated', value: 'Zaloguj się i spróbuj ponownie' },
-                { name: 'storage/unauthorized', value: 'Nie masz wystarczających uprawnień' },
+                { name: 'storage/unauthorized', value: 'Brak wystarczających uprawnień' },
                 { name: 'storage/canceled', value: 'Anulowano przez użytkownika' },
                 { name: 'storage/server-file-wrong-size', value: 'Problem z wielkością pliku' },
             ]
