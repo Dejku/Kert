@@ -10,7 +10,7 @@ export async function getAvatar(avatar: string): Promise<string> { // TODO: prze
     try {
         return await getFile(`avatars/${avatar}.png`);
     } catch (error) {
-        return await getFile('avatars/default_avatar.png');
+        return 'src/assets/default_avatar.png';
     }
 }
 
