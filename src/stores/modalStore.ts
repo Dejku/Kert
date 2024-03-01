@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { fireEvent, waitForEvent } from 'utils';
-import { useAppStore } from 'stores/appStore';
 
 export const useModalStore = defineStore('modal', {
   state: () => ({
@@ -19,10 +18,17 @@ export const useModalStore = defineStore('modal', {
 
   actions: {
     async showModal(options: Modal): Promise<AppResponse> {
-      this.isVisible(true);
+      this.isShowed = true;
+      fireEvent('showOverlay');
       this.modal = options;
 
-      return await waitForEvent('modal_userInteraction');
+      const response = await waitForEvent('modal_userInteraction');
+      if (response == null) {
+        this.close();
+
+        return { status: 'failed' };
+      }
+      else return response;
     },
 
     optionChoosen(status: AppResponse['status']) {
@@ -30,15 +36,8 @@ export const useModalStore = defineStore('modal', {
       this.close();
     },
 
-    isVisible(isShowed: boolean) {
-      const appStore = useAppStore();
-
-      this.isShowed = isShowed;
-      appStore.isOverlayShowed = isShowed;
-    },
-
     close() {
-      this.isVisible(false);
+      this.isShowed = false;
       this.clear();
     },
 

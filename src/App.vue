@@ -34,7 +34,6 @@ onMounted(() => {
   appStore.startClock();
   authStart();
 
-  window.addEventListener('showOverlay', (e) => closePopUps(e as CustomEvent));
   window.addEventListener('online', HandleNetworkChange, false);
   window.addEventListener('offline', HandleNetworkChange, false);
 
@@ -44,15 +43,9 @@ onMounted(() => {
 onUnmounted(() => {
   appStore.stopClock();
 
-  window.removeEventListener('showOverlay', (e) =>
-    closePopUps(e as CustomEvent)
-  );
   window.removeEventListener('online', HandleNetworkChange, false);
   window.removeEventListener('offline', HandleNetworkChange, false);
 });
-
-const closePopUps = (e: CustomEvent) =>
-  e.detail == false || 'failed' ? appStore.closeAllPopUps() : null;
 
 const HandleNetworkChange = () => {
   if (navigator.onLine) $q.loading.hide();

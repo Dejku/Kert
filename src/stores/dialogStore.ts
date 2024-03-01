@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { fireEvent, waitForEvent } from 'utils';
-import { useAppStore } from 'stores/appStore';
 
 export const useDialogStore = defineStore('dialog', {
     state: () => ({
@@ -10,10 +9,17 @@ export const useDialogStore = defineStore('dialog', {
 
     actions: {
         async showDialog(options: Dialog): Promise<AppResponse> {
-            this.isVisible(true);
+            this.isShowed = true;
+            fireEvent('showOverlay');
             this.dialog = options;
 
-            return await waitForEvent('dialog_userInteraction');
+            const response = await waitForEvent('dialog_userInteraction');
+            if (response == null) {
+                this.close();
+
+                return { status: 'failed' };
+            }
+            else return response;
         },
 
         optionChoosen(status: AppResponse['status']) {
@@ -21,15 +27,8 @@ export const useDialogStore = defineStore('dialog', {
             this.close();
         },
 
-        isVisible(isShowed: boolean) {
-            const appStore = useAppStore();
-
-            this.isShowed = isShowed;
-            appStore.isOverlayShowed = isShowed;
-        },
-
         close() {
-            this.isVisible(false);
+            this.isShowed = false;
             this.clear();
         },
 
