@@ -5,42 +5,10 @@ import { useAppStore } from 'stores/appStore';
 export const useModalStore = defineStore('modal', {
   state: () => ({
     isShowed: false,
-    modal: {
-      title: 'Brak tytułu',
-      component: {
-        type: undefined,
-        options: {
-          date: {
-            day: 0,
-            month: 0,
-            year: 0
-          },
-        }
-      },
-      buttons: {
-        baseButton: {
-          label: 'Okej',
-          color: undefined,
-          transparent: true,
-        },
-        secondaryButton: {
-          label: undefined,
-          color: undefined,
-          transparent: undefined,
-        },
-        isDisabled: true,
-      }
-    } as ModalStructure,
+    modal: {} as Modal,
 
     component: {
-      vacationDays: {
-        name: 'Urlop wypoczynkowy',
-        isSpecial: false,
-        time: {
-          type: 'day',
-          hours: 0
-        }
-      } as VacationTypes,
+      vacationDays: {} as VacationTypes,
 
       user: {
         displayName: '',
@@ -50,21 +18,9 @@ export const useModalStore = defineStore('modal', {
   }),
 
   actions: {
-    async showModal(options: ModalOption): Promise<AppResponse> {
+    async showModal(options: Modal): Promise<AppResponse> {
       this.isVisible(true);
-
-      this.modal.component = options.component;
-      if (options.title)
-        this.modal.title = options.title;
-      else
-        this.modal.title =
-          options.component.type == 'addVacation' ? 'Dodaj urlop' :
-            options.component.type == 'showVacation' ? 'Szczegóły urlopu' : 'Brak tytułu';
-
-      if (options.buttonsOptions) {
-        if (options.buttonsOptions.baseButton) this.modal.buttons.baseButton = options.buttonsOptions.baseButton;
-        if (options.buttonsOptions.secondaryButton) this.modal.buttons.secondaryButton = options.buttonsOptions.secondaryButton;
-      }
+      this.modal = options;
 
       return await waitForEvent('modal_userInteraction');
     },

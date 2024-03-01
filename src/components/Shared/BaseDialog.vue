@@ -15,9 +15,9 @@
 
       <footer class="row gap-xl">
         <base-button
-          :label="dialogStore.dialog.buttons.baseButton?.label"
-          :color="dialogStore.dialog.buttons.baseButton?.color"
-          :transparent="dialogStore.dialog.buttons.baseButton?.transparent"
+          :label="dialogStore.dialog.buttons.primaryButton.label"
+          :color="dialogStore.dialog.buttons.primaryButton.color"
+          :transparent="dialogStore.dialog.buttons.primaryButton.transparent"
           @click="dialogStore.optionChoosen('failed')"
         />
 

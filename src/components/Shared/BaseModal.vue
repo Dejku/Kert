@@ -27,9 +27,9 @@
 
       <section id="base__modal__buttons" class="row flex-center q-pa-sm gap-xl">
         <base-button
-          :label="modalStore.modal.buttons.baseButton?.label"
-          :color="modalStore.modal.buttons.baseButton?.color"
-          :transparent="modalStore.modal.buttons.baseButton?.transparent"
+          :label="modalStore.modal.buttons.primaryButton.label"
+          :color="modalStore.modal.buttons.primaryButton.color"
+          :transparent="modalStore.modal.buttons.primaryButton.transparent"
           :disabled="isButtonDisabled"
           @click="modalStore.optionChoosen('failed')"
         />

@@ -5,35 +5,13 @@ import { useAppStore } from 'stores/appStore';
 export const useDialogStore = defineStore('dialog', {
     state: () => ({
         isShowed: false,
-        dialog: {
-            title: 'Brak nagłówka',
-            desc: undefined,
-            buttons: {
-                baseButton: {
-                    label: 'Okej',
-                    color: undefined,
-                    transparent: true
-                },
-                secondaryButton: {
-                    label: undefined,
-                    color: undefined,
-                    transparent: undefined
-                }
-            }
-        } as DialogStructure
+        dialog: {} as Dialog
     }),
 
     actions: {
-        async showDialog(options: DialogOption): Promise<AppResponse> {
+        async showDialog(options: Dialog): Promise<AppResponse> {
             this.isVisible(true);
-
-            this.dialog.title = options.title;
-            this.dialog.desc = options.desc;
-
-            if (options.buttonsOptions) {
-                if (options.buttonsOptions.baseButton) this.dialog.buttons.baseButton = options.buttonsOptions.baseButton;
-                if (options.buttonsOptions.secondaryButton) this.dialog.buttons.secondaryButton = options.buttonsOptions.secondaryButton;
-            }
+            this.dialog = options;
 
             return await waitForEvent('dialog_userInteraction');
         },

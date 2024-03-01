@@ -1,11 +1,11 @@
-type ButtonsOptions = {
-    baseButton?: ButtonOptions,
+type ComponentButtons = {
+    primaryButton: ButtonOptions,
     secondaryButton?: ButtonOptions
     isDisabled?: boolean,
 }
 
 type ButtonOptions = {
-    label: string | undefined,
+    label: string,
     color?: AppColors,
     transparent?: boolean
 }

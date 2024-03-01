@@ -126,13 +126,18 @@ export const useVacationStore = defineStore('vacations', {
       }
       else {
         const response = await modalStore.showModal({
+          title: 'Dodaj urlop',
           component: {
             type: 'addVacation',
             options: {
               date,
             },
           },
-          buttonsOptions: {
+          buttons: {
+            primaryButton: {
+              label: 'Okej',
+              transparent: true
+            },
             secondaryButton: {
               label: 'Dodaj urlop',
             },
@@ -243,13 +248,18 @@ export const useVacationStore = defineStore('vacations', {
       modalStore.component.vacationDays = this.findVacation(date).type;
 
       return await modalStore.showModal({
+        title: 'Szczegóły urlopu',
         component: {
           type: 'showVacation',
           options: {
             date,
           },
         },
-        buttonsOptions: {
+        buttons: {
+          primaryButton: {
+            label: 'Okej',
+            transparent: true
+          },
           secondaryButton: {
             label: 'Usuń urlop',
             color: 'error',

@@ -1,11 +1,5 @@
-type DialogStructure = {
+type Dialog = {
     title: string,
-    desc?: string,
-    buttons: ButtonsOptions
-}
-
-type DialogOption = {
-    title: string,
-    desc?: string,
-    buttonsOptions?: ButtonsOptions
+    desc: string | null,
+    buttons: ComponentButtons
 }
