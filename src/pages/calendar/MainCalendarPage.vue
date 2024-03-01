@@ -342,6 +342,12 @@ const showSummaryModal = () => {
         },
       },
     },
+    buttons: {
+      primaryButton: {
+        label: 'Okej',
+        transparent: true,
+      },
+    },
   });
 };
 

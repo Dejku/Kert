@@ -17,8 +17,6 @@ export const useSupportStore = defineStore('support', {
         async fetchLinks() {
             if (this.links.length) return;
 
-            console.log(this.links.length);
-
             const db = getFirestore();
             const docRef = doc(db, 'supportStore', 'supportLinks');
             const docSnap = await getDoc(docRef);

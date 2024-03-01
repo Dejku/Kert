@@ -141,8 +141,8 @@ const changeName = async () => {
   const response = await modalStore.showModal({
     title: 'Zmień swoją nazwę',
     component: { type: 'changeName' },
-    buttonsOptions: {
-      baseButton: {
+    buttons: {
+      primaryButton: {
         label: 'Wróć',
         transparent: true,
       },
@@ -175,11 +175,11 @@ const changeName = async () => {
   }
 };
 const changePassword = async () => {
-  const modalOptions: ModalOption = {
+  const modalResponse = await modalStore.showModal({
     title: 'Zmień hasło',
     component: { type: 'changePassword' },
-    buttonsOptions: {
-      baseButton: {
+    buttons: {
+      primaryButton: {
         label: 'Wróć',
         transparent: true,
       },
@@ -189,9 +189,7 @@ const changePassword = async () => {
         transparent: false,
       },
     },
-  };
-
-  const modalResponse = await modalStore.showModal(modalOptions);
+  });
   if (modalResponse.status != 'success') return;
 
   const auth = getAuth();

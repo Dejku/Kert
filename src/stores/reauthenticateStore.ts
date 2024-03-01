@@ -23,7 +23,8 @@ export const useReauthenticateStore = defineStore('reauthenticate', {
     },
 
     reauthenticate() {
-      if (this.password) return;
+      if (!this.password) return;
+
       const auth = getAuth();
       const { createAlert, formatMessage } = useAlertStore()
 

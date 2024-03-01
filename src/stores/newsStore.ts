@@ -29,7 +29,7 @@ export const useNewsStore = defineStore('news', {
       this.news = this.news.filter((ele) => ele.id !== id);
     },
 
-    async fetchNewsData(userID: Account['id']) {
+    async fetchNewsData(userID: User['id']) {
       const db = getFirestore();
       const docRef = doc(db, 'newsStore', userID);
       const docSnap = await getDoc(docRef);

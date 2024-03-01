@@ -1,18 +1,12 @@
-type ModalStructure = {
+type Modal = {
     title: string,
     component: Component,
-    buttons: ButtonsOptions
-}
-
-type ModalOption = {
-    title?: string,
-    component: Component,
-    buttonsOptions?: ButtonsOptions
+    buttons: ComponentButtons
 }
 
 type Component = {
-    type: string | undefined,
+    type: string,
     options?: {
-        date?: AppDate,
+        date: AppDate
     }
 }

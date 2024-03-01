@@ -105,10 +105,11 @@ const sections = {
 };
 
 const logout = async () => {
-  const dialogOption: DialogOption = {
+  const response = await showDialog({
     title: 'Czy na pewno chcesz się wylogować?',
-    buttonsOptions: {
-      baseButton: {
+    desc: null,
+    buttons: {
+      primaryButton: {
         label: 'Nie',
         transparent: true,
       },
@@ -117,9 +118,7 @@ const logout = async () => {
         color: 'error',
       },
     },
-  };
-
-  const response = await showDialog(dialogOption);
+  });
 
   if (response.status == 'success') {
     const auth = getAuth();

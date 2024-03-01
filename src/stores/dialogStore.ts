@@ -1,41 +1,25 @@
 import { defineStore } from 'pinia';
 import { fireEvent, waitForEvent } from 'utils';
-import { useAppStore } from 'stores/appStore';
 
 export const useDialogStore = defineStore('dialog', {
     state: () => ({
         isShowed: false,
-        dialog: {
-            title: 'Brak nagłówka',
-            desc: undefined,
-            buttons: {
-                baseButton: {
-                    label: 'Okej',
-                    color: undefined,
-                    transparent: true
-                },
-                secondaryButton: {
-                    label: undefined,
-                    color: undefined,
-                    transparent: undefined
-                }
-            }
-        } as DialogStructure
+        dialog: {} as Dialog
     }),
 
     actions: {
-        async showDialog(options: DialogOption): Promise<AppResponse> {
-            this.isVisible(true);
+        async showDialog(options: Dialog): Promise<AppResponse> {
+            this.isShowed = true;
+            fireEvent('showOverlay');
+            this.dialog = options;
 
-            this.dialog.title = options.title;
-            this.dialog.desc = options.desc;
+            const response = await waitForEvent('dialog_userInteraction');
+            if (response == null) {
+                this.close();
 
-            if (options.buttonsOptions) {
-                if (options.buttonsOptions.baseButton) this.dialog.buttons.baseButton = options.buttonsOptions.baseButton;
-                if (options.buttonsOptions.secondaryButton) this.dialog.buttons.secondaryButton = options.buttonsOptions.secondaryButton;
+                return { status: 'failed' };
             }
-
-            return await waitForEvent('dialog_userInteraction');
+            else return response;
         },
 
         optionChoosen(status: AppResponse['status']) {
@@ -43,15 +27,8 @@ export const useDialogStore = defineStore('dialog', {
             this.close();
         },
 
-        isVisible(isShowed: boolean) {
-            const appStore = useAppStore();
-
-            this.isShowed = isShowed;
-            appStore.isOverlayShowed = isShowed;
-        },
-
         close() {
-            this.isVisible(false);
+            this.isShowed = false;
             this.clear();
         },
 

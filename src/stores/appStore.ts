@@ -1,29 +1,23 @@
 import { defineStore } from 'pinia';
-import { useModalStore } from 'stores/modalStore';
-import { useDialogStore } from 'stores/dialogStore';
+
 import { useVacationStore } from 'stores/vacationStore';
 import { useNewsStore } from 'stores/newsStore';
 import { useAccountStore } from 'stores/accountStore';
 import { usePreferenceStore } from 'stores/preferenceStore';
 
+let clock: string | number | NodeJS.Timeout | undefined;
 export const useAppStore = defineStore('app', {
     state: () => ({
         todayDate: new Date(),
-        isOverlayShowed: false,
     }),
 
     actions: {
         startClock() {
-            setInterval(() => this.todayDate = new Date(), 1000);
+            clock = setInterval(() => this.todayDate = new Date(), 1000);
         },
 
-        closeAllPopUps() {
-            const modalStore = useModalStore();
-            const dialogStore = useDialogStore();
-
-            this.isOverlayShowed = false;
-            modalStore.clear();
-            dialogStore.clear();
+        stopClock() {
+            clearInterval(clock)
         },
 
         async fetchData() {

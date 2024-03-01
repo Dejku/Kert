@@ -14,7 +14,7 @@ export const usePreferenceStore = defineStore('preferences', {
   }),
 
   actions: {
-    async fetchPreferenceData(userID: Account['id']) {
+    async fetchPreferenceData(userID: User['id']) {
       const db = getFirestore();
       const docRef = doc(db, 'preferenceStore', userID);
       const docSnap = await getDoc(docRef);
