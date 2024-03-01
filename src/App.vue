@@ -42,6 +42,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  appStore.stopClock();
+
   window.removeEventListener('showOverlay', (e) =>
     closePopUps(e as CustomEvent)
   );
