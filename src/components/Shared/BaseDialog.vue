@@ -18,7 +18,7 @@
           :label="dialogStore.dialog.buttons.primaryButton.label"
           :color="dialogStore.dialog.buttons.primaryButton.color"
           :transparent="dialogStore.dialog.buttons.primaryButton.transparent"
-          @click="dialogStore.optionChoosen('failed')"
+          @click="dialogStore.chooseOption('failed')"
         />
 
         <base-button
@@ -26,7 +26,7 @@
           :label="dialogStore.dialog.buttons.secondaryButton.label"
           :color="dialogStore.dialog.buttons.secondaryButton.color"
           :transparent="dialogStore.dialog.buttons.secondaryButton.transparent"
-          @click="dialogStore.optionChoosen('success')"
+          @click="dialogStore.chooseOption('success')"
         />
       </footer>
     </div>

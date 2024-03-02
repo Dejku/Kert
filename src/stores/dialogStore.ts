@@ -9,31 +9,29 @@ export const useDialogStore = defineStore('dialog', {
 
     actions: {
         async showDialog(options: Dialog): Promise<AppResponse> {
-            this.isShowed = true;
-            fireEvent('showOverlay');
             this.dialog = options;
+            this.open();
 
             const response = await waitForEvent('dialog_userInteraction');
-            if (response == null) {
-                this.close();
+            this.close();
 
-                return { status: 'failed' };
-            }
-            else return response;
+            return response;
         },
 
-        optionChoosen(status: AppResponse['status']) {
+        chooseOption(status: AppResponse['status']) {
             fireEvent('dialog_userInteraction', { status });
-            this.close();
+        },
+
+        open() {
+            this.isShowed = true;
+            fireEvent('showOverlay');
         },
 
         close() {
             this.isShowed = false;
-            this.clear();
-        },
+            fireEvent('hideOverlay');
 
-        clear() {
             setTimeout(() => { this.$reset() }, 100);
-        },
+        }
     }
 });
