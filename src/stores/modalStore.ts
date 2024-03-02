@@ -18,31 +18,29 @@ export const useModalStore = defineStore('modal', {
 
   actions: {
     async showModal(options: Modal): Promise<AppResponse> {
-      this.isShowed = true;
-      fireEvent('showOverlay');
       this.modal = options;
+      this.open();
 
       const response = await waitForEvent('modal_userInteraction');
-      if (response == null) {
-        this.close();
+      this.close();
 
-        return { status: 'failed' };
-      }
-      else return response;
+      return response;
     },
 
-    optionChoosen(status: AppResponse['status']) {
+    chooseOption(status: AppResponse['status']) {
       fireEvent('modal_userInteraction', { status, message: this.modal.component.options });
-      this.close();
+    },
+
+    open() {
+      this.isShowed = true;
+      fireEvent('showOverlay');
     },
 
     close() {
       this.isShowed = false;
-      this.clear();
-    },
+      fireEvent('hideOverlay');
 
-    clear() {
       setTimeout(() => { this.$reset() }, 100);
-    },
+    }
   }
 });

@@ -31,7 +31,7 @@
           :color="modalStore.modal.buttons.primaryButton.color"
           :transparent="modalStore.modal.buttons.primaryButton.transparent"
           :disabled="isButtonDisabled"
-          @click="modalStore.optionChoosen('failed')"
+          @click="modalStore.chooseOption('failed')"
         />
 
         <base-button
@@ -40,7 +40,7 @@
           :color="modalStore.modal.buttons.secondaryButton.color"
           :transparent="modalStore.modal.buttons.secondaryButton.transparent"
           :disabled="isButtonDisabled || modalStore.modal.buttons.isDisabled"
-          @click="modalStore.optionChoosen('success')"
+          @click="modalStore.chooseOption('success')"
         />
       </section>
     </div>

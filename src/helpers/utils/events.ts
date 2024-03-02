@@ -8,7 +8,11 @@ export function waitForEvent(eventName: string): Promise<AppResponse> {
         const listener = (e: object) => {
             window.removeEventListener(eventName, listener);
             window.removeEventListener('hideOverlay', listener);
-            resolve((e as CustomEvent).detail);
+
+            if ((e as CustomEvent).detail == null)
+                return resolve({ status: 'failed' });
+            else
+                return resolve((e as CustomEvent).detail);
         };
 
         window.addEventListener('hideOverlay', listener, { once: true });

@@ -21,12 +21,7 @@ const router = useRouter();
 
 const props = defineProps({
   icon: String,
-  title: {
-    type: String,
-    validator: (value: string) => {
-      return value.length > 0;
-    },
-  },
+  title: String,
   size: {
     type: String,
     default: '8',

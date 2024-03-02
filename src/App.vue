@@ -7,6 +7,7 @@
     </transition>
   </router-view>
 
+  <AppBlock />
   <BaseDialog />
   <BaseModal />
   <BaseOverlay />
@@ -15,39 +16,34 @@
 
 <script setup lang="ts">
 import Alerts from 'components/alerts/AlertsContainer.vue';
+import AppBlock from 'components/Shared/AppBlock.vue';
 import BaseDialog from 'components/Shared/BaseDialog.vue';
 import BaseModal from 'components/Shared/BaseModal.vue';
 import BaseOverlay from 'components/Shared/BaseOverlay.vue';
 import BaseReauthenticate from 'components/Shared/BaseReauthenticate.vue';
 
 import { useAppStore } from 'stores/appStore';
-import { onMounted, onUnmounted } from 'vue';
-import { QSpinnerRadio, useQuasar } from 'quasar';
+const appStore = useAppStore();
 
 import 'database/firebase';
 import authStart from 'database/auth';
+import { handleAppAvailability } from 'helpers/functions/app';
 
-const appStore = useAppStore();
+import { onMounted, onUnmounted } from 'vue';
+import { QSpinnerRadio, useQuasar } from 'quasar';
 const $q = useQuasar();
 
-onMounted(() => {
-  appStore.startClock();
-  authStart();
+const navigatorStart = () => {
+  window.addEventListener('online', handleNetworkChange, false);
+  window.addEventListener('offline', handleNetworkChange, false);
+};
 
-  window.addEventListener('online', HandleNetworkChange, false);
-  window.addEventListener('offline', HandleNetworkChange, false);
+const navigatorStop = () => {
+  window.removeEventListener('online', handleNetworkChange, false);
+  window.removeEventListener('offline', handleNetworkChange, false);
+};
 
-  if (process.env.PROD) window.screen.orientation.lock('portrait');
-});
-
-onUnmounted(() => {
-  appStore.stopClock();
-
-  window.removeEventListener('online', HandleNetworkChange, false);
-  window.removeEventListener('offline', HandleNetworkChange, false);
-});
-
-const HandleNetworkChange = () => {
+const handleNetworkChange = () => {
   if (navigator.onLine) $q.loading.hide();
   else
     $q.loading.show({
@@ -56,4 +52,18 @@ const HandleNetworkChange = () => {
       message: 'Brak połączenia z internetem...',
     });
 };
+
+onMounted(() => {
+  appStore.startClock();
+  authStart();
+  navigatorStart();
+  handleAppAvailability();
+
+  if (process.env.PROD) window.screen.orientation.lock('portrait');
+});
+
+onUnmounted(() => {
+  appStore.stopClock();
+  navigatorStop();
+});
 </script>

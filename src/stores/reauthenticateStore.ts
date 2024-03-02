@@ -19,7 +19,10 @@ export const useReauthenticateStore = defineStore('reauthenticate', {
     async askForReauthenticate(): Promise<AppResponse> {
       this.isShowed = true;
 
-      return await waitForEvent('reauthenticate_userInteraction');
+      const response = await waitForEvent('reauthenticate_userInteraction');
+      this.close();
+
+      return response;
     },
 
     reauthenticate() {
@@ -32,10 +35,7 @@ export const useReauthenticateStore = defineStore('reauthenticate', {
       const credential = EmailAuthProvider.credential(auth.currentUser.email, this.password);
 
       reauthenticateWithCredential(auth.currentUser, credential)
-        .then(() => {
-          fireEvent('reauthenticate_userInteraction', { status: 'success' });
-          this.close();
-        })
+        .then(() => fireEvent('reauthenticate_userInteraction', { status: 'success' }))
         .catch((error) => {
           createAlert({
             message: formatMessage(error),
@@ -43,23 +43,18 @@ export const useReauthenticateStore = defineStore('reauthenticate', {
             duration: 5,
           });
 
-          fireEvent('base__button--loadingComplete');
-          this.canceled();
+          this.cancelled();
         });
     },
 
-    canceled() {
+    cancelled() {
       fireEvent('reauthenticate_userInteraction', { status: 'failed' });
-      this.close();
+      fireEvent('base__button--loadingComplete');
     },
 
     close() {
       this.isShowed = false;
-      this.clear();
-    },
-
-    clear() {
       setTimeout(() => { this.$reset() }, 100);
-    },
+    }
   }
 });

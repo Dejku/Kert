@@ -70,6 +70,7 @@ import { fireEvent } from 'utils';
 
 import { useIconStore } from 'stores/iconStore';
 import { useAlertStore } from 'stores/alertStore';
+import { useBlockStore } from 'stores/blockStore';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -77,6 +78,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const iconStore = useIconStore();
 const { createAlert, formatMessage } = useAlertStore();
+const blockStore = useBlockStore();
 const router = useRouter();
 
 const email = ref<string>('');
@@ -91,6 +93,11 @@ const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then(() => router.push('/home'))
     .catch((error) => {
+      if (error.code == 'auth/user-disabled') {
+        blockStore.showMessage('auth/user-disabled');
+        return router.push('/block');
+      }
+
       createAlert({
         message: formatMessage(error),
         status: 'error',

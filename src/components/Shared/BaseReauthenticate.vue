@@ -35,7 +35,7 @@
             label="Anuluj"
             corner-small
             transparent
-            @click="reauthenticateStore.canceled"
+            @click="reauthenticateStore.cancelled"
           />
 
           <base-button

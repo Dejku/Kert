@@ -60,8 +60,9 @@
 
 <script setup lang="ts">
 import { ErrorAlert } from 'models';
-import { useResetStore } from 'utils';
+import { snapshotsStop } from 'database/snapshots';
 
+import { useResetStore } from 'utils';
 import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useDialogStore } from 'stores/dialogStore';
@@ -125,6 +126,7 @@ const logout = async () => {
 
     signOut(auth)
       .then(() => {
+        snapshotsStop();
         router.push('/loggedOut');
 
         setTimeout(() => resetStore.all(), 500);
