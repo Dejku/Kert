@@ -1,6 +1,6 @@
 import { fireEvent } from 'utils';
 import { getAvatar } from 'database/storage';
-import snapshots from 'database/snapshots';
+import { snapshotsStart } from 'database/snapshots';
 
 import { useAppStore } from 'stores/appStore';
 import { useAccountStore } from 'stores/accountStore';
@@ -40,7 +40,7 @@ export default function authStart() {
             });
 
             await appStore.fetchData();
-            snapshots();
+            snapshotsStart();
         }
 
         fireEvent('firebase--auth-ready');
