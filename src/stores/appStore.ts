@@ -9,6 +9,8 @@ let clock: string | number | NodeJS.Timeout | undefined;
 export const useAppStore = defineStore('app', {
     state: () => ({
         todayDate: new Date(),
+        appBlocked: false,
+        appVersion: '1.0.0'
     }),
 
     actions: {
