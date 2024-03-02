@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "emulators": "cd emulators && firebase emulators:start",
+    "emulators": "cd emulators && firebase emulators:start --import=./firebase-export",
+    "emulators:export": "cd emulators && firebase emulators:export ./firebase-export",
     "deploy": "cd emulators && firebase deploy --only firestore && firebase deploy --only storage",
     "deploy --only firestore": "cd emulators && firebase deploy --only firestore",
     "deploy --only storage": "cd emulators && firebase deploy --only storage",

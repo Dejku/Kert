@@ -1,0 +1,19 @@
+{
+  "name": "avatars/default_avatar.png",
+  "bucket": "kert-c3c73.appspot.com",
+  "metageneration": 1,
+  "generation": 1709395224238,
+  "contentType": "image/png",
+  "storageClass": "STANDARD",
+  "contentDisposition": "inline",
+  "downloadTokens": [
+    "f0f592cb-0d2b-4b31-8b48-63911e0a57c5"
+  ],
+  "etag": "aLonJQowjQexl18rorOTUAwUlro",
+  "customMetadata": {},
+  "timeCreated": "2024-03-02T16:00:24.239Z",
+  "updated": "2024-03-02T16:00:24.239Z",
+  "size": 8229,
+  "md5Hash": "pegfGc8sWHh2/RuwiuAknw==",
+  "crc32c": "977146866"
+}
