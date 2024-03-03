@@ -38,13 +38,11 @@ $themes: (
     onErrorContainer: #ffdad6,
 
     background: #1a1d1e,
-    onBackground: #e1e2e5,
 
     surface: #273135,
-    onSurface: #e1e2e5,
     surfaceVariant: #494d50,
-    onSurfaceVariant: #e1e2e5,
 
+    text: #e1e2e5,
     outline: #5a5d62,
   ),
 );
@@ -53,7 +51,7 @@ $themes: (
   [data-theme='#{$theme}'] {
     #q-app {
       background-color: map.get($colors, 'background') !important;
-      color: map.get($colors, 'onBackground') !important;
+      color: map.get($colors, 'text') !important;
     }
 
     @each $name, $color in $colors {
