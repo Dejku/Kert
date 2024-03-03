@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <router-view v-slot="{ Component }" class="column q-pa-lg full-width">
-        <transition :name="(route.meta.transition as string) || 'fade'">
+        <transition :name="(route.meta.transition as string) || 'page-fade'">
           <component :is="Component" />
         </transition>
       </router-view>

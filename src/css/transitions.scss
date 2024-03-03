@@ -10,16 +10,51 @@
   transition: var(--base-transition);
 }
 
-// Page Transitions
+// Element Transitions
 
 // fade
 .fade-enter-active,
 .fade-leave-active {
-  transition: all var(--page-transition);
+  transition: all var(--base-transition);
 }
 
 .fade-enter-from,
 .fade-leave-to {
+  opacity: 0;
+}
+
+// list
+
+.list-transition-move {
+  z-index: 1;
+}
+
+.list-transition-move,
+.list-transition-enter-active,
+.list-transition-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-transition-enter-from,
+.list-transition-leave-to {
+  opacity: 0;
+}
+
+.list-transition-leave-active {
+  position: absolute;
+  z-index: 0;
+}
+
+// Page Transitions
+
+// fade
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: all var(--page-transition);
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
   opacity: 0;
 }
 

@@ -2,7 +2,7 @@
   <transition-group
     tag="div"
     id="alerts"
-    name="alerts__element"
+    name="list-transition"
     class="column z-max relative-position gap-sm"
   >
     <base-alert
