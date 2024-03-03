@@ -354,9 +354,18 @@ const showSummaryModal = () => {
 const selectDay = (day: number, month: number, year: number) =>
   vacationStore.selectVacationDay({ day, month, year });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const holdSelectDay = (details: any) => {
-  const data = details.evt.target.getAttribute('data-date').split('/');
+type Details = {
+  evt: {
+    target: {
+      getAttribute(data: string): string;
+    };
+  };
+};
+
+const holdSelectDay = <T>(details: T) => {
+  const data = (details as Details).evt.target
+    .getAttribute('data-date')
+    .split('/');
 
   vacationStore.holdSelectVacationDay({
     day: Number(data[0]),
