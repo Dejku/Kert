@@ -10,7 +10,17 @@ export const useAppStore = defineStore('app', {
     state: () => ({
         todayDate: new Date(),
         appBlocked: false,
-        appVersion: '1.0.0'
+        appVersion: '1.0.0',
+        appColors: [
+            'onBackground',
+            'primary',
+            'secondary',
+            'tertiary',
+            'success',
+            'info',
+            'warning',
+            'error',
+        ] as AppColors[]
     }),
 
     actions: {

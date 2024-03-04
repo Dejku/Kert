@@ -11,6 +11,8 @@ const routes: RouteRecordRaw[] = [
       { path: '/password-recovery', component: () => import('pages/landing/RecoveryPassPage.vue'), meta: { transition: 'page-slide-left' } },
       { path: '/accountDeleted', component: () => import('pages/other/AccountDeleted.vue') },
       { path: '/loggedOut', component: () => import('pages/other/LoggedOut.vue') },
+      { path: '/tasks/create', component: () => import('pages/tasks/CreateTaskPage.vue'), meta: { requireAuth: true } },
+      { path: '/tasks/view', component: () => import('pages/tasks/ViewTaskPage.vue'), meta: { requireAuth: true } },
       { name: 'ErrorNotFound', path: '/:catchAll(.*)*', component: () => import('pages/other/ErrorNotFound.vue') }
     ],
   },
