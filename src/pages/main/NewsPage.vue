@@ -3,7 +3,7 @@
     <base-title title="Skrzynka odbiorcza" />
 
     <section class="relative-position">
-      <transition-group name="news-list">
+      <transition-group name="list-transition">
         <news-list-element
           v-for="message in newsStore.news"
           :key="message.id"
@@ -38,21 +38,3 @@ import NewsListElement from 'components/news/NewsListElement.vue';
 import { useNewsStore } from 'stores/newsStore';
 const newsStore = useNewsStore();
 </script>
-
-<style lang="scss" scoped>
-.news-list-move,
-.news-list-enter-active,
-.news-list-leave-active {
-  transition: var(--transition);
-}
-
-.news-list-enter-from,
-.news-list-leave-to {
-  opacity: 0;
-  transform: translateX(-30%);
-}
-
-.news-list-leave-active {
-  position: absolute;
-}
-</style>

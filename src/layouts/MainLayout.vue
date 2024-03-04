@@ -38,7 +38,7 @@
           :bar-style="{ display: 'none' }"
           :thumb-style="{ display: 'none' }"
         >
-          <transition :name="(route.meta.transition as string) || 'fade'">
+          <transition :name="(route.meta.transition as string) || 'page-fade'">
             <component :is="Component" />
           </transition>
         </q-scroll-area>

@@ -8,7 +8,7 @@
       <base-title
         title="Ile dni urlopu Ci przysługuje?"
         size="5"
-        weight="500"
+        text-weight="500"
       />
 
       <div class="row gap-md">

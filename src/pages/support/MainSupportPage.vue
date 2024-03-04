@@ -15,7 +15,7 @@
     </section>
 
     <section v-if="computedResult.length" class="column q-px-sm q-py-sm gap-md">
-      <transition-group name="list">
+      <transition-group name="list-transition">
         <div
           v-for="element in computedResult"
           :key="element.label"
@@ -80,21 +80,6 @@ onBeforeMount(() => supportStore.fetchLinks());
 </script>
 
 <style lang="scss" scoped>
-.list-move,
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-}
-.list-leave-active {
-  position: absolute;
-  z-index: 1;
-}
-
 .search__container__element {
   width: calc(100vw - (16px * 2) - (8px * 2));
 }

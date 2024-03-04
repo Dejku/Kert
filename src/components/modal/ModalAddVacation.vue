@@ -34,25 +34,23 @@
         Czas trwania
       </div>
       <div>
-        <Transition name="fade" mode="out-in">
-          <span v-if="modalStore.component.vacationDays.time.type == 'day'">
-            Cały dzień
-          </span>
+        <span v-if="modalStore.component.vacationDays.time.type == 'day'">
+          Cały dzień
+        </span>
 
-          <div v-else class="row gap-sm">
-            <q-icon
-              :name="iconStore.icon.arrowLeft"
-              class="text-size-10"
-              v-touch-repeat:0:100.mouse="decrement"
-            />
-            <span>{{ modalStore.component.vacationDays.time.hours }}</span>
-            <q-icon
-              :name="iconStore.icon.arrowRight"
-              class="text-size-10"
-              v-touch-repeat:0:100.mouse="increment"
-            />
-          </div>
-        </Transition>
+        <div v-else class="row gap-sm">
+          <q-icon
+            :name="iconStore.icon.arrowLeft"
+            class="text-size-10"
+            v-touch-repeat:0:100.mouse="decrement"
+          />
+          <span>{{ modalStore.component.vacationDays.time.hours }}</span>
+          <q-icon
+            :name="iconStore.icon.arrowRight"
+            class="text-size-10"
+            v-touch-repeat:0:100.mouse="increment"
+          />
+        </div>
       </div>
     </div>
   </div>

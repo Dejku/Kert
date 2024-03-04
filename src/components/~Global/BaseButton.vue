@@ -1,9 +1,10 @@
 <template>
   <div
     v-ripple="ripple"
-    class="base__button relative-position row flex-center hug text-bold"
+    class="base__button relative-position row flex-center hug"
     :class="{
       'box-shadow': shadow,
+      'text-bold': textBold,
       'no-pointer-events': disabled || isLoading,
       'base__button--disabled': disabled || isLoading,
       'base__button--small': size === 'small' || size == 0,
@@ -111,6 +112,10 @@ const props = defineProps({
     validator: (value: string) => {
       return ['big', '2', 2, 'medium', '1', 1, 'small', '0', 0].includes(value);
     },
+  },
+  textBold: {
+    type: Boolean,
+    default: true,
   },
   loading: {
     type: Boolean,

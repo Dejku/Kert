@@ -5,7 +5,7 @@
     <section
       class="column flex-center q-py-md bg-surface rounded-borders gap-sm box-shadow"
     >
-      <base-title title="Tryb powiadomień" size="5" weight="500" />
+      <base-title title="Tryb powiadomień" size="5" text-weight="500" />
 
       <div class="row gap-md text-size-4">
         <div

@@ -7,7 +7,14 @@ export const useModalStore = defineStore('modal', {
     modal: {} as Modal,
 
     component: {
-      vacationDays: {} as VacationTypes,
+      vacationDays: {
+        name: 'Urlop wypoczynkowy',
+        isSpecial: false,
+        time: {
+          type: 'day',
+          hours: 0
+        }
+      } as VacationTypes,
 
       user: {
         displayName: '',

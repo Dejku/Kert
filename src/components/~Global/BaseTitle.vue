@@ -5,7 +5,7 @@
     <h6
       v-if="title"
       class="first-upper-case"
-      :class="`text-size-${size} text-weight-${weight}`"
+      :class="`text-size-${size} text-weight-${textWeight}`"
       :style="{ 'letter-spacing': letterSpacing ? '1px' : '0px' }"
     >
       {{ title }}
@@ -26,7 +26,7 @@ const props = defineProps({
     type: String,
     default: '8',
   },
-  weight: {
+  textWeight: {
     type: [String, Number],
     default: 700,
     validator: (value: string | number) => {
