@@ -1,4 +1,4 @@
-type AppColors = 'background' | 'text' | 'primary' | 'secondary' | 'tertiary' | 'success' | 'info' | 'warning' | 'error'
+type AppColors = 'background' | 'onBackground' | 'primary' | 'secondary' | 'tertiary' | 'success' | 'info' | 'warning' | 'error'
 
 type AppDate = {
     day: number,
