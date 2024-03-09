@@ -3,50 +3,32 @@
     <transition name="scale">
       <div
         v-if="activeTab == 'calendar' && vacationStore.hasUnsavedChanges"
-        class="row justify-between q-px-lg text-size-8"
+        class="row justify-between"
         :class="
           $q.screen.height > 700
-            ? 'absolute-bottom q-py-xl z-fab'
-            : 'absolute-top q-py-lg'
+            ? 'absolute-bottom q-px-md q-py-lg z-fab'
+            : 'absolute-top q-px-lg q-py-lg'
         "
       >
-        <template v-if="$q.screen.height > 700">
-          <base-button
-            :icon-left="iconStore.icon.success"
-            label="Zapisz"
-            color="success"
-            transparent
-            v-touch-hold:2000.mouse="vacationStore.saveChanges"
-          />
+        <base-button
+          :icon-left="iconStore.icon.success"
+          :label="$q.screen.height > 700 ? 'Zapisz' : ''"
+          color="success"
+          :circle="$q.screen.height < 700"
+          transparent
+          :size="$q.screen.height > 700 ? 'big' : 'medium'"
+          @click="vacationStore.saveChanges"
+        />
 
-          <base-button
-            :icon-right="iconStore.icon.trash"
-            label="Anuluj"
-            color="error"
-            transparent
-            v-touch-hold:2000.mouse="vacationStore.discardChanges"
-          />
-        </template>
-
-        <template v-else>
-          <div class="column flex-center text-success">
-            <q-icon
-              :name="iconStore.icon.success"
-              class="q-pa-sm border-success rounded-borders--circle"
-              style="border-width: 2px !important"
-              v-touch-hold:2000.mouse="vacationStore.saveChanges"
-            />
-          </div>
-
-          <div class="column flex-center text-error">
-            <q-icon
-              :name="iconStore.icon.trash"
-              class="q-pa-sm border-error rounded-borders--circle"
-              style="border-width: 2px !important"
-              v-touch-hold:2000.mouse="vacationStore.discardChanges"
-            />
-          </div>
-        </template>
+        <base-button
+          :icon-right="iconStore.icon.trash"
+          :label="$q.screen.height > 700 ? 'Anuluj' : ''"
+          color="error"
+          :circle="$q.screen.height < 700"
+          transparent
+          :size="$q.screen.height > 700 ? 'big' : 'medium'"
+          @click="vacationStore.discardChanges"
+        />
       </div>
     </transition>
 

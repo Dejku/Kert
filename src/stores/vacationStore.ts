@@ -69,7 +69,7 @@ export const useVacationStore = defineStore('vacations', {
         .catch(() => { return this.createAlert(ErrorAlert) });
 
       this.hasUnsavedChanges = false;
-      this.createAlert({ message: 'Zmiany zostały pomyślnie zapisane', status: 'success', duration: 4, isImportant: true })
+      this.createAlert({ message: 'Zmiany zostały zapisane', status: 'success', duration: 4, isImportant: true })
     },
 
     async discardChanges() {
