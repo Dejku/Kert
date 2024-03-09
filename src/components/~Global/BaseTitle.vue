@@ -4,8 +4,8 @@
 
     <h6
       v-if="title"
-      class="first-upper-case"
-      :class="`text-size-${size} text-weight-${textWeight}`"
+      class="first-upper-case full-width"
+      :class="`text-size-${size} text-weight-${textWeight} text-${textPosition}`"
       :style="{ 'letter-spacing': letterSpacing ? '1px' : '0px' }"
     >
       {{ title }}
@@ -33,6 +33,13 @@ const props = defineProps({
       return typeof value === 'number'
         ? value / 100 >= 1 && value / 100 <= 9
         : new RegExp('[1-9]00').test(value);
+    },
+  },
+  textPosition: {
+    type: String,
+    default: 'left',
+    validator: (value: string) => {
+      return ['left', 'center', 'right'].includes(value);
     },
   },
   letterSpacing: {
