@@ -1,11 +1,11 @@
 <template>
-  <q-page class="gap-lg">
-    <header class="column items-center gap-md">
-      <base-title title="Stwórz nową listę" />
+  <q-page class="justify-between gap-md">
+    <header class="column gap-md">
+      <base-title title="Stwórz nową listę" text-position="center" />
 
       <base-input
         v-model="newSet.label"
-        :minlength="5"
+        :minlength="3"
         :maxlength="16"
         placeholder="Wpisz nazwę listy"
         :textCenter="true"
@@ -37,25 +37,35 @@
       </div>
     </header>
 
-    <section class="col-grow">
+    <section>
       <q-scroll-area
-        style="height: 397px"
+        class="q-px-sm bg-surface rounded-borders box-shadow"
+        :style="`height: ${tasksContainerHeight}px`"
         :bar-style="{ display: 'none' }"
         :thumb-style="{ display: 'none' }"
       >
-        <div class="column gap-sm">
+        <div class="column q-my-sm gap-sm">
           <div
             v-for="task in newSet.tasks"
             :key="task.id"
             class="row no-wrap gap-xs"
           >
-            <q-icon :name="iconStore.icon.circle" class="text-size-8" />
+            <q-icon
+              :name="
+                task.isCompleted
+                  ? iconStore.icon.successCircle
+                  : iconStore.icon.circle
+              "
+              class="text-size-8"
+              @click="toggleCheckTask(task)"
+            />
 
             <input
               type="text"
               v-model="task.label"
               placeholder="Nazwa zadania"
               class="full-width"
+              :class="task.isCompleted ? 'disabled text-strike' : ''"
             />
 
             <q-icon
@@ -111,7 +121,12 @@
       <div class="row items-center justify-evenly">
         <base-button label="Wróć" transparent @click="router.push('/tasks')" />
 
-        <base-button label="Stwórz" :disabled="hasError" @click="createSet()" />
+        <base-button
+          label="Stwórz"
+          loading
+          :disabled="hasError"
+          @click="createSet()"
+        />
       </div>
     </footer>
   </q-page>
@@ -123,9 +138,9 @@ import { useIconStore } from 'stores/iconStore';
 import { useAccountStore } from 'stores/accountStore';
 import { useAppStore } from 'stores/appStore';
 
-import { ref } from 'vue';
-import { uid } from 'quasar';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { uid } from 'quasar';
 
 const taskStore = useTaskStore();
 const iconStore = useIconStore();
@@ -133,6 +148,7 @@ const accountStore = useAccountStore();
 const appStore = useAppStore();
 const router = useRouter();
 
+const tasksContainerHeight = ref<number>();
 const hasError = ref<boolean>(true);
 
 const newSet = ref<SetOfTasks>({
@@ -155,6 +171,8 @@ const newTask = () => {
   newSet.value.tasks.push(newTask);
 };
 
+const toggleCheckTask = (task: Task) => (task.isCompleted = !task.isCompleted);
+
 const deleteTask = (task: Task) => {
   const index = newSet.value.tasks.indexOf(task);
   if (index > -1) newSet.value.tasks.splice(index, 1);
@@ -172,7 +190,11 @@ const unShareSet = () => (newSet.value.sharedIn = null);
 const createSet = async () => {
   if (hasError.value) return;
 
-  taskStore.createSet(newSet.value);
+  await taskStore.createSet(newSet.value);
   router.push({ path: '/tasks/view', query: { task: newSet.value.id } });
 };
+
+onMounted(() => {
+  tasksContainerHeight.value = window.innerHeight - 178 - 117 - 24 * 2 - 16 * 2;
+});
 </script>
