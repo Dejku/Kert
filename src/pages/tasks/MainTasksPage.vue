@@ -1,9 +1,6 @@
 <template>
   <q-page class="gap-md">
-    <q-expansion-item
-      expand-icon="eva-funnel-outline"
-      expanded-icon="eva-funnel-outline"
-    >
+    <q-expansion-item expand-icon="eva-settings-outline">
       <template v-slot:header>
         <base-title title="Twoja lista zadań" />
 
@@ -84,14 +81,16 @@
           label="Kliknij aby dodaj nowe"
           transparent
           no-border
+          color="primary"
           size="small"
           :text-bold="false"
           :ripple="false"
+          @click="router.push('/tasks/create')"
         />
       </div>
 
       <div
-        v-if="!sets.length"
+        v-if="!sets.length && taskStore.sets.length"
         key="nothing found"
         class="absolute-center full-width column items-center"
       >

@@ -133,6 +133,10 @@ const signup = () => {
         } as Preference,
       });
 
+      await setDoc(doc(db, 'taskStore', user.uid), {
+        sets: [] as SetOfTasks[],
+      });
+
       if (auth.currentUser)
         await updateProfile(auth.currentUser, {
           displayName: nick.value,
